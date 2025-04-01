@@ -12,4 +12,4 @@ class Conexion{
         }
     }
 }
-?>php
+?>
