@@ -6,4 +6,4 @@ define("PASSWORD","");
 
 
 define("DSN","mysql:host=".SERVIDOR.";dbname=".DATABASE.";charset=utf8mb4");
-?>php
+?>
