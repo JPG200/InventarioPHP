@@ -26,7 +26,7 @@ class Usuario{
         return false;
     }
         //Validar Usuario
-    function ValidarUsuario($u_correo,$u_contraseña): bool{
+    function ValidarUsuario($u_correo,$u_contraseña){
         $query = "SELECT * FROM tbusuarios WHERE correo=? AND estado=1";
         $result = $this->cnx->prepare($query);
         $result->bindParam(1,$u_correo);
@@ -34,7 +34,7 @@ class Usuario{
         if($result->rowCount()>0){
             $row=$result->fetch(PDO::FETCH_ASSOC);
             if(password_verify($u_contraseña,$row['contraseña'])){
-                return true;
+                return $row;
             }
         }
         return false;

@@ -18,14 +18,21 @@ function ValidarUsuario(){
                 location.href = "/pages/welcome.php";
             } else if(response == "not found"){
                 console.log(response);
+                LimpiarController();
                msg ='<div class="alert alert-danger mb-2" role="alert"><strong>Usuario o Contraseña incorrecta </strong>Las Credenciales son incorrectas. Por favor verifique.</div>;'
             } else if(response == "requerido"){
                 console.log(response);
+                LimpiarController();
                msg ='<div class="alert alert-danger mb-2" role="alert"><strong>Usuario no existe </strong> Por favor registrese.</div>;'
             }
-            $('#status_logic').html(msg);
+            $('#status_login').html(msg);
         }
     });
+}
+
+function LimpiarController(){
+$('#user-name').val("");
+$('#user-password').val("");
 }
 
 

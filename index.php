@@ -1,3 +1,9 @@
+<?php
+session_start();
+if(isset($_SESSION["user"])){
+    header("Location: pages/welcome.php");
+}else{
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -69,7 +75,7 @@
                             </form>
                         </div>
                     </div>
-                    <div id="status_logic" class="card-footer"></div>
+                    <div id="status_login" class="card-footer"></div>
                     <div class="card-footer">
                         <div class="">
                             <p class="float-sm-left text-xs-center m-0"><a href="" class="card-link">Recover password</a></p>
@@ -83,3 +89,6 @@
     </div>
   </body>
 </html>
+<?php
+}
+?>

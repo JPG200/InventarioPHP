@@ -1,5 +1,6 @@
 <?php 
-
+session_start();
+// Incluir el archivo de conexión a la base de datos
 require "../model/Usuario.php";
 $usuario = new Usuario();
 
@@ -29,8 +30,11 @@ switch($_REQUEST["operador"]){
         if(isset($_POST["correo"],$_POST["clave"]) && !empty($_POST["correo"]) && !empty($_POST["clave"]) || !empty($_POST["correo"]) || !empty($_POST["clave"])){
             $u_correo = $_POST["correo"];
             $u_contraseña = $_POST["clave"];
-            if($usuario->ValidarUsuario($u_correo,$u_contraseña)){
-            $response ="success";
+            if($user = $usuario->ValidarUsuario($u_correo,$u_contraseña)){
+                foreach($user as $campos => $valor){
+                    $_SESSION["user"][$campos] = $valor;
+                }
+                $response ="success";
             }else{
             $response ="not found";
             }
@@ -39,5 +43,11 @@ switch($_REQUEST["operador"]){
         }
         echo $response;
     break;
+
+    case 'CerrarSesion':
+        unset($_SESSION["user"]);
+        session_destroy();
+        header("Location: ../index.php");
+        break;
 }
 ?>
