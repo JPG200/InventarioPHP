@@ -2,7 +2,24 @@
 <div data-scroll-to-active="true" class="main-menu menu-fixed menu-dark menu-accordion menu-shadow">
 
       <div class="main-menu-header">
-        <input type="text" placeholder="Search" class="menu-search form-control round"/>
+        <div class="media">
+          <div class="media-left">
+          <span class="avatar avatar-sm avatar-online rounded-circle">
+            <img src="../app-assests/images/portrait/small/avatar-s-1.png" alt="avatar" class="rounded-circle"><i></i>   
+            </span>      
+          </div>
+          <div class="media-body">
+            <h6 class="media-heading"><?php echo $_SESSION["user"]["nombre"].' '.$_SESSION["user"]["apellidos"];?>
+              <p class="notification-text font-small-3 text-muted">
+              <?php 
+                  echo $_SESSION["user"]["correo"];
+              ?>
+              </p> 
+            </h6>
+            <span class="font-small-3 text-muted">Administrador</span>
+
+          </div>
+       </div> 
       </div>
 
       <div class="main-menu-content">
@@ -28,7 +45,7 @@
             <ul class="menu-content">
               <li><a href="#" class="menu-item">Nuevo producto</a></li>
               <li><a href="#" class="menu-item">Lista de productos</a></li>
-              <li><a href="#" class="menu-item">Categorias</a></li>
+              <li><a href="/pages/categorias.php" class="menu-item">Categorias</a></li>
               <li><a href="#" class="menu-item">Sub categorias</a></li>
               <li><a href="#" class="menu-item">Unidad de medida</a></li>
             </ul>

@@ -1,5 +1,8 @@
 <!-- ============== | head | =================-->
-<?php  include "layouts/head.php";     ?>
+<?php  
+session_start();
+if(isset($_SESSION["user"])){
+include "layouts/head.php";     ?>
 <!--==========================================-->
 
 
@@ -9,7 +12,6 @@
         <div class="content-header row">
         </div>
         <div class="content-body">
-
         </div>
     </div>
 </div>
@@ -20,7 +22,11 @@
 <!--==========================================-->
 
 <!-- ============= | footer | ================-->
-<?php  include "../pages/layouts/footer.php";      ?>
+<?php  include "../pages/layouts/footer.php";     
+}else{
+header(header: "Location: ../");
+}
+?>
 <!--==========================================-->
 
 
