@@ -25,7 +25,7 @@ class Usuario{
         }
         return false;
     }
-
+        //Validar Usuario
     function ValidarUsuario($u_correo,$u_contraseña): bool{
         $query = "SELECT * FROM tbusuarios WHERE correo=? AND estado=1";
         $result = $this->cnx->prepare($query);
