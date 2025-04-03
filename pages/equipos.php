@@ -18,7 +18,7 @@ if(isset($_SESSION["user"])){
 					<ol class="breadcrumb">
 						<li class="breadcrumb-item"><a href="../main">Dashboard</a></li>
 						<li class="breadcrumb-item"><a >Productos</a></li>
-						<li class="breadcrumb-item active"><a href="#">Categorias</a></li>
+						<li class="breadcrumb-item active"><a href="../pages/categorias.php">Registro de Equipos</a></li>
 					</ol>
 				</div>
 			</div>
@@ -31,7 +31,7 @@ if(isset($_SESSION["user"])){
 							<div class="card-header">
 								<h4 class="card-title" id="basic-layout-form">
 									<button class="btn btn-sm btn-success" data-target="#createEquipo" data-toggle="modal" aria-expanded="false" aria-controls="createEquipo">
-										Registrar Nuevo Equipo</button>
+										Registrar Equipo</button>
 								</h4>
 								<a class="heading-elements-toggle"><i class="icon-ellipsis font-medium-3"></i></a>
 								<div class="heading-elements">
@@ -44,19 +44,15 @@ if(isset($_SESSION["user"])){
 							<div class="card-body collapse in">
 								<div class="card-block">
 									<div class="table-responsive">
-										<table id="Tabla_regEquipos" class="table table-bordered table-sm">
+										<table id="Tabla_Equipos" class="table table-bordered table-sm">
 											<thead>
 												<tr>
-													<th width="5%">Numero de Registro</th>
-													<th width="5%">Placa</th>
-													<th width="5%">Serial</th>
-													<th width="25%">Descripcion</th>
-													<th width="20%">Observaciones</th>
-													<th width="10%">Accesorios</th>
-													<th width="5%">Empresa</th>
-													<th width="10%">Fecha de Ingreso</th>
-													<th width="5%">Estado</th>
-													<th width="5%">op</th>
+													<th >Numero de Registro</th>
+													<th >Placa</th>
+													<th >Serial</th>
+													<th >Fecha de Ingreso</th>
+													<th >Estado</th>
+													<th >op</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -78,7 +74,9 @@ if(isset($_SESSION["user"])){
 </div>
 <!--=============MODAL====================-->
 <?php 
-include 'modals/createregEquipo.php';
+include 'modals/createEquipo.php';
+include 'modals/updateEquipo.php';
+
 ?>
 <!--==========================================-->
 
@@ -87,7 +85,8 @@ include 'modals/createregEquipo.php';
 <!--==========================================-->
 <script src="../app-assests/plugins/DataTables/datatables.min.js" type="text/javascript"></script>
 <script src="../app-assests/plugins/DataTables/DataTables-1.10.18/js/dataTables.bootstrap4.min.js" type="text/javascript"></script>
-<script src="../assets/js/regEquipos.js" type="text/javascript"></script>
+<script src="../assets/js/Equipos.js" type="text/javascript"></script>
+<script src="../app-assests/plugins/toastr/toastr.min.js" type="text/javascript"></script>
 <!-- ============= | footer | ================-->
 <?php  include "layouts/footer.php";      }
 else{
