@@ -7,8 +7,6 @@ function init(){
 LlenarTablaEquipos();
 }
 
-<<<<<<< Updated upstream
-=======
 function LimpiarModel(){
     $('#txtplaca').val("");
     $('#txtserial').val("");
@@ -29,7 +27,7 @@ function ActualizarEquipo(){
         beforeSend: function(response){},
         success:function(response){
             if (response == "sucess") {
-                toastr.success("Equipo actualizado exitosamente", "Registro Actualizado."); // Mostrar mensaje de éxito
+                toastr.sucess("Equipo actualizado exitosamente", "Registro Actualizado."); // Mostrar mensaje de éxito
                 table.ajax.reload(); // Recargar la tabla
                 $('#updateEquipo').modal('hide'); // Cerrar el modal después de registrar
                 LimpiarModel(); // Limpiar los campos del modal
@@ -54,7 +52,6 @@ function ActualizarEquipo(){
     });
 }
 
->>>>>>> Stashed changes
 function LlenarTablaEquipos(){
 table = $('#Tabla_Equipos').DataTable({
 pageLength:10,
@@ -62,21 +59,14 @@ responsive:true,
 processing:true,
 ajax:"../controller/EquiposController.php?operador=listar_categorias",
 columns:[
-    {data:"Numero de Registro"},
+    {data:"Numero de Registro", 'visible': false},
     {data:"Placa"},
     {data:"Serial"},
-    {data:"Descripcion"},
-    {data:"Observaciones"},
-    {data:"Accesorios"},
-    {data:"Empresa"},
     {data:"Fecha de Ingreso"},
     {data:"Estado"},
     {data:"op"}
 ]
 });
-<<<<<<< Updated upstream
-}
-=======
 }
 
 function RegistrarEquipo(){
@@ -94,21 +84,25 @@ function RegistrarEquipo(){
         success: function(response) {
             console.log(parametros);
             if (response == "sucess") {
+                console.log(response); // Para depuración
                 toastr.success("Equipo registrado exitosamente", "Registro Exitoso."); // Mostrar mensaje de éxito
                 table.ajax.reload(); // Recargar la tabla después de registrar el equipo
                 LimpiarModel(); // Limpiar los campos del modal
                 $('#createEquipo').modal('hide'); // Cerrar el modal después de registrar
             } 
             else if(response == "registered"){
+                console.log(response); // Para depuración
                 toastr.info("El equipo ya está registrado en la base de datos", "El equipo ya existe.");
                 LimpiarModel(); // Limpiar los campos del modal
                 $('#createEquipo').modal('hide'); // Cerrar el modal después de registrar
             }else if(response == "error"){
+                console.log(response); // Para depuración
                 toastr.error("Intente nuevamente", "Error al registrar el equipo.");
                 table.ajax.reload(); // Recargar la tabla
                 LimpiarModel(); // Limpiar los campos del modal
                 $('#createEquipo').modal('hide'); // Cerrar el modal después de registrar
             } else{
+                console.log(response); // Para depuración
                 toastr.info("Por favor, complete todos los campos", "Datos incompletos.");
                 LimpiarModel(); // Limpiar los campos del modal
                 $('#createEquipo').modal('hide'); // Cerrar el modal después de registrar
@@ -128,6 +122,7 @@ function BuscarEquipo(id_Equip){
         beforeSend: function(response){
         },
         success: function(response){
+            console.log(response); // Para depuración
             data = $.parseJSON(response);
             if(data.length > 0){
                 $('#id_Equipupdate').val(data[0]['Numero de Registro']);
@@ -138,4 +133,3 @@ function BuscarEquipo(id_Equip){
         });
 }
         
->>>>>>> Stashed changes
