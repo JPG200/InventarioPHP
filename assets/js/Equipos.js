@@ -27,7 +27,7 @@ function ActualizarEquipo(){
         beforeSend: function(response){},
         success:function(response){
             if (response == "sucess") {
-                toastr.sucess("Equipo actualizado exitosamente", "Registro Actualizado."); // Mostrar mensaje de éxito
+                toastr.success("Equipo actualizado exitosamente", "Registro Actualizado."); // Mostrar mensaje de éxito
                 table.ajax.reload(); // Recargar la tabla
                 $('#updateEquipo').modal('hide'); // Cerrar el modal después de registrar
                 LimpiarModel(); // Limpiar los campos del modal
@@ -85,7 +85,7 @@ function RegistrarEquipo(){
             console.log(parametros);
             if (response == "sucess") {
                 console.log(response); // Para depuración
-                toastr.sucess("Equipo registrado exitosamente", "Registro Exitoso."); // Mostrar mensaje de éxito
+                toastr.success("Equipo registrado exitosamente", "Registro Exitoso."); // Mostrar mensaje de éxito
                 table.ajax.reload(); // Recargar la tabla después de registrar el equipo
                 LimpiarModel(); // Limpiar los campos del modal
                 $('#createEquipo').modal('hide'); // Cerrar el modal después de registrar
