@@ -27,7 +27,7 @@ function ActualizarEquipo(){
         beforeSend: function(response){},
         success:function(response){
             if (response == "sucess") {
-                toastr.sucess("Equipo actualizado exitosamente", "Registro Actualizado."); // Mostrar mensaje de éxito
+                toastr.success("Equipo actualizado exitosamente", "Registro Actualizado."); // Mostrar mensaje de éxito
                 table.ajax.reload(); // Recargar la tabla
                 $('#updateEquipo').modal('hide'); // Cerrar el modal después de registrar
                 LimpiarModel(); // Limpiar los campos del modal
