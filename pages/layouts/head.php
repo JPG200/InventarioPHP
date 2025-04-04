@@ -37,6 +37,9 @@
     <!-- BEGIN Custom CSS-->
     <link rel="stylesheet" type="text/css" href="../assets/css/style.css">
     <link rel="stylesheet" type="text/css" href="/app-assests/plugins/toastr/toastr.min.css">
+    <link rel="stylesheet" type="text/css" href="/app-assests/plugins/sweetalert2/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
     <!-- END Custom CSS-->
   </head>
   <body data-open="click" data-menu="vertical-menu" data-col="2-columns" class="vertical-layout vertical-menu 2-columns  fixed-navbar">

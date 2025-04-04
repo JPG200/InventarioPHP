@@ -88,6 +88,9 @@ include 'modals/createregEquipo.php';
 <script src="../app-assests/plugins/DataTables/datatables.min.js" type="text/javascript"></script>
 <script src="../app-assests/plugins/DataTables/DataTables-1.10.18/js/dataTables.bootstrap4.min.js" type="text/javascript"></script>
 <script src="../assets/js/regEquipos.js" type="text/javascript"></script>
+<script src="../app-assests/plugins/sweetalert2/dist/sweetalert2.all.min.js" type="text/javascript"></script>
+<script src="../app-assests/plugins/toastr/toastr.min.js" type="text/javascript"></script>
+
 <!-- ============= | footer | ================-->
 <?php  include "layouts/footer.php";      }
 else{

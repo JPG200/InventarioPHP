@@ -70,6 +70,29 @@ class Equipos{
         }
     }
 
+    function ActivarEquipos($id){
+        $query="UPDATE tbequipos set estado = 1 where id_Equip = ?;";
+        $result = $this->cnx->prepare($query);
+        $result->bindParam(1,$id);
+
+        if($result->execute()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
+    function EliminarEquipos($id){
+        $query="UPDATE tbequipos set estado = 0 where id_Equip = ?;";
+        $result = $this->cnx->prepare($query);
+        $result->bindParam(1,$id);
+
+        if($result->execute()){
+            return true;
+        }else{
+            return false;
+        }
+    }
     function Verificar($placa){
         $query="SELECT * from tbequipos where placa = ? and estado = 1;";
         $result = $this->cnx->prepare($query);
