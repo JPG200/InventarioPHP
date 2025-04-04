@@ -31,7 +31,7 @@ if(isset($_SESSION["user"])){
 							<div class="card-header">
 								<h4 class="card-title" id="basic-layout-form">
 									<button class="btn btn-sm btn-success" data-target="#createEquipo" data-toggle="modal" aria-expanded="false" aria-controls="createEquipo">
-										Registrar Nuevo Equipo</button>
+										Nueva categoria</button>
 								</h4>
 								<a class="heading-elements-toggle"><i class="icon-ellipsis font-medium-3"></i></a>
 								<div class="heading-elements">
@@ -44,7 +44,7 @@ if(isset($_SESSION["user"])){
 							<div class="card-body collapse in">
 								<div class="card-block">
 									<div class="table-responsive">
-										<table id="Tabla_regEquipos" class="table table-bordered table-sm">
+										<table id="Tabla_Equipos" class="table table-bordered table-sm">
 											<thead>
 												<tr>
 													<th width="5%">Numero de Registro</th>
@@ -78,7 +78,7 @@ if(isset($_SESSION["user"])){
 </div>
 <!--=============MODAL====================-->
 <?php 
-include 'modals/createregEquipo.php';
+include 'modals/createEquipo.php';
 ?>
 <!--==========================================-->
 
@@ -87,7 +87,7 @@ include 'modals/createregEquipo.php';
 <!--==========================================-->
 <script src="../app-assests/plugins/DataTables/datatables.min.js" type="text/javascript"></script>
 <script src="../app-assests/plugins/DataTables/DataTables-1.10.18/js/dataTables.bootstrap4.min.js" type="text/javascript"></script>
-<script src="../assets/js/regEquipos.js" type="text/javascript"></script>
+<script src="../assets/js/Equipos.js" type="text/javascript"></script>
 <!-- ============= | footer | ================-->
 <?php  include "layouts/footer.php";      }
 else{
