@@ -8,24 +8,27 @@
 				<h4 class="modal-title" id="modalEquipos"><i class="icon-road2"></i>Nuevo Equipo</h4>
 			</div>
 			<div class="modal-body">
-			<label for="placa">Placa</label>
 				<div class="form-group">
-					<div class="position-relative has-icon-left">
-						<input type="text" id="txtplaca" class="form-control" placeholder="Placa del equipo" autofocus required>
-						<div class="form-control-position"><i class="icon-bag"></i></div>
-					</div>
+					<label for="placa">Placa</label>
+					<input type="text" id="txtplaca" class="form-control" placeholder="Placa del equipo" required>
 					<label for="serial">Serial</label>
-					<div class="position-relative has-icon-left">
-						<input type="text" id="txtserial" class="form-control" placeholder="Serial del equipo" required>
-						<div class="form-control-position"><i class="icon-file2"></i></div>	
-					</div>
+					<input type="text" id="txtserial" class="form-control" placeholder="Serial del equipo" required>
+					<label for="descripcion">Descripcion</label>
+					<input type="text" id="txtdescripcion" class="form-control" placeholder="Descripcion del equipo" required>
+					<label for="observaciones">Observaciones</label>
+					<input type="text" id="txtobservaciones" class="form-control" placeholder="Observaciones del equipo" required>
+					<label for="accesorios">Accesorios</label>
+					<input type="text" id="txtaccesorios" class="form-control" placeholder="Accesorios del equipo" required>
+					<label for="empresa">Empresa</label>
+					<input type="text" id="txtempresa" class="form-control" placeholder="Empresa" required>
+					<label for="fecha">Fecha de Ingreso</label>
+					<input type="date" id="txtfecha" class="form-control" placeholder="Fecha de ingreso" required>
 				</div>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal">Cerrar</button>
-				<button type="button" onclick="RegistrarEquipo();" class="btn btn-outline-primary">Guardar</button>
+				<button type="button" class="btn btn-outline-primary">Guardar Cambios</button>
 			</div>
 		</div>
 	</div>
 </div>
-
