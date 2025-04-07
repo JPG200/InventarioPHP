@@ -9,8 +9,8 @@ function __construct(){
 }
 
 function ListarregEquipos(){
-    $query="SELECT tbreq.id_Reg,tbeq.placa,tbeq.serial,tbreq.descripcion,tbreq.observaciones,tbreq.accesorios,tbreq.empresa, tbreq.fecha_creacion,tbreq.estado
-     FROM tbequipos tbeq INNER JOIN tbregequip tbreq ON tbeq.id_Equip=tbreq.id_Equip WHERE tbeq.estado=1;";
+    $query="SELECT tbreq.id_Reg,tbeq.placa,tbeq.serial,tbreq.descripcion,tbreq.observaciones,tbreq.accesorios,emp.Empresa, tbreq.fecha_creacion,tbreq.estado
+     FROM tbequipos tbeq INNER JOIN tbregequip tbreq ON tbeq.id_Equip=tbreq.id_Equip INNER JOIN tbempresas emp ON emp.id_Empresa=tbreq.id_Empresa WHERE tbeq.estado=1;";
 
     $result = $this->cnx->prepare($query);
 
@@ -25,11 +25,10 @@ function ListarregEquipos(){
     return false;
 }
 
-function buscarEquipo($placa){
+
+function buscarSerial($placa){
     $estado = 1; //Activo por defecto
-    $query="SELECT tbeq.placa,tbeq.serial,tbreq.descripcion,tbreq.observaciones,tbreq.accesorios,tbreq.empresa
-    from tbequipos tbeq INNER JOIN tbregequip tbreq 
-    ON tbeq.id_Equip=tbreq.id_Equip where tbeq.placa=? and tbeq.estado=?;";
+    $query="SELECT tbeq.placa, tbeq.serial from tbequipos tbeq where placa=? and estado=?;";
     $result = $this->cnx->prepare($query);
     $result->bindParam(1,$placa);
     $result->bindParam(2,$estado);
@@ -42,25 +41,112 @@ function buscarEquipo($placa){
     return false;
 }
 
-function RegistrarRegistroEquipo($id_Equip,$descripcion,$observaciones,$accesorios,$empresa){
+function buscarEquipo($placa){
+    $estado = 1; //Activo por defecto
+    $query="SELECT tbeq.placa,tbeq.serial,tbreq.descripcion,tbreq.observaciones,tbreq.accesorios,emp.Empresa
+    from tbequipos tbeq INNER JOIN tbregequip tbreq ON tbeq.id_Equip=tbreq.id_Equip INNER JOIN tbempresas emp ON emp.id_Empresa=tbreq.id_Empresa
+    where tbeq.placa=? and tbeq.estado=?;";
+    $result = $this->cnx->prepare($query);
+    $result->bindParam(1,$placa);
+    $result->bindParam(2,$estado);
+    if($result->execute()){
+        if($result->rowCount()>0){
+            return $result->fetch(PDO::FETCH_ASSOC);
+        }
+        return false;
+    }
+    return false;
+}
+
+function LlenarSelectEmpresas(){
+    $query="SELECT * from tbempresas;";
+    $result = $this->cnx->prepare($query);
+    if($result->execute()){
+        if($result->rowCount()>0){
+            while($fila = $result->fetch(PDO::FETCH_ASSOC)){
+                $datos[]=$fila;
+            }
+            return $datos;
+        }
+    }
+    return false;
+}
+
+function buscartablaEquipo($placa){
+    $query="SELECT id_Equip from tbequipos where placa=?;";
+    $result = $this->cnx->prepare($query);
+    $result->bindParam(1,$placa);
+    if($result->execute()){
+        if($result->rowCount()>0){
+            return $result->fetch(PDO::FETCH_ASSOC);
+        }
+        return false;
+    }
+    return false;
+}
+
+function RegistrarRegistroEquipo($placa,$descripcion,$observaciones,$accesorios,$Empr){
 
     $estado = 1; //Activo por defecto
     $fecha_creacion=date( 'Y-m-d H:i:s',time()); //Fecha creacion del equipo
-    $query="INSERT INTO tbregequip(id_Equip,descripcion,observaciones,accesorios,empresa,fecha_creacion,estado) VALUES (?,?,?,?,?,?,?)";
-    $result = $this->cnx->prepare($query);
-    $result->bindParam(1,$id_Equip);
-    $result->bindParam(2,$descripcion);
-    $result->bindParam(3,$observaciones);
-    $result->bindParam(4,$accesorios);
-    $result->bindParam(5,$empresa);
-    $result->bindParam(6,$fecha_creacion);
-    $result->bindParam(7,$estado);
+    $Equip=$this->buscartablaEquipo($placa); //Buscar el id del equipo en la tabla de equipos
+    #$Empre=$this->buscarEmpresa($Empr); //Buscar el id de la empresa en la tabla de empresas
+    if($Equip){
+        #echo "el id de la empre es: ".$Empre;
+        #echo "El id del equipo es; ".$Equip;
+        #$id_Empresa=$Empre['id_Empresa']; //Obtenemos el id de la empresa
+        $id_Equip=$Equip['id_Equip']; //Obtenemos el id del equipo
+        $query="INSERT INTO tbregequip(id_Equip,descripcion,observaciones,accesorios,id_Empresa,fecha_creacion,estado) VALUES (?,?,?,?,?,?,?)";
+        $result = $this->cnx->prepare($query);
+        $result->bindParam(1,$id_Equip);
+        $result->bindParam(2,$descripcion);
+        $result->bindParam(3,$observaciones);
+        $result->bindParam(4,$accesorios);
+        $result->bindParam(5,$Empr);
+        $result->bindParam(6,$fecha_creacion);
+        $result->bindParam(7,$estado);
 
-    if($result->execute()){
-        return true;
+        if($result->execute()){
+            return true;
+        }else{
+            return false;
+        }
     }else{
         return false;
     }
 }
+/*
+function buscarEmpresa($Empr){
+    $EmprUper=strtoupper($Empr); //Convertimos a mayusculas el nombre de la empresa
+    $query="SELECT id_Empresa from tbempresas where Empresa LIKE ?;";
+    $result = $this->cnx->prepare($query);
+    $result->bindParam(1,$EmprUper);
+    if($result->execute()){
+        if($result->rowCount()>0){
+            return $result->fetch(PDO::FETCH_ASSOC);
+        }
+        return false;
+    }
+    return false;
+
+}
+*/
+
+    function Verificar($placa){
+        $Equip=$this->buscartablaEquipo($placa); //Buscar el id del equipo en la tabla de equipos
+        $estado = 1; //Activo por defecto
+        $id_Equip=$Equip['id_Equip']; //Obtenemos el id del equipo
+        $query="SELECT * from tbregequip where id_Equip=? and estado=?;";
+        $result = $this->cnx->prepare($query);
+        $result->bindParam(1,$id_Equip);
+        $result->bindParam(2,$estado);
+        if($result->execute()){
+            if($result->rowCount()<=0){
+                return true;
+            }
+            return false;
+        }
+        return false;
+    }
 }
 ?>
