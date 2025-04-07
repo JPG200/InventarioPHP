@@ -30,7 +30,7 @@ if(isset($_SESSION["user"])){
 						<div class="card">
 							<div class="card-header">
 								<h4 class="card-title" id="basic-layout-form">
-									<button class="btn btn-sm btn-success" data-target="#createEquipo" data-toggle="modal" aria-expanded="false" aria-controls="createEquipo">
+									<button class="btn btn-sm btn-success" data-target="#createregEquipo" data-toggle="modal" aria-expanded="false" aria-controls="createEquipo">
 										Registrar Nuevo Equipo</button>
 								</h4>
 								<a class="heading-elements-toggle"><i class="icon-ellipsis font-medium-3"></i></a>
@@ -85,11 +85,13 @@ include 'modals/createregEquipo.php';
 <!-- ========= | scripts robust | ============-->
 <?php  include "layouts/main_scripts.php"; ?>
 <!--==========================================-->
-<script src="../app-assests/plugins/DataTables/datatables.min.js" type="text/javascript"></script>
-<script src="../app-assests/plugins/DataTables/DataTables-1.10.18/js/dataTables.bootstrap4.min.js" type="text/javascript"></script>
-<script src="../assets/js/regEquipos.js" type="text/javascript"></script>
-<script src="../app-assests/plugins/sweetalert2/dist/sweetalert2.all.min.js" type="text/javascript"></script>
-<script src="../app-assests/plugins/toastr/toastr.min.js" type="text/javascript"></script>
+<script src="/app-assests/plugins/DataTables/datatables.min.js" type="text/javascript"></script>
+<script src="/app-assests/plugins/DataTables/DataTables-1.10.18/js/dataTables.bootstrap4.min.js" type="text/javascript"></script>
+<script src="/assets/js/regEquipos.js" type="text/javascript"></script>
+<script src="/app-assests/plugins/sweetalert2/dist/sweetalert2.all.min.js" type="text/javascript"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<script src="/app-assests/plugins/toastr/toastr.min.js" type="text/javascript"></script>
+
 
 <!-- ============= | footer | ================-->
 <?php  include "layouts/footer.php";      }

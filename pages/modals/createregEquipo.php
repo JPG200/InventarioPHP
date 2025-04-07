@@ -1,4 +1,4 @@
-<div class="modal fade text-xs-left" id="createEquipo" tabindex="-1" role="dialog" area-labelledby="modalEquipos" aria-hiden="true">
+<div class="modal fade text-xs-left" id="createregEquipo" tabindex="-1" role="dialog" area-labelledby="modalEquipos" aria-hiden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -46,16 +46,18 @@
 					<div class="form-group">
 						<label for="empresa">Empresa</label>
 						<div class="position-relative has-icon-left">
-							<input type="text" id="txtempresacrear" class="form-control" placeholder="Empresa" autofocus required>
-							<div class="form-control-position"><i class="icon-file2"></i></div>	
-						</div>
+       						 <select  id="txtempresacrear" class="form-control selectpicker" data-live-search="true" title="Seleccione una empresa" required></select>
+       						 <div class="form-control-position"><i class="icon-office"></i></div>
+    					</div>
 					</div>
 				</div>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal" onClick="cerrarModal();">Cerrar</button>
-				<button type="button" class="btn btn-outline-primary">Guardar Cambios</button>
+				<button type="button" class="btn btn-outline-primary" onclick="RegistrarEquipo();">Guardar Cambios</button>
 			</div>
 		</div>
 	</div>
 </div>
+
+

@@ -15,7 +15,7 @@ $list[]=array(
 "Descripcion"=> $datos[$i]['descripcion'],
 "Observaciones"=> $datos[$i]['observaciones'],
 "Accesorios"=> $datos[$i]['accesorios'],
-"Empresa"=> $datos[$i]['empresa'],
+"Empresa"=> $datos[$i]['Empresa'],
 "Fecha de Ingreso"=> $datos[$i]['fecha_creacion'],
 "Estado"=> $datos[$i]['estado']==1?'<div class="tag tag-success">Activo</div>':
                                     '<div class="tag tag-danger">Inactivo</div>',
@@ -66,24 +66,138 @@ case "buscarEquipo":
 
 if(isset($_POST["placa"]) && !empty($_POST["placa"])){
         $data = $cat->buscarEquipo($_POST["placa"]);
-            if($data){
+            if($data && $data["descripcion"]!=null){
                 $list[] = array(
                     "placa"=>$data["placa"],
                     "serial"=>$data["serial"],
                     "descripcion"=>$data["descripcion"],
                     "observaciones"=>$data["observaciones"],
                     "accesorios"=>$data["accesorios"],
-                    "empresa"=>$data["empresa"]
+                    "empresa"=>$data["Empresa"]
                 );
+                echo json_encode($list);
+            }else{
+                $data = $cat->buscarSerial($_POST["placa"]);
+                $list[] = array(
+                    "placa"=>$data["placa"],
+                    "serial"=>$data["serial"],
+                    "descripcion"=>"",
+                    "observaciones"=>"",
+                    "accesorios"=>"",
+                    "empresa"=>""
+                );
+                echo json_encode($list);
+            }
+            $response = array(
+                "error"=>"error"
+            );
+        }
+        break;
+        case "confirmarInformacion":
+
+        break;
+
+        case"LlenarSelectEmpresas":
+            $data = $cat->LlenarSelectEmpresas();
+            if($data){
+                for($i=0;$i<count($data);$i++){
+                    $list[]=array(
+                        "id_Empresa"=>$data[$i]["id_Empresa"],
+                        "Empresa"=>$data[$i]['Empresa']
+                    );
+                }
                 echo json_encode($list);
             }else{
                 $response = array(
                     "error"=>"error"
                 );
             }
+            break;
+case "registrarEquipo":
+    if(isset($_POST["placa"]) && !empty($_POST["placa"]) && $_POST["descripcion"]
+    && !empty($_POST["descripcion"]) && $_POST["observaciones"] && !empty($_POST["observaciones"]) 
+    && $_POST["accesorios"] && !empty($_POST["accesorios"]) && $_POST["empresa"] && !empty($_POST["empresa"])){
+        $placa=$_POST["placa"];
+    if($cat->Verificar($placa)){
+        if($cat->RegistrarRegistroEquipo($_POST["placa"],$_POST["descripcion"],$_POST["observaciones"],
+        $_POST["accesorios"],$_POST["empresa"])){
+            $response ="sucess";
 
+        }else{
+            $response ="required";
         }
-        break;
+    }else{
+        $response ="registered";
+    }
+    echo $response;
+    }
+    break;
+    
+/*
+case "actualizarEquipo":
+    if(isset($_POST["placa"]) && !empty($_POST["placa"])){
+        $data = $cat->actualizarEquipo($_POST["id"],$_POST["placa"],$_POST["serial"],$_POST["descripcion"],$_POST["observaciones"],$_POST["accesorios"],$_POST["empresa"]);
+        if($data){
+            $response = array(
+                "success"=>"success"
+            );
+        }else{
+            $response = array(
+                "error"=>"error"
+            );
+        }
+    }else{
+        $response = array(
+            "error"=>"error"
+        );
+    }
+    echo json_encode($response);
+    break;
 
+
+case "eliminarEquipo":
+    if(isset($_POST["id"]) && !empty($_POST["id"])){
+        $data = $cat->eliminarEquipo($_POST["id"]);
+        if($data){
+            $response = array(
+                "success"=>"success"
+            );
+        }else{
+            $response = array(
+                "error"=>"error"
+            );
+        }
+    }else{
+        $response = array(
+            "error"=>"error"
+        );
+    }
+    echo json_encode($response);
+    break;
+
+
+case "activarEquipo":
+    if(isset($_POST["id"]) && !empty($_POST["id"])){
+        $data = $cat->activarEquipo($_POST["id"]);
+        if($data){
+            $response = array(
+                "success"=>"success"
+            );
+        }else{
+            $response = array(
+                "error"=>"error"
+            );
+        }
+    }else{
+        $response = array(
+            "error"=>"error"
+        );
+    }
+    echo json_encode($response);
+    break;
+*/
 }
+
+
+
 ?>
