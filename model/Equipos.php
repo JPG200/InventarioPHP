@@ -25,7 +25,6 @@ class Equipos{
     }
 
     function RegistrarEquipos($placa,$serial){
-
             $estado = 1; //Activo por defecto
             $fecha_creacion=date( 'Y-m-d H:i:s',time()); //Fecha creacion del equipo
             $query="INSERT INTO tbequipos(placa,serial,fecha_creacion,estado) VALUES(?,?,?,?);";
