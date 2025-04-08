@@ -16,7 +16,7 @@
 						<div class="form-control-position"><i class="icon-bag"></i></div>
         			</div>
         			<div class="col-md-4">
-						<button type="button" onClick="BuscarEquipo();" class="btn btn-outline-primary"><i class="bi bi-search me-2"></i></button>
+						<button type="button" onClick="BuscarEquipo(document.getElementById('txtplacacrear').value,'registrar');" class="btn btn-outline-primary"><i class="bi bi-search me-2"></i></button>
         			</div>
    					</div>
 					<label for="serial">Serial</label>
