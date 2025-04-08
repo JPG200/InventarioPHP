@@ -43,7 +43,7 @@ function buscarSerial($placa){
 
 function buscarEquipo($placa){
     $estado = 1; //Activo por defecto
-    $query="SELECT tbeq.placa,tbeq.serial,tbreq.descripcion,tbreq.observaciones,tbreq.accesorios,emp.Empresa
+    $query="SELECT tbreq.id_Reg,tbeq.placa,tbeq.serial,tbreq.descripcion,tbreq.observaciones,tbreq.accesorios,emp.Empresa
     from tbequipos tbeq INNER JOIN tbregequip tbreq ON tbeq.id_Equip=tbreq.id_Equip INNER JOIN tbempresas emp ON emp.id_Empresa=tbreq.id_Empresa
     where tbeq.placa=? and tbeq.estado=?;";
     $result = $this->cnx->prepare($query);
@@ -78,7 +78,7 @@ function buscartablaEquipo($placa){
     $result->bindParam(1,$placa);
     if($result->execute()){
         if($result->rowCount()>0){
-            return $result->fetch(PDO::FETCH_ASSOC);
+            return $result->fetch(mode: PDO::FETCH_ASSOC);
         }
         return false;
     }
@@ -95,7 +95,11 @@ function RegistrarRegistroEquipo($placa,$descripcion,$observaciones,$accesorios,
         #echo "el id de la empre es: ".$Empre;
         #echo "El id del equipo es; ".$Equip;
         #$id_Empresa=$Empre['id_Empresa']; //Obtenemos el id de la empresa
-        $id_Equip=$Equip['id_Equip']; //Obtenemos el id del equipo
+        if ($Equip && isset($Equip['id_Equip'])) {
+            $id_Equip = $Equip['id_Equip']; // Obtenemos el id del equipo
+        } else {
+            return false; // Handle the case where $Equip is null or does not contain 'id_Equip'
+        }
         $query="INSERT INTO tbregequip(id_Equip,descripcion,observaciones,accesorios,id_Empresa,fecha_creacion,estado) VALUES (?,?,?,?,?,?,?)";
         $result = $this->cnx->prepare($query);
         $result->bindParam(1,$id_Equip);
@@ -115,6 +119,32 @@ function RegistrarRegistroEquipo($placa,$descripcion,$observaciones,$accesorios,
         return false;
     }
 }
+
+function eliminarRegistroEquipo($id_Reg){
+    $query="UPDATE tbregequip
+    set estado = 0 where id_Reg = ?;";
+    $result = $this->cnx->prepare($query);
+    $result->bindParam(1,$id_Reg);
+    if($result->execute()){
+        return true;
+    }else{
+        return false;
+    }
+}
+
+function activarRegEquipo($id_Reg){
+    $query="UPDATE tbregequip
+    set estado = 1 where id_Reg = ?;";
+    $result = $this->cnx->prepare($query);
+    $result->bindParam(1,$id_Reg);
+    if($result->execute()){
+        return true;
+    }else{
+        return false;
+    }
+}
+
+
 /*
 function buscarEmpresa($Empr){
     $EmprUper=strtoupper($Empr); //Convertimos a mayusculas el nombre de la empresa
@@ -131,22 +161,44 @@ function buscarEmpresa($Empr){
 
 }
 */
-
-    function Verificar($placa){
-        $Equip=$this->buscartablaEquipo($placa); //Buscar el id del equipo en la tabla de equipos
-        $estado = 1; //Activo por defecto
+function ActualizarRegistroEquipo($id,$placa,$descripcion,$observaciones,$accesorios,$Empr){
+    $Equip=$this->buscartablaEquipo($placa); //Buscar el id del equipo en la tabla de equipos
+    if($Equip){
         $id_Equip=$Equip['id_Equip']; //Obtenemos el id del equipo
-        $query="SELECT * from tbregequip where id_Equip=? and estado=?;";
+        $query="UPDATE tbregequip set id_Equip=?, descripcion=?,observaciones=?,accesorios=?,id_Empresa=? where id_Reg=?";
         $result = $this->cnx->prepare($query);
         $result->bindParam(1,$id_Equip);
-        $result->bindParam(2,$estado);
+        $result->bindParam(2,$descripcion);
+        $result->bindParam(3,$observaciones);
+        $result->bindParam(4,$accesorios);
+        $result->bindParam(5,$Empr);
+        $result->bindParam(6,$id);
+
         if($result->execute()){
-            if($result->rowCount()<=0){
-                return true;
-            }
+            return true;
+        }else{
             return false;
+        }
+    }else{
+        return false;
+    }
+    }
+
+function Verificar($placa){
+    $Equip=$this->buscartablaEquipo($placa); //Buscar el id del equipo en la tabla de equipos
+    $estado = 1; //Activo por defecto
+    $id_Equip=$Equip['id_Equip']; //Obtenemos el id del equipo
+    $query="SELECT * from tbregequip where id_Equip=? and estado=?;";
+    $result = $this->cnx->prepare($query);
+    $result->bindParam(1,$id_Equip);
+    $result->bindParam(2,$estado);
+    if($result->execute()){
+        if($result->rowCount()<=0){
+            return true;
         }
         return false;
     }
+    return false;
+}
 }
 ?>

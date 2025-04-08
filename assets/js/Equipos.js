@@ -166,7 +166,6 @@ function EliminarEquipo(id_Equip){
         beforeSend: function(response){
         },
         success: function(response){
-            console.log(response); // Para depuración
             if (response == "sucess") {
                 toastr.success("Equipo desactivado exitosamente", "Registro Desactivado."); // Mostrar mensaje de éxito
                 table.ajax.reload(); // Recargar la tabla

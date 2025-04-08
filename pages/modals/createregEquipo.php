@@ -9,6 +9,7 @@
 			</div>
 			<div class="modal-body">
 				<div class="form-group">
+				<input type="hidden" id="id_Registro">
 					<label for="placa">Placa</label>
 					<div class="row"> 
 					<div class="col-md-8 position-relative has-icon-left">
@@ -54,7 +55,8 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal" onClick="cerrarModal();">Cerrar</button>
-				<button type="button" class="btn btn-outline-primary" onclick="RegistrarEquipo();">Guardar Cambios</button>
+				<button id="btnGuardar" type="button" class="btn btn-outline-primary" onclick="RegistrarEquipo();">Guardar Cambios</button>
+				<button id="btnActualizar" type="button" class="btn btn-outline-primary" onclick="EditarEquipo();" visible="false">Actualizar Registro</button>
 			</div>
 		</div>
 	</div>

@@ -19,18 +19,26 @@ switch($_REQUEST["operador"]){
                     "Fecha de Ingreso"=> $datos[$i]['fecha_creacion'],
                     "Estado"=> $datos[$i]['estado']==1?'<div class="tag tag-success">Activo</div>':
                                                         '<div class="tag tag-danger">Inactivo</div>',
-                    "op"=> '<div class="btn-group">
+                    "op"=> ($datos[$i]['estado'])==1?'<div class="btn-group">
                     <button class="btn btn-info dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                         <i class="icon-gear"></i>
                     </button>
                     <div class="dropdown-menu">
-                            <a class="dropdown-item" data-toggle="modal" data-target="#updateregEquipo"
+                            <a class="dropdown-item" data-toggle="modal" data-target="#createregEquipo"
                             onclick="BuscarEquipo('.$datos[$i]['placa'].",'editar'".');">
                             <i class="icon-pencil"></i> Editar</a>
-                        <a class="dropdown-item" href="#"><i class="icon-trash"></i> Eliminar</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#"><i class="icon-eye"></i> Ver</a>
-                    </div>'
+                        <a class="dropdown-item" onclick="BuscarEquipo('.$datos[$i]['placa'].",'eliminar'".');">
+                        <i class="icon-trash"></i> Eliminar</a>
+                    </div>':'
+                            <div class="btn-group">
+                                <button class="btn btn-info dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                    <i class="icon-gear"></i>
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" onclick="BuscarEquipo('.$datos[$i]['placa'].",'activar'".');"><i class="icon-check"></i> Activar</a>
+                                    <div class="dropdown-divider"></div>
+                                </div>
+                            </div>'
                 );
             }
             $resultador = array(
@@ -70,6 +78,7 @@ switch($_REQUEST["operador"]){
             $data = $cat->buscarEquipo($_POST["placa"]);
                 if($data && $data["descripcion"]!=null){
                     $list[] = array(
+                        "id_Reg"=>$data["id_Reg"],
                         "placa"=>$data["placa"],
                         "serial"=>$data["serial"],
                         "descripcion"=>$data["descripcion"],
@@ -81,6 +90,7 @@ switch($_REQUEST["operador"]){
                 }else{
                     $data = $cat->buscarSerial($_POST["placa"]);
                     $list[] = array(
+                        "id_Reg"=>"",
                         "placa"=>$data["placa"],
                         "serial"=>$data["serial"],
                         "descripcion"=>"",
@@ -95,10 +105,10 @@ switch($_REQUEST["operador"]){
                 );
             }
             break;
-            case "confirmarInformacion":
+           /* case "confirmarInformacion":
 
             break;
-
+*/
             case"LlenarSelectEmpresas":
                 $data = $cat->LlenarSelectEmpresas();
                 if($data){
@@ -135,69 +145,57 @@ switch($_REQUEST["operador"]){
         }
         break;
         
-    /*
-    case "actualizarEquipo":
-        if(isset($_POST["placa"]) && !empty($_POST["placa"])){
-            $data = $cat->actualizarEquipo($_POST["id"],$_POST["placa"],$_POST["serial"],$_POST["descripcion"],$_POST["observaciones"],$_POST["accesorios"],$_POST["empresa"]);
-            if($data){
-                $response = array(
-                    "success"=>"success"
-                );
+
+    case "editarEquipo":
+        if(isset($_POST["id_Reg"]) && !empty($_POST["id_Reg"]) && isset($_POST["placa"]) && !empty($_POST["placa"]) && $_POST["descripcion"]
+        && !empty($_POST["descripcion"]) && $_POST["observaciones"] && !empty($_POST["observaciones"]) 
+        && $_POST["accesorios"] && !empty($_POST["accesorios"]) && $_POST["empresa"] && !empty($_POST["empresa"])){
+            if($cat->ActualizarRegistroEquipo($_POST["id_Reg"],$_POST["placa"],$_POST["descripcion"],$_POST["observaciones"],
+            $_POST["accesorios"],$_POST["empresa"])){
+                $response = "sucess";
             }else{
-                $response = array(
-                    "error"=>"error"
-                );
+                $response = "error";
             }
         }else{
-            $response = array(
-                "error"=>"error"
-            );
+            $response = "required";
         }
-        echo json_encode($response);
+        echo $response;
         break;
 
-
+    
     case "eliminarEquipo":
-        if(isset($_POST["id"]) && !empty($_POST["id"])){
-            $data = $cat->eliminarEquipo($_POST["id"]);
+        if(isset($_POST["id_Reg"]) && !empty($_POST["id_Reg"])){
+            $data = $cat->eliminarRegistroEquipo($_POST["id_Reg"]);
             if($data){
-                $response = array(
-                    "success"=>"success"
-                );
+                $response = "sucess";
+
             }else{
-                $response = array(
-                    "error"=>"error"
-                );
+                $response = "error";
+
             }
         }else{
-            $response = array(
-                "error"=>"error"
-            );
+            $response = "required";
+
         }
-        echo json_encode($response);
+        echo $response;
         break;
 
-
-    case "activarEquipo":
-        if(isset($_POST["id"]) && !empty($_POST["id"])){
-            $data = $cat->activarEquipo($_POST["id"]);
+    case "activarRegEquipo":
+        if(isset($_POST["id_Reg"]) && !empty($_POST["id_Reg"])){
+            $data = $cat->activarRegEquipo($_POST["id_Reg"]);
             if($data){
-                $response = array(
-                    "success"=>"success"
-                );
+                $response = "sucess";
+
             }else{
-                $response = array(
-                    "error"=>"error"
-                );
+                $response = "error";
             }
         }else{
-            $response = array(
-                "error"=>"error"
-            );
+            $response = "required";
+
         }
-        echo json_encode($response);
+        echo $response;
         break;
-    */
+
 }
 
 
