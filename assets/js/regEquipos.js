@@ -145,7 +145,7 @@ function ActivarRegistroEquipo(id_Reg){
     console.log(id_Reg);
     $.ajax({
         data: {"id_Reg": id_Reg},
-        url: '../controller/EquiposController.php?operador=activarRegEquipo',
+        url: '../controller/regEquiposController.php?operador=activarRegEquipo',
         type: 'POST',
         beforeSend: function(response){
         },
@@ -159,7 +159,7 @@ function ActivarRegistroEquipo(id_Reg){
                 toastr.error("Intente nuevamente", "Error al Activar el registro.");
                 table.ajax.reload(); // Recargar la tabla
             }else{
-                toastr.error("ERROR", "ERROR.");
+                toastr.error("ERROR", "ERROR "+response);
             }
         },
         error: function() {

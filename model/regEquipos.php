@@ -72,19 +72,6 @@ function LlenarSelectEmpresas(){
     return false;
 }
 
-function buscartablaEquipo($placa){
-    $query="SELECT id_Equip from tbequipos where placa=?;";
-    $result = $this->cnx->prepare($query);
-    $result->bindParam(1,$placa);
-    if($result->execute()){
-        if($result->rowCount()>0){
-            return $result->fetch(mode: PDO::FETCH_ASSOC);
-        }
-        return false;
-    }
-    return false;
-}
-
 function RegistrarRegistroEquipo($placa,$descripcion,$observaciones,$accesorios,$Empr){
 
     $estado = 1; //Activo por defecto
@@ -120,6 +107,20 @@ function RegistrarRegistroEquipo($placa,$descripcion,$observaciones,$accesorios,
     }
 }
 
+function buscartablaEquipo($placa){
+    $query="SELECT id_Equip from tbequipos where placa=?;";
+    $result = $this->cnx->prepare($query);
+    $result->bindParam(1,$placa);
+    if($result->execute()){
+        if($result->rowCount()>0){
+            return $result->fetch(mode: PDO::FETCH_ASSOC);
+        }
+        return false;
+    }
+    return false;
+}
+
+
 function eliminarRegistroEquipo($id_Reg){
     $query="UPDATE tbregequip
     set estado = 0 where id_Reg = ?;";
@@ -135,8 +136,8 @@ function eliminarRegistroEquipo($id_Reg){
 function activarRegEquipo($id_Reg){
     $query="UPDATE tbregequip
     set estado = 1 where id_Reg = ?;";
-    $result = $this->cnx->prepare($query);
-    $result->bindParam(1,$id_Reg);
+        $result = $this->cnx->prepare($query);
+        $result->bindParam(1,$id_Reg);
     if($result->execute()){
         return true;
     }else{

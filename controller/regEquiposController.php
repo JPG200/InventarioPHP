@@ -182,13 +182,16 @@ switch($_REQUEST["operador"]){
 
     case "activarRegEquipo":
         if(isset($_POST["id_Reg"]) && !empty($_POST["id_Reg"])){
+            try{
             $data = $cat->activarRegEquipo($_POST["id_Reg"]);
             if($data){
                 $response = "sucess";
-
             }else{
                 $response = "error";
             }
+        }catch(ErrorException $ex){
+            $response = $ex;
+        }
         }else{
             $response = "required";
 

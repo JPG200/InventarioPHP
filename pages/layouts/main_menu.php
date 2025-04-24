@@ -35,19 +35,16 @@
               <li><a href="#" class="menu-item">Usuarios</a></li>
             </ul>
           </li>
-          <li class=" nav-item"><a href="#"><i class="icon-mobile2"></i><span class="menu-title">Contactos</span></a>
+          <li class=" nav-item"><a href="#"><i class="icon-mobile2"></i><span class="menu-title">Colaboradores</span></a>
             <ul class="menu-content">
-              <li><a href="#" class="menu-item">Clientes</a></li>
-              <li><a href="#" class="menu-item">Proveedores</a></li>
+              <li><a href="/pages/empleados.php" class="menu-item">Empleados</a></li>
+              <li><a href="#" class="menu-item">Area</a></li>
             </ul>
           </li>
           <li class=" nav-item"><a href="#"><i class="icon-dropbox"></i><span class="menu-title">Productos</span></a>
             <ul class="menu-content">
-              <li><a href="#" class="menu-item">Nuevo producto</a></li>
-              <li><a href="/pages/equipos.php" class="menu-item">Lista de productos</a></li>
-              <li><a href="/pages/categorias.php" class="menu-item">Categorias</a></li>
-              <li><a href="#" class="menu-item">Sub categorias</a></li>
-              <li><a href="#" class="menu-item">Unidad de medida</a></li>
+              <li><a href="/pages/equipos.php" class="menu-item">Lista de Equipos</a></li>
+              <li><a href="/pages/categorias.php" class="menu-item">Registrar Equipos</a></li>
             </ul>
           </li>
           <li class=" nav-item"><a href="#"><i class="icon-briefcase4"></i><span class="menu-title">Ventas</span></a>
