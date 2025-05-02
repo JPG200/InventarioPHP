@@ -14,6 +14,7 @@ switch($_REQUEST["operador"]){
                     "Cedula"=> $datos[$i]['cedula'],
                     "Nombre"=> $datos[$i]['nombre'],
                     "Apellido"=> $datos[$i]['apellido'],
+                    "Email"=> $datos[$i]['correo'],
                     "Area"=> $datos[$i]['Area'],
                     "Estado"=> $datos[$i]['estado']==1?'<div class="tag tag-success">Activo</div>':
                                                         '<div class="tag tag-danger">Inactivo</div>',

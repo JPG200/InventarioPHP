@@ -30,8 +30,8 @@ if(isset($_SESSION["user"])){
 						<div class="card">
 							<div class="card-header">
 								<h4 class="card-title" id="basic-layout-form">
-									<button class="btn btn-sm btn-success" data-target="#createEquipo" data-toggle="modal" aria-expanded="false" aria-controls="createEquipo">
-										Registrar Equipo</button>
+									<button class="btn btn-sm btn-success" data-target="#createEmpleado" data-toggle="modal" aria-expanded="false" aria-controls="createEmpleado">
+										Registrar Empleado</button>
 								</h4>
 								<a class="heading-elements-toggle"><i class="icon-ellipsis font-medium-3"></i></a>
 								<div class="heading-elements">
@@ -51,6 +51,7 @@ if(isset($_SESSION["user"])){
                                                     <th >Cedula</th>
 													<th >Nombre</th>
 													<th >Apellido</th>
+													<th >Email</th>
 													<th >Area</th>
 													<th >Estado</th>
 													<th >op</th>
@@ -79,13 +80,17 @@ if(isset($_SESSION["user"])){
 <!--==========================================-->
 
 <!-- ========= | scripts robust | ============-->
-<?php  include "layouts/main_scripts.php"; ?>
+<?php  include "layouts/main_scripts.php";
+include 'modals/createEmpleado.php';
+include 'modals/updateEquipo.php';
+ ?>
 <!--==========================================-->
 <script src="../app-assests/plugins/DataTables/datatables.min.js" type="text/javascript"></script>
 <script src="../app-assests/plugins/DataTables/DataTables-1.10.18/js/dataTables.bootstrap4.min.js" type="text/javascript"></script>
 <script src="../assets/js/Empleados.js" type="text/javascript"></script>
 <script src="../app-assests/plugins/sweetalert2/dist/sweetalert2.all.min.js" type="text/javascript"></script>
 <script src="../app-assests/plugins/toastr/toastr.min.js" type="text/javascript"></script>
+
 <!-- ============= | footer | ================-->
 <?php  include "layouts/footer.php";      }
 else{

@@ -5,20 +5,20 @@
 				<button type="button" class="close" data-dismiss="modal" onClick="cerrarModal();" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<h4 class="modal-title" id="modalEquipos"><i class="icon-road2"></i>Registrar Nuevo Equipo</h4>
+				<h4 class="modal-title" id="modalEquipos"><i class="icon-road2"></i>Registro de Equipo</h4>
 			</div>
 			<div class="modal-body">
 				<div class="form-group">
 				<input type="hidden" id="id_Registro">
 					<label for="placa">Placa</label>
 					<div class="row"> 
-					<div class="col-md-8 position-relative has-icon-left">
-						<input type="text" id="txtplacacrear" class="form-control" placeholder="Placa del equipo" autofocus required></input>
-						<div class="form-control-position"><i class="icon-bag"></i></div>
-        			</div>
-        			<div class="col-md-4">
-						<button type="button" onClick="BuscarEquipo(document.getElementById('txtplacacrear').value,'registrar');" class="btn btn-outline-primary"><i class="bi bi-search me-2"></i></button>
-        			</div>
+						<div class="col-md-8 position-relative has-icon-left">
+							<input type="text" id="txtplacacrear" class="form-control" placeholder="Placa del equipo" autofocus required></input>
+							<div class="form-control-position"><i class="icon-bag"></i></div>
+						</div>
+						<div class="col-md-4">
+							<button type="button" onClick="BuscarEquipo(document.getElementById('txtplacacrear').value,'registrar');" class="btn btn-outline-primary"><i class="bi bi-search me-2"></i></button>
+						</div>
    					</div>
 					<label for="serial">Serial</label>
 					<div class="position-relative has-icon-left">
