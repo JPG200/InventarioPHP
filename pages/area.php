@@ -11,14 +11,14 @@ if(isset($_SESSION["user"])){
 	<div class="content-wrapper">
 		<div class="content-header row">
 			<div class="content-header-left col-md-6 col-xs-12 mb-1">
-				<h2 class="content-header-title">Equipos Registrados</h2>
+				<h2 class="content-header-title">Registro de Areas</h2>
 			</div>
 			<div class="content-header-right breadcrumbs-right breadcrumbs-top col-md-6 col-xs-12">
 				<div class="breadcrumb-wrapper col-xs-12">
 					<ol class="breadcrumb">
 						<li class="breadcrumb-item"><a href="../main">Dashboard</a></li>
 						<li class="breadcrumb-item"><a >Productos</a></li>
-						<li class="breadcrumb-item active"><a href="../pages/categorias.php">Registro de Equipos</a></li>
+						<li class="breadcrumb-item active"><a href="../pages/categorias.php">Registro de Area</a></li>
 					</ol>
 				</div>
 			</div>
@@ -30,8 +30,8 @@ if(isset($_SESSION["user"])){
 						<div class="card">
 							<div class="card-header">
 								<h4 class="card-title" id="basic-layout-form">
-									<button class="btn btn-sm btn-success" data-target="#createEquipo" data-toggle="modal" aria-expanded="false" aria-controls="createEquipo">
-										Registrar Equipo</button>
+									<button class="btn btn-sm btn-success" data-target="#createArea" data-toggle="modal" aria-expanded="false" aria-controls="createArea">
+										Registrar Area</button>
 								</h4>
 								<a class="heading-elements-toggle"><i class="icon-ellipsis font-medium-3"></i></a>
 								<div class="heading-elements">
@@ -44,13 +44,14 @@ if(isset($_SESSION["user"])){
 							<div class="card-body collapse in">
 								<div class="card-block">
 									<div class="table-responsive">
-										<table id="Tabla_Equipos" class="table table-bordered table-sm">
+										<table id="Tabla_Area" class="table table-bordered table-sm">
 											<thead>
 												<tr>
 													<th >Numero de Registro</th>
-													<th >Placa</th>
-													<th >Serial</th>
-													<th >Fecha de Ingreso</th>
+													<th >Area</th>
+													<th> Centro de Costos</th>
+													<th >Fecha de Inicio</th>
+													<th >Fecha de Terminacion</th>
 													<th >Estado</th>
 													<th >op</th>
 												</tr>
@@ -74,8 +75,8 @@ if(isset($_SESSION["user"])){
 </div>
 <!--=============MODAL====================-->
 <?php 
-include 'modals/createEquipo.php';
-include 'modals/updateEquipo.php';
+include 'modals/createArea.php';
+include 'modals/updateArea.php';
 
 ?>
 <!--==========================================-->
@@ -85,7 +86,7 @@ include 'modals/updateEquipo.php';
 <!--==========================================-->
 <script src="../app-assests/plugins/DataTables/datatables.min.js" type="text/javascript"></script>
 <script src="../app-assests/plugins/DataTables/DataTables-1.10.18/js/dataTables.bootstrap4.min.js" type="text/javascript"></script>
-<script src="../assets/js/Equipos.js" type="text/javascript"></script>
+<script src="../assets/js/Area.js" type="text/javascript"></script>
 <script src="../app-assests/plugins/sweetalert2/dist/sweetalert2.all.min.js" type="text/javascript"></script>
 <script src="../app-assests/plugins/toastr/toastr.min.js" type="text/javascript"></script>
 <!-- ============= | footer | ================-->

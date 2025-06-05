@@ -9,8 +9,8 @@ function __construct(){
 }
 
 function ListarregEquipos(){
-    $query="SELECT tbreq.id_Reg,tbeq.placa,tbeq.serial,tbreq.descripcion,tbreq.observaciones,tbreq.accesorios,emp.Empresa, tbreq.fecha_creacion,tbreq.estado
-     FROM tbequipos tbeq INNER JOIN tbregequip tbreq ON tbeq.id_Equip=tbreq.id_Equip INNER JOIN tbempresas emp ON emp.id_Empresa=tbreq.id_Empresa WHERE tbeq.estado=1;";
+    $query="SELECT tbreq.id_Reg,tbeq.placa,tbeq.serial,tbreq.descripcion,tbreq.observaciones,tbreq.accesorios,emp.Empresa, tbreq.fecha_creacion,tbreq.fecha_finalizacion,tbreq.estado
+     FROM tbequipos tbeq INNER JOIN tbregequip tbreq ON tbeq.id_Equip=tbreq.id_Equip INNER JOIN tbempresas emp ON emp.id_Empresa=tbreq.id_Empresa;";
 
     $result = $this->cnx->prepare($query);
 
@@ -122,10 +122,12 @@ function buscartablaEquipo($placa){
 
 
 function eliminarRegistroEquipo($id_Reg){
+    $fecha_fin=date( 'Y-m-d H:i:s',time());
     $query="UPDATE tbregequip
-    set estado = 0 where id_Reg = ?;";
+    set estado = 0, fecha_finalizacion=?  where id_Reg = ?;";
     $result = $this->cnx->prepare($query);
-    $result->bindParam(1,$id_Reg);
+    $result->bindParam(1,$fecha_fin);
+    $result->bindParam(2,$id_Reg);
     if($result->execute()){
         return true;
     }else{
@@ -134,10 +136,12 @@ function eliminarRegistroEquipo($id_Reg){
 }
 
 function activarRegEquipo($id_Reg){
+    $fecha_finalizacion="0000-00-00";
     $query="UPDATE tbregequip
-    set estado = 1 where id_Reg = ?;";
+    set estado = 1,fecha_finalizacion=? WHERE id_Reg = ?;";
         $result = $this->cnx->prepare($query);
-        $result->bindParam(1,$id_Reg);
+        $result->bindParam(1,$fecha_finalizacion);
+        $result->bindParam(2,$id_Reg);
     if($result->execute()){
         return true;
     }else{

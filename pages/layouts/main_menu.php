@@ -47,10 +47,10 @@
               <li><a href="/pages/categorias.php" class="menu-item">Registrar Equipos</a></li>
             </ul>
           </li>
-          <li class=" nav-item"><a href="#"><i class="icon-briefcase4"></i><span class="menu-title">Ventas</span></a>
+          <li class=" nav-item"><a href="#"><i class="icon-briefcase4"></i><span class="menu-title">Asignacion</span></a>
             <ul class="menu-content">
-              <li><a href="#" class="menu-item">Realizar venta</a></li>
-              <li><a href="#" class="menu-item">Lista de ventas</a></li>
+              <li><a href="/pages/Asignacion.php" class="menu-item">Realizar Asignacion</a></li>
+              <li><a href="/pages/Devolucion.php" class="menu-item">Realizar Devolucion</a></li>
             </ul>
           </li>
           <li class=" nav-item"><a href="#"><i class="icon-ios-cart-outline"></i><span class="menu-title">Compras</span></a>

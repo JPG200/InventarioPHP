@@ -17,6 +17,8 @@ switch($_REQUEST["operador"]){
                     "Accesorios"=> $datos[$i]['accesorios'],
                     "Empresa"=> $datos[$i]['Empresa'],
                     "Fecha de Ingreso"=> $datos[$i]['fecha_creacion'],
+                    "Fecha de Finalizacion"=> $datos[$i]['fecha_finalizacion']=="0000-00-00"?'<div class="tag tag-success">Vigente</div>':
+                                                        $datos[$i]['fecha_finalizacion'],
                     "Estado"=> $datos[$i]['estado']==1?'<div class="tag tag-success">Activo</div>':
                                                         '<div class="tag tag-danger">Inactivo</div>',
                     "op"=> ($datos[$i]['estado'])==1?'<div class="btn-group">

@@ -16,7 +16,7 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal">Cerrar</button>
+				<button type="button" class="btn grey btn-outline-secondary" onClick="LimpiarModel();" data-dismiss="modal">Cerrar</button>
 				<button type="button" class="btn btn-outline-primary" onclick="RegistrarEquipo();">Guardar Cambios</button>
 			</div>
 		</div>

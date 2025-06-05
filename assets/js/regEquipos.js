@@ -31,6 +31,7 @@ columns:[
     {data:"Accesorios"},
     {data:"Empresa"},
     {data:"Fecha de Ingreso"},
+    {data:"Fecha de Finalizacion"},
     {data:"Estado"},
     {data:"op"}
 ]
