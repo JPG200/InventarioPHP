@@ -85,7 +85,7 @@ class Empleados{
         $query="SELECT tbe.id_Empl,tbe.nombre,tbe.apellido,tbe.cedula,tbe.correo,tba.Area 
         from tbempleado tbe INNER JOIN tbArea tba ON tbe.id_Area=tba.id_Area where tbe.estado=1 AND tbe.cedula = ?;";
         $result = $this->cnx->prepare($query);
-        $result->bindParam(1,$id);
+        $result->bindParam(1,$id, PDO::PARAM_INT);
         if($result->execute()){
             if($result->rowCount()>0){
                 return $result->fetch(PDO::FETCH_ASSOC);

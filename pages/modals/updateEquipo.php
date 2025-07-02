@@ -12,7 +12,7 @@
 			<label for="placa">Placa</label>
 				<div class="form-group">
 					<div class="position-relative has-icon-left">
-						<input type="text" id="txtplacaupdate" class="form-control" placeholder="Placa del equipo" autofocus required>
+						<input type="number" id="txtplacaupdate" class="form-control" placeholder="Placa del equipo" autofocus required pattern="[0-9]*" inputmode="numeric">
 						<div class="form-control-position"><i class="icon-bag"></i></div>
 					</div>
 					<label for="serial">Serial</label>

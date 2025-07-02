@@ -79,7 +79,7 @@ if(isset($_SESSION["user"])){
 <!--=============MODAL====================-->
 <?php 
 include 'modals/createAsignacion.php';
-include 'modals/updateEquipo.php';
+include 'modals/updateAsignacion.php';
 
 ?>
 <!--==========================================-->

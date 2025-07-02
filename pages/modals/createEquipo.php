@@ -10,7 +10,7 @@
 			<div class="modal-body">
 				<div class="form-group">
 					<label for="placa">Placa</label>
-					<input type="text" id="txtplaca" class="form-control" placeholder="Placa del equipo" required>
+					<input type="number" id="txtplaca" class="form-control" placeholder="Placa del equipo" autofocus required pattern="[0-9]*" inputmode="numeric">
 					<label for="serial">Serial</label>
 					<input type="text" id="txtserial" class="form-control" placeholder="Serial del equipo" required>
 				</div>

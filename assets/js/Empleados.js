@@ -37,6 +37,7 @@ function listarEmpleados(){
     $('#txtapellido').val("");
     $('#txtemail').val("");
     $('#txtareacrear').val("");
+    $("#btnGuardar").show();
     $('#createEmpleado').modal('hide'); // Cerrar el modal después de registrar
 }
 
@@ -97,7 +98,7 @@ function BuscarEmpleado(id,op){
         beforeSend: function(response){
         },
         success: function(response){
-            data = $.parseJSON(response);
+             data = $.parseJSON(response);
                 if(data.length > 0){
                     if(op=="editar"){
                         $('#id_Empleado').val(data[0]['id_Empl']);
@@ -198,11 +199,14 @@ function BuscarEmpleadoBoton(cedula,op){
     */
     $.ajax({
         data: {"cedula": cedula},
-        url: '../controller/EmpleadosController.php?operador=buscarEquipoBoton',
+        url: '../controller/EmpleadosController.php?operador=buscarEmpleadoBoton',
         type: 'POST',
         beforeSend: function(response){
         },
         success: function(response){
+            console.log(response);
+            console.log(cedula);
+            console.log(op);
             data = $.parseJSON(response);
                 if(data.length > 0){
                     if(op=="editar"){

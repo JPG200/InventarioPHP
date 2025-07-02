@@ -30,7 +30,7 @@ function buscarSerial($placa){
     $estado = 1; //Activo por defecto
     $query="SELECT tbeq.placa, tbeq.serial from tbequipos tbeq where placa=? and estado=?;";
     $result = $this->cnx->prepare($query);
-    $result->bindParam(1,$placa);
+    $result->bindParam(1,$placa, PDO::PARAM_INT);
     $result->bindParam(2,$estado);
     if($result->execute()){
         if($result->rowCount()>0){
@@ -47,7 +47,7 @@ function buscarEquipo($placa){
     from tbequipos tbeq INNER JOIN tbregequip tbreq ON tbeq.id_Equip=tbreq.id_Equip INNER JOIN tbempresas emp ON emp.id_Empresa=tbreq.id_Empresa
     where tbeq.placa=? and tbeq.estado=?;";
     $result = $this->cnx->prepare($query);
-    $result->bindParam(1,$placa);
+    $result->bindParam(1,$placa , PDO::PARAM_INT);
     $result->bindParam(2,$estado);
     if($result->execute()){
         if($result->rowCount()>0){
@@ -110,7 +110,7 @@ function RegistrarRegistroEquipo($placa,$descripcion,$observaciones,$accesorios,
 function buscartablaEquipo($placa){
     $query="SELECT id_Equip from tbequipos where placa=?;";
     $result = $this->cnx->prepare($query);
-    $result->bindParam(1,$placa);
+    $result->bindParam(1,$placa, PDO::PARAM_INT);
     if($result->execute()){
         if($result->rowCount()>0){
             return $result->fetch(mode: PDO::FETCH_ASSOC);

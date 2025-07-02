@@ -13,7 +13,7 @@
 					<label for="cedula">Cedula</label>
                     <div class="row"> 
 						<div class="col-md-8 position-relative has-icon-left">
-                            <input type="text" id="txtcedulaupdate" class="form-control" placeholder="Cedula del empleado" required>
+                            <input type="number" id="txtcedulaupdate" class="form-control" placeholder="Cedula del empleado" autofocus required pattern="[0-9]*" inputmode="numeric">
                             <div class="form-control-position"><i class="icon-bag"></i></div>
 						</div>
 						<div class="col-md-4">
