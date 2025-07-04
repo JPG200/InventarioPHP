@@ -2,7 +2,7 @@
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" onClick="" aria-label="Close">
+				<button type="button" class="close" data-dismiss="modal" onClick="cerrarModal();" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 				<h4 class="modal-title" id="modalDevolucion"><i class="icon-road2"></i>Devolucion de Equipo</h4>
@@ -26,7 +26,7 @@
 							<div class="form-control-position"><i class="icon-bag"></i></div>
 						</div>
 						<div class="col-md-4">
-							<button type="button" onClick="BuscarInformacion(document.getElementById('txtasigcrear').value,'registrar');" class="btn btn-outline-primary">
+							<button type="button" onClick="BuscarInformacionActaAsignacion(document.getElementById('txtasigcrear').value,'registrar');" class="btn btn-outline-primary">
 								<i class="bi bi-search me-2"></i>
 							</button>
 						</div>
@@ -53,8 +53,8 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal" onClick="">Cerrar</button>
-				<button id="btnGuardar" type="button" class="btn btn-outline-primary" onclick="">Guardar Cambios</button>
+				<button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal" onClick="cerrarModal();">Cerrar</button>
+				<button id="btnGuardar" type="button" class="btn btn-outline-primary" onclick="RegistrarDevolucion();">Guardar Cambios</button>
 			</div>
 		</div>
 	</div>

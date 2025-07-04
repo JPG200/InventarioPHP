@@ -6,15 +6,6 @@ function init(){
 LlenarTablaregAsig();
 LlenarSelectorEmpleado();
 LlenarSelectorEmpleadoActualizar();
-/*
-$("#btnGuardar").hide();
-$("#btnActualizar").hide();
-$('#txtplacacrear').val("");
-$('#txtserialcrear').val("");
-$('#txtdescripcioncrear').val("");
-$('#txtobservacionescrear').val("");
-$('#txtaccesorioscrear').val("");
-$('#txtempresacrear').val("");*/
 }
 
 
@@ -51,10 +42,7 @@ function BuscarAsignacion(placa,op){
         beforeSend: function(response){
         },
         success: function(response){
-            console.log(response);
             if(response && response.length > 0){
-              console.log(placa);
-              console.log(op);
               data = $.parseJSON(response);
               $("#txtplacacrear").val(placa);
               if(data[0]['Acta']!="" && data[0]['Acta']!=null && op=="editar"){

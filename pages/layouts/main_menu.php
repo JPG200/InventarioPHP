@@ -53,11 +53,7 @@
               <li><a href="/pages/Devolucion.php" class="menu-item">Realizar Devolucion</a></li>
             </ul>
           </li>
-          <li class=" nav-item"><a href="#"><i class="icon-ios-cart-outline"></i><span class="menu-title">Compras</span></a>
-            <ul class="menu-content">
-              <li><a href="#" class="menu-item">Realizar compras</a></li>
-              <li><a href="#" class="menu-item">Lista de compras</a></li>
-            </ul>
+          <li class=" nav-item"><a href="/pages/Empresa.php"><i class="icon-ios-cart-outline"></i><span class="menu-title">Empresas</span></a>
           </li>
 
           <li class=" navigation-header"><span>Informes</span>

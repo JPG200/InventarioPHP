@@ -32,17 +32,18 @@ switch($_REQUEST["operador"]){
                         <i class="icon-gear"></i>
                     </button>
                     <div class="dropdown-menu">
-                            <a class="dropdown-item" data-toggle="modal" data-target=""
-                            onclick="">
+                            <a class="dropdown-item" data-toggle="modal" data-target="#updateDevolucion"
+                            onclick="BuscarInformacionActaAsignacion('.$datos[$i]['Acta'].",'editar'".');">
                             <i class="icon-pencil"></i>Editar</a>
-                        <a class="dropdown-item" onclick="">
+                        <a class="dropdown-item" onclick="BuscarInformacionActaAsignacion('.$datos[$i]['Acta'].",'eliminar'".');">
                         <i class="icon-trash"></i> Eliminar</a>
                     </div>':'<div class="btn-group">
                                 <button class="btn btn-info dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                     <i class="icon-gear"></i>
                                 </button>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" onclick=""><i class="icon-check"></i> Activar</a>
+                                    <a class="dropdown-item" onclick="BuscarInformacionActaAsignacion('.$datos[$i]['Acta'].",'activar'".');">
+                                    <i class="icon-check"></i> Activar</a>
                                     <div class="dropdown-divider"></div>
                                 </div>
                             </div>'
@@ -121,32 +122,32 @@ switch($_REQUEST["operador"]){
     break;
     case "buscarDevolucion":
         if(isset($_POST["acta"]) && !empty($_POST["acta"])){
-                    $list = array();
+                $list = array();
                 $data = $cat->BuscarInformacion($_POST["acta"]);
-                    if($data && $data["observaciones"]==null && $data["ActaDev"]==null){
+                    if($data && $data["id_Dev"]==null && $data["id_Dev"]==null){
                         $list[] = array(
                             "id_Dev"=>"",
-                            "placa"=>$_POST["placa"],
+                            "placa"=>$data["placa"],
                             "observaciones"=>"",
                             "descripcion"=>$data["descripcion"],
-                            "ActaAsig"=>$_POST["ActaAsig"],
+                            "ActaAsig"=>$data["ActaAsig"],
                             "ActaDev"=>""
                     );
                         echo json_encode($list);
                     }else{
-                        $data = $cat->BuscarInformacion($_POST["acta_asig"]);
-                        if($data){
+                        $data = $cat->BuscarInformacion($_POST["acta"]);
+                    if(is_array($data)){
                         $list[] = array(
-                            "id_Dev"=>$_POST["id_Dev"],
-                            "placa"=>$_POST["placa"],
-                            "observaciones"=>$_POST["observaciones"],
+                            "id_Dev"=>$data["id_Dev"],
+                            "placa"=>$data["placa"],
+                            "observaciones"=>$data["observaciones"],
                             "descripcion"=>$data["descripcion"],
-                            "ActaAsig"=>$_POST["ActaAsig"],
-                            "ActaDev"=>$_POST["ActaDev"],
+                            "ActaAsig"=>$data["ActaAsig"],
+                            "ActaDev"=>$data["ActaDev"],
                         );
                         echo json_encode($list);
                     }else{
-                      $list[] = array(
+                        $list[] = array(
                             "id_Dev"=>"",
                             "placa"=>"",
                             "observaciones"=>"",
@@ -161,6 +162,47 @@ switch($_REQUEST["operador"]){
                         "error"=>"error"
                     );
                 }
+    break;
+    case"actualizar_Devolucion":
+        try{
+            if(isset($_POST['id_Dev']) && isset($_POST['acta_asig']) && isset($_POST['observaciones']) && isset($_POST['descripcion']) && isset($_POST['acta_dev']) && 
+            !empty($_POST['id_Dev']) && !empty($_POST['acta_asig']) && !empty($_POST['observaciones']) && !empty($_POST['descripcion']) && !empty($_POST['acta_dev'])){
+                $id_Dev = $_POST['id_Dev'];
+                $acta_asig = $_POST['acta_asig'];
+                $observaciones = $_POST['observaciones'];
+                $acta = $_POST['acta_dev'];
+                if($cat->ActualizarDevolucion($id_Dev, $acta_asig, $observaciones, $acta)){
+                    $response="success";
+                }else{
+                    $response="error";
+                }
+            }else{
+                $response="required";
+            }
+        }catch(Exception $e){
+            $response = $e->getMessage();
+        }
+        echo $response;
+    break;
+    case "eliminar_Devolucion":
+        if(isset($_POST['id_Dev']) && !empty($_POST['id_Dev'])){
+            $id_Dev = $_POST['id_Dev'];
+            if($cat->EliminarDevolucion($id_Dev)){
+                $response="success";
+            }else{
+                $response="error";
+            }
+        }
+    break;
+    case"activar_Devolucion":
+        if(isset($_POST['id_Dev']) && !empty($_POST['id_Dev'])){
+            $id_Dev = $_POST['id_Dev'];
+            if($cat->ActivarDevolucion($id_Dev)){
+                $response="success";
+            }else{
+                $response="error";
+            }
+        }
     break;
 }
 ?>

@@ -44,17 +44,16 @@ if(isset($_SESSION["user"])){
 							<div class="card-body collapse in">
 								<div class="card-block">
 									<div class="table-responsive">
-										<table id="Tabla_Devolucion" class="table table-bordered table-sm">
+										<table id="Tabla_Empresa" class="table table-bordered table-sm">
 											<thead>
 												<tr>
 													<th >Numero de Registro</th>
-													<th >Acta de Asignacion</th>
-													<th >Empleado</th>
-													<th >Placa</th>
-                                                    <th >Empresa</th>
-													<th >Acta de Devolucion</th>
-                                                    <th >Fecha de Devolucion</th>
-													<th >Fecha de Entrega</th>
+													<th >Empresa</th>
+													<th >NIT</th>
+													<th >Numero de Contrato</th>
+                                                    <th >Fecha de Inicio</th>
+													<th >Fecha de Final</th>
+                                                    <th >Vigencia</th>
 													<th >Estado</th>
 													<th >op</th>
 												</tr>
@@ -78,9 +77,9 @@ if(isset($_SESSION["user"])){
 </div>
 <!--=============MODAL====================-->
 <?php 
-include 'modals/createDevolucion.php';
+/*include 'modals/createDevolucion.php';
 include 'modals/updateDevolucion.php';
-
+*/
 ?>
 <!--==========================================-->
 
@@ -89,7 +88,7 @@ include 'modals/updateDevolucion.php';
 <!--==========================================-->
 <script src="../app-assests/plugins/DataTables/datatables.min.js" type="text/javascript"></script>
 <script src="../app-assests/plugins/DataTables/DataTables-1.10.18/js/dataTables.bootstrap4.min.js" type="text/javascript"></script>
-<script src="../assets/js/Devolucion.js" type="text/javascript"></script>
+<script src="../assets/js/Empresa.js" type="text/javascript"></script>
 <script src="../app-assests/plugins/sweetalert2/dist/sweetalert2.all.min.js" type="text/javascript"></script>
 <script src="../app-assests/plugins/toastr/toastr.min.js" type="text/javascript"></script>
 <!-- ============= | footer | ================-->
