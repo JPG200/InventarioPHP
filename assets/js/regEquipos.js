@@ -34,7 +34,8 @@ columns:[
     {data:"Fecha de Finalizacion"},
     {data:"Estado"},
     {data:"op"}
-]
+],
+            "autoWidth": false, 
 });
 }
 
@@ -193,30 +194,6 @@ function AlertaDesactivar(id_Reg,placa)
 
 }
 
-/*
-function ConfirmarInformacion(){
-    placa = $("#txtplacacrear").val();
-    parametros = {
-        "placa": placa,
-        },
-    $.ajax({
-        data: parametros,
-        url: '../controller/regEquiposController.php?operador=confirmarInformacion',
-        type: 'POST',
-        beforeSend: function(response){
-        },
-        success: function(response){
-            if(response && response.length > 0){
-                data = $.parseJSON(response);
-
-
-            }else{
-            toastr.success("Error al buscar el equipo", "ERROR"); // Mostrar mensaje de éxito
-            }
-        }
-        });
-}
-*/
 
 function LlenarSelectorEmpresa(){
     $.ajax({

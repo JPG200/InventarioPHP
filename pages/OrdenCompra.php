@@ -11,7 +11,7 @@ if(isset($_SESSION["user"])){
 	<div class="content-wrapper">
 		<div class="content-header row">
 			<div class="content-header-left col-md-6 col-xs-12 mb-1">
-				<h2 class="content-header-title">Empresa</h2>
+				<h2 class="content-header-title">Ordenes</h2>
 			</div>
 			<div class="content-header-right breadcrumbs-right breadcrumbs-top col-md-6 col-xs-12">
 				<div class="breadcrumb-wrapper col-xs-12">
@@ -30,8 +30,8 @@ if(isset($_SESSION["user"])){
 						<div class="card">
 							<div class="card-header">
 								<h4 class="card-title" id="basic-layout-form">
-									<button class="btn btn-sm btn-success" data-target="#createEmpresa" data-toggle="modal" aria-expanded="false" aria-controls="createEmpresa">
-										Empresa</button>
+									<button class="btn btn-sm btn-success" data-target="#createOrden" data-toggle="modal" aria-expanded="false" aria-controls="createOrden">
+										Orden</button>
 								</h4>
 								<a class="heading-elements-toggle"><i class="icon-ellipsis font-medium-3"></i></a>
 								<div class="heading-elements">
@@ -44,19 +44,21 @@ if(isset($_SESSION["user"])){
 							<div class="card-body collapse in">
 								<div class="card-block">
 									<div class="table-responsive">
-										<table id="Tabla_Empresa" class="table table-bordered table-sm">
+										<table id="Tabla_Orden" class="table table-bordered table-sm">
 											<thead>
 												<tr>
+													<th >Orden De Compra</th>
+													<th >Orden de Servicio</th>
 													<th >Numero de Registro</th>
-													<th >Empresa</th>
-													<th >NIT</th>
+													<th >Fecha de Entrega</th>
+													<th >Tipo de Orden</th>
 													<th >Numero de Contrato</th>
-                                                    <th >Fecha de Inicio</th>
-													<th >Fecha de Final</th>
-                                                    <th >Vigencia</th>
-													<th >Estado</th>
+													<th >Total de Equipos Activos</th>
+													<th >Total de Equipos Devueltos</th>
+													<th >Orden Original</th>													
+													<th >Empresa</th>
 													<th >op</th>
-												</tr>
+											</tr>
 											</thead>
 											<tbody>
 											</tbody>
@@ -77,9 +79,9 @@ if(isset($_SESSION["user"])){
 </div>
 <!--=============MODAL====================-->
 <?php 
-include 'modals/createEmpresa.php';
-include 'modals/updateEmpresa.php';
-
+include 'modals/createOrden.php';
+/*include 'modals/updateEmpresa.php';
+*/
 ?>
 <!--==========================================-->
 
@@ -88,7 +90,7 @@ include 'modals/updateEmpresa.php';
 <!--==========================================-->
 <script src="../app-assests/plugins/DataTables/datatables.min.js" type="text/javascript"></script>
 <script src="../app-assests/plugins/DataTables/DataTables-1.10.18/js/dataTables.bootstrap4.min.js" type="text/javascript"></script>
-<script src="../assets/js/Empresa.js" type="text/javascript"></script>
+<script src="../assets/js/Orden.js" type="text/javascript"></script>
 <script src="../app-assests/plugins/sweetalert2/dist/sweetalert2.all.min.js" type="text/javascript"></script>
 <script src="../app-assests/plugins/toastr/toastr.min.js" type="text/javascript"></script>
 <!-- ============= | footer | ================-->

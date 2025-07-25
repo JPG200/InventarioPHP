@@ -27,7 +27,8 @@ function listarEmpleados(){
         {data:"Area"},
         {data:"Estado"},
         {data:"op"}
-    ]
+    ],
+            "autoWidth": false, 
     });
     }
 
@@ -120,22 +121,6 @@ function BuscarEmpleado(id,op){
                         id_Empleado=data[0]['id_Empl'];
                         AlertaActivar(id_Empleado,data[0]['cedula']);
                     }
-                    /*else if(op=="buscar"){
-                        $('#id_Empleado').val(data[0]['id_Empl']);
-                        $('#txtcedula').val(data[0]['cedula']);
-                        $('#txtnombre').val(data[0]['nombre']);
-                        $('#txtapellido').val(data[0]['apellido']);
-                        $('#txtemail').val(data[0]['correo']);
-                        $('#txtareacrear').val(data[0]['estado']);
-                        var nombreAreaEncontrada = data[0]['area'];
-                        $('#txtareacrear option').each(function() {
-                                if ($(this).text().toUpperCase() === nombreAreaEncontrada.toUpperCase()) {
-                                    $('#txtareacrear').val($(this).val()); // Seleccionar la opción por su valor
-                                    return false; // Romper el bucle each una vez encontrada la coincidencia
-                                }
-                            });
-                        $("#btnGuardar").hide();
-                    }*/
             }
             }
         });
@@ -191,12 +176,6 @@ function ActivarEmpleado(id_Empl){
 }
 
 function BuscarEmpleadoBoton(cedula,op){
-    /*cedula=$('#txtcedula').val();
-    nombre=$('#txtnombre').val();
-    apellido=$('#txtapellido').val();
-    email=$('#txtemail').val();
-    area=$('#txtareacrear').val();
-    */
     $.ajax({
         data: {"cedula": cedula},
         url: '../controller/EmpleadosController.php?operador=buscarEmpleadoBoton',

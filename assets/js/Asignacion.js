@@ -94,59 +94,6 @@ function BuscarAsignacion(placa,op){
            } else{
             toastr.success("Error al buscar la Asignacion", "ERROR"); // Mostrar mensaje de éxito
             }
-            /*
-            if(response && response.length > 0){
-                data = $.parseJSON(response);                         
-                $("#btnGuardar").hide();
-                $("#btnActualizar").hide();
-                if(op=="registrar" || op=="editar"){
-                        $("#txtplacacrear").val(placa);
-                        $('#txtserialcrear').val(data[0]['serial']);
-                        if(data[0]['descripcion']!=null && data[0]['descripcion']!=""){
-                            $('#id_Registro').val(data[0]['id_Reg']);
-                            $("#txtplacacrear").val(placa);
-                            $('#txtdescripcioncrear').val(data[0]['descripcion']);
-                            $('#txtobservacionescrear').val(data[0]['observaciones']);
-                            $('#txtaccesorioscrear').val(data[0]['accesorios']);
-                            var nombreEmpresaEncontrada = data[0]['empresa'];
-
-                            // Buscar la opción en el select que coincida con el nombre de la empresa
-                            $('#txtempresacrear option').each(function() {
-                                if ($(this).text().toUpperCase() === nombreEmpresaEncontrada.toUpperCase()) {
-                                    $('#txtempresacrear').val($(this).val()); // Seleccionar la opción por su valor
-                                    return false; // Romper el bucle each una vez encontrada la coincidencia
-                                }
-                            });
-                            if(op=="editar"){
-                                toastr.info("Actualice los datos del equipo.", "Actualice los datos"); // Mostrar mensaje de éxito      
-                                $("#btnGuardar").hide();
-                                $("#btnActualizar").show();
-                            }else{
-                                toastr.error("El equipo ya esta registrado.", "Equipo ya registrado"); // Mostrar mensaje de éxito      
-                                $("#btnGuardar").hide();
-                                $("#btnActualizar").hide();
-                            }
-                        }else{
-                            $('#txtdescripcioncrear').val("");
-                            $('#txtobservacionescrear').val("");
-                            $('#txtaccesorioscrear').val("");
-                            $('#txtempresacrear').val("");
-                            toastr.success("El equipo no se ha registrado.", "Registre los datos del equipo"); // Mostrar mensaje de éxito
-                            $("#btnGuardar").show();
-                            $("#btnActualizar").hide();
-                        }
-                    }else if(op=="eliminar"){
-                        id_Reg=data[0]['id_Reg'];
-                        AlertaDesactivar(id_Reg,data[0]['placa']);
-                    }else if(op=="activar"){
-                        id_Reg=data[0]['id_Reg'];
-                        console.log(id_Reg);
-                        AlertaActivar(id_Reg,data[0]['placa']);
-                    }
-
-            }else{
-            toastr.success("Error al buscar el equipo", "ERROR"); // Mostrar mensaje de éxito
-            }*/
         }
         });
 }
@@ -168,7 +115,8 @@ columns:[
     {data:"Fecha Devolucion"},
     {data:"Estado"},
     {data:"op"}
-]
+],
+ "autoWidth": false,
 });
 }
 

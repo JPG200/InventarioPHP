@@ -68,7 +68,8 @@ columns:[
     {data:"Fecha de Terminacion"},
     {data:"Estado"},
     {data:"op"}
-]
+],
+ "autoWidth": false, 
 });
 }
 

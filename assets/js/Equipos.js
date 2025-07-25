@@ -65,7 +65,8 @@ columns:[
     {data:"Fecha de Ingreso"},
     {data:"Estado"},
     {data:"op"}
-]
+],
+            "autoWidth": false, 
 });
 }
 

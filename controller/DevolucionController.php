@@ -47,26 +47,6 @@ switch($_REQUEST["operador"]){
                                     <div class="dropdown-divider"></div>
                                 </div>
                             </div>'
-                    /*($datos[$i]['estado'])==1?'<div class="btn-group">
-                    <button class="btn btn-info dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                        <i class="icon-gear"></i>
-                    </button>
-                    <div class="dropdown-menu">
-                            <a class="dropdown-item" data-toggle="modal" data-target="#createregEquipo"
-                            onclick="BuscarEquipo('.$datos[$i]['placa'].",'editar'".');">
-                            <i class="icon-pencil"></i> Editar</a>
-                        <a class="dropdown-item" onclick="BuscarEquipo('.$datos[$i]['placa'].",'eliminar'".');">
-                        <i class="icon-trash"></i> Eliminar</a>
-                    </div>':'
-                            <div class="btn-group">
-                                <button class="btn btn-info dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                    <i class="icon-gear"></i>
-                                </button>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" onclick="BuscarEquipo('.$datos[$i]['placa'].",'activar'".');"><i class="icon-check"></i> Activar</a>
-                                    <div class="dropdown-divider"></div>
-                                </div>
-                            </div>'*/
                 );
             }
             $resultador = array(
@@ -135,7 +115,6 @@ switch($_REQUEST["operador"]){
                     );
                         echo json_encode($list);
                     }else{
-                        $data = $cat->BuscarInformacion($_POST["acta"]);
                     if(is_array($data)){
                         $list[] = array(
                             "id_Dev"=>$data["id_Dev"],
