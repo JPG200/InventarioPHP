@@ -1,13 +1,15 @@
 var table;
 
-init();
+init(); // Inicializar la tabla y cerrar los modales
 
+// Función para inicializar la tabla y cerrar los modales
 function init(){
     LlenarTablaregDev();
     cerrarModalUpdate();
     cerrarModal();
 }
 
+// Función para llenar la tabla de devoluciones
 function LlenarTablaregDev(){
 table = $('#Tabla_Devolucion').DataTable({
 pageLength:10,
@@ -15,6 +17,7 @@ responsive:true,
 processing:true,
 ajax:"../controller/DevolucionController.php?operador=listar_Devolucion",
 columns:[
+    // Definición de las columnas de la tabla
     {data:"Numero de Registro",'visible': false},
     {data:"Acta"},
     {data:"Empleado"},
@@ -26,11 +29,14 @@ columns:[
     {data:"Estado"},
     {data:"op"}
 ],
+// Configuración de la tabla
             "autoWidth": false, 
 });
 }
 
+
 function cerrarModalUpdate(){
+    // Limpiar los campos del modal de actualización
     $('#id_Dev').val("");
     $('#txtactaupdate').val("");
     $('#txtasigupdate').val("");
@@ -41,6 +47,7 @@ function cerrarModalUpdate(){
 }
 
 function cerrarModal(){
+    // Limpiar los campos del modal de creación
     $('#id_Dev').val("");
     $('#txtactacrear').val("");
     $('#txtasigcrear').val("");
@@ -50,12 +57,17 @@ function cerrarModal(){
     $('#createDevolucion').modal('hide'); // Cerrar el modal después de registrar
 }
 
+// Función para registrar una devolución
+// Esta función se llama cuando se hace clic en el botón "Registrar Devolución"
+// y envía los datos del formulario al servidor para su procesamiento
 function RegistrarDevolucion(){
+    // Obtener los valores de los campos de entrada
     acta_asig = $('#txtasigcrear').val();
     observaciones = $('#txtobservacionescrear').val();
     acta = $('#txtactacrear').val();
 
     $.ajax({
+        // Enviar los datos al servidor
         url: "../controller/DevolucionController.php?operador=registrar_Devolucion",
         type: "POST",
         data: {
@@ -66,9 +78,6 @@ function RegistrarDevolucion(){
         beforeSend: function(response){
         },
         success: function(response){
-            console.log("Respuesta: " + response);
-            console.log("Acta Asignacion: " + acta_asig);
-            
             if(response == "success"){
               toastr.success("Devolucion Registrada exitosamente", "Registro Exitoso."); // Mostrar mensaje de éxito
               table.ajax.reload(); // Recargar la tabla después de registrar el equipo
@@ -86,6 +95,8 @@ function RegistrarDevolucion(){
     });
 }
 
+// Función para buscar información de un acta de asignación
+// Esta función se llama cuando se ingresa un número de acta en el campo de búsqueda
 function BuscarInformacionActaAsignacion($acta,op){
     // Obtener los valores de los campos de entrada
     parametros = {
@@ -97,9 +108,7 @@ function BuscarInformacionActaAsignacion($acta,op){
         beforeSend: function(response){
         },
         success: function(response){
-            console.log("Respuesta "+response);
-            console.log("Acta: " + $acta);
-            console.log("Operación: " + op);
+            // Procesar la respuesta del servidor
             if(response && response.length > 0){
             data = $.parseJSON(response);
             $("#txtasigcrear").val($acta);
@@ -107,15 +116,17 @@ function BuscarInformacionActaAsignacion($acta,op){
             $('#txtplacacrear').val(data[0]['placa']);
             $('#txtdescripcioncrear').val(data[0]['descripcion']);
             if(data[0]['observaciones']!=null && data[0]['observaciones']!=""){
-
+                // Si hay observaciones se hace el cambio de la operacion
                 if(op=="registrar"){
                     op="editar";
                 }
 
+                // Asignar los valores a los campos del formulario
                 $('#id_Dev').val(data[0]['id_Dev']);
                 $('#txtobservacionescrear').val(data[0]['observaciones']);
                 $('#txtactacrear').val(data[0]['ActaDev']);
 
+                // lógica para manejar la operación según el caso
                 switch(op) {
                     case "editar":
                         $("#txtasigupdate").val($acta);
@@ -150,6 +161,8 @@ function BuscarInformacionActaAsignacion($acta,op){
         }
         });
 }
+
+// Funciones para mostrar alertas de confirmación antes de activar o desactivar una devolución
     function AlertaActivar(id_Reg,placa){
     Swal.fire({
         title: '¿Seguro?',
@@ -173,6 +186,7 @@ function BuscarInformacionActaAsignacion($acta,op){
     });
     }
 
+    // Función para mostrar una alerta de confirmación antes de desactivar una devolución
     function AlertaDesactivar(id_Reg,placa){
     Swal.fire({
         title: '¿Seguro?',
@@ -195,6 +209,8 @@ function BuscarInformacionActaAsignacion($acta,op){
     });
     }
 
+    // Función para activar una devolución
+    // Esta función se llama cuando se confirma la activación de una devolución
     function ActivarDevolucion(id_Dev){
     console.log(id_Dev);
     $.ajax({
@@ -218,6 +234,8 @@ function BuscarInformacionActaAsignacion($acta,op){
     });
     }
 
+    // Función para eliminar una devolución
+    // Esta función se llama cuando se confirma la eliminación de una devolución
     function EliminarDevolucion(id_Dev){
     parametros = {
         "id_Dev": id_Dev
@@ -244,6 +262,8 @@ function BuscarInformacionActaAsignacion($acta,op){
     });
     }
 
+    // Función para actualizar una devolución
+    // Esta función se llama cuando se hace clic en el botón "Actualizar Devolución"
     function ActualizarDevolucion(){
     acta_asig = $("#txtasigupdate").val();
     placa = $("#txtplacaupdate").val();

@@ -324,12 +324,14 @@ class Orden{
                         if(!$verificarEquipoxOrdenVerificarCambio && $idTipoOrden==2){
                         $estadoEquipoXOrdenDevolucion = 0;
                         $estadoEquipoXOrdenNuevo = 1; // 0 para devolucion
+                        $fechaSalidaNueva = "0000-00-00 00:00:00"; // Indicar que aún no ha salido
+
                         $queryEquipoOrden = "INSERT INTO tb_equipoxorden (id_Orden, id_Equipo, fecha_Entrega, Fecha_Salida, estado,estado_devolucion, orden_original) VALUES (?, ?, ?, ?, ?, ?, ?)";
                         $stmtEquipoOrden = $this->cnx->prepare($queryEquipoOrden);
                         $stmtEquipoOrden->bindParam(1, $idOrdenGenerado, PDO::PARAM_INT);
                         $stmtEquipoOrden->bindParam(2, $idEquipoActual, PDO::PARAM_INT);
                         $stmtEquipoOrden->bindParam(3, $fechaActual);
-                        $stmtEquipoOrden->bindParam(4, $fechaActual);
+                        $stmtEquipoOrden->bindParam(4, $fechaSalidaNueva);
                         $stmtEquipoOrden->bindParam(5, $estadoEquipoXOrdenNuevo, PDO::PARAM_INT);
                         $stmtEquipoOrden->bindParam(6, $estadoEquipoXOrdenDevolucion, PDO::PARAM_INT);
                         $stmtEquipoOrden->bindParam(7, $numeroRegistro, PDO::PARAM_INT);

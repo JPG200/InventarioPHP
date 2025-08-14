@@ -2,13 +2,16 @@ var table;
 
 init();// Función para inicializar el DataTable
 
+// Función para inicializar el DataTable y cargar los datos
+// Llama a las funciones para llenar la tabla y los selectores de empleados
 function init(){
 LlenarTablaregAsig();
 LlenarSelectorEmpleado();
 LlenarSelectorEmpleadoActualizar();
 }
 
-
+// Función para buscar una asignación por ID
+// Envía una solicitud AJAX al servidor para buscar la asignación con el ID proporcionado
 function BuscarAsignacionPorId(id_Asig){
     parametros = {
         "id_Asig": id_Asig,
@@ -31,6 +34,8 @@ function BuscarAsignacionPorId(id_Asig){
     });
 }
 
+// Función para buscar una asignación por placa
+// Envía una solicitud AJAX al servidor para buscar la asignación con la placa proporcionada
 function BuscarAsignacion(placa,op){
     // Obtener los valores de los campos de entrada
     parametros = {
@@ -46,7 +51,9 @@ function BuscarAsignacion(placa,op){
               data = $.parseJSON(response);
               $("#txtplacacrear").val(placa);
               if(data[0]['Acta']!="" && data[0]['Acta']!=null && op=="editar"){
-                toastr.info("Actualice los datos de la Asignacion.", "Actualice los datos"); // Mostrar mensaje de éxito      
+                // Mostrar mensaje de aviso si la asignación ya existe
+                // Actualizar los campos del formulario con los datos de la asignación
+                toastr.info("Actualice los datos de la Asignacion.", "Actualice los datos");    
                 $("#btnGuardar").hide();
                 $("#btnActualizar").show();
                 $('#id_Asig').val(data[0]['id_Asig']);
@@ -65,7 +72,8 @@ function BuscarAsignacion(placa,op){
                 }); 
               }   
               if(data[0]['Acta']!="" && data[0]['Acta']!=null && op=="registrar"){
-                toastr.info("Actualice los datos.", "Actualice los datos"); // Mostrar mensaje de éxito  
+                // Mostrar mensaje de aviso si la asignación ya existe
+                toastr.info("Actualice los datos.", "Actualice los datos");
                 $('#id_Asig').val(data[0]['id_Asig']);
                 $("#txtplacacrear").val(placa);
                 $('#txtdescripcioncrear').val(data[0]['descripcion']);
@@ -82,6 +90,7 @@ function BuscarAsignacion(placa,op){
                 });    
                 $("#btnGuardar").hide();
               }else if(op=="registrar"){
+                // Mostrar mensaje de aviso si la asignación no existe
                 toastr.info("Equipo no Asignado.", "Asigne el equipo"); // Mostrar mensaje de éxito  
                 $("#txtplacacrear").val(placa);
                 $('#txtdescripcioncrear').val(data[0]['descripcion']);
@@ -98,6 +107,8 @@ function BuscarAsignacion(placa,op){
         });
 }
 
+// Función para llenar la tabla de asignaciones
+// Utiliza DataTables para mostrar los datos de las asignaciones en una tabla
 function LlenarTablaregAsig(){
 table = $('#Tabla_Asignacion').DataTable({
 pageLength:10,
@@ -120,6 +131,8 @@ columns:[
 });
 }
 
+// Función para abrir el modal de asignación
+// Limpia los campos del modal y muestra el modal para registrar una nueva asignación
 function cerrarModal(){
     $('#id_Asig').val("");
     $('#txtempleadocrear').val("");
@@ -131,6 +144,7 @@ function cerrarModal(){
     $('#modalAsignacion').modal('hide'); // Cerrar el modal después de registrar
 }
 
+// Función para abrir el modal de actualización de asignación
 function cerrarModalUpdate(){
     $('#id_Asig').val("");
     $('#txtempleadoupdate').val("");
@@ -141,7 +155,7 @@ function cerrarModalUpdate(){
     $('#updateAsignacion').modal('hide'); // Cerrar el modal después de registrar
 }
 
-
+// Función para mostrar una alerta de confirmación antes de activar una asignación
 function AlertaActivar(id_Asig,placa)
 {
     Swal.fire({
@@ -166,6 +180,7 @@ function AlertaActivar(id_Asig,placa)
 
 }
 
+// Función para activar una asignación
 function ActivarAsignacion(id_Asig){
     console.log(id_Asig);
     $.ajax({
@@ -192,6 +207,8 @@ function ActivarAsignacion(id_Asig){
 
 }
 
+// Función para mostrar una alerta de confirmación antes de desactivar una asignación
+// Muestra un mensaje de advertencia y, si se confirma, llama a la función para
 function AlertaDesactivar(id_Asig,placa)
 {
     Swal.fire({
@@ -215,8 +232,9 @@ function AlertaDesactivar(id_Asig,placa)
 
 }
 
+// Función para desactivar una asignación
+// Envía una solicitud AJAX al servidor para desactivar la asignación con el ID proporcionado
 function EliminarAsignacion(id_Asig){
-    // Obtener los valores de los campos de entrada
     parametros = {
         "id_Asig": id_Asig,
         },
@@ -243,6 +261,8 @@ function EliminarAsignacion(id_Asig){
         });
 }
 
+// Test function EliminarAsignacion
+// Esta función está comentada porque no se utiliza actualmente, pero se puede descomentar si
 /*function EliminarAsignacion(id_Asig,placa){
     Swal.fire({
         title: '¿Está seguro de eliminar la Asignación?',
@@ -277,6 +297,9 @@ function EliminarAsignacion(id_Asig){
 }
 */
 
+
+// Función para registrar una nueva asignación
+// Obtiene los valores de los campos del formulario y envía una solicitud AJAX al servidor para registrar la asignación
 function RegistrarAsignacion(){
     placa = $("#txtplacacrear").val();
     descripcion = $("#txtdescripcioncrear").val();
@@ -318,6 +341,8 @@ function RegistrarAsignacion(){
         });
 }
 
+// Función para llenar el selector de empleados al crear una asignación
+// Envía una solicitud AJAX al servidor para obtener la lista de empleados y llenar el selector
 function LlenarSelectorEmpleado(){
     $.ajax({
         url: '../controller/AsignacionController.php?operador=LlenarSelectEmpleados',
@@ -338,6 +363,10 @@ function LlenarSelectorEmpleado(){
         }
         });
 }
+
+
+// Función para llenar el selector de empleados al actualizar una asignación
+// Envía una solicitud AJAX al servidor para obtener la lista de empleados y llenar el selector
 function LlenarSelectorEmpleadoActualizar(){
     $.ajax({
         url: '../controller/AsignacionController.php?operador=LlenarSelectEmpleadosUpdate',
@@ -358,6 +387,9 @@ function LlenarSelectorEmpleadoActualizar(){
         }
         });
     }
+
+    // Función para actualizar una asignación
+    // Obtiene los valores de los campos del formulario y envía una solicitud AJAX al servidor
     function ActualizarAsignacion(){
     placa = $("#txtplacaupdate").val();
     descripcion = $("#txtdescripcionupdate").val();

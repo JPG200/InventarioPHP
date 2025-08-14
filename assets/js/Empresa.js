@@ -2,12 +2,15 @@ var table;
 
 init();// Función para inicializar el DataTable
 
+
 function init(){
+  // Inicializar el DataTable
 LlenarTablaEmpresa();
 }
 
-
+// Función para llenar la tabla de empresas
 function LlenarTablaEmpresa(){
+  // Configuración del DataTable
 table = $('#Tabla_Empresa').DataTable({
 pageLength:10,
 responsive:true,
@@ -24,11 +27,14 @@ columns:[
     {data:"Estado"},
     {data:"op", "orderable": false, "searchable": false, "className": "text-center", "width": "10%"}
 ],
+// Configuración de idioma
             "autoWidth": false, 
 });
 }
 
+// Función para eliminar una empresa
 function eliminarEmpresa(id_Empresa, NumeroContrato){
+// Mostrar alerta de confirmación antes de eliminar
      Swal.fire({
         title: '¿Seguro?',
         html: "¿Está seguro de desactivar el contrato: <h5>"+ NumeroContrato +"</h5>?",
@@ -41,6 +47,7 @@ function eliminarEmpresa(id_Empresa, NumeroContrato){
     .then((result) => {
         if (result.value) {
             $.ajax({
+              // Enviar solicitud AJAX para eliminar la empresa
                 url: "../controller/EmpresasController.php?operador=eliminar_Empresa",
                 type: "POST",
                 data: {
@@ -48,9 +55,9 @@ function eliminarEmpresa(id_Empresa, NumeroContrato){
                     "NumeroContrato": NumeroContrato
                 },
                 beforeSend: function(response){
-                    // Aquí puedes mostrar un mensaje de carga si lo deseas
                 },
                 success: function(response){
+                  // Manejar la respuesta del servidor
                     if(response == "success"){
                         toastr.success("Empresa eliminada exitosamente", "Eliminación Exitosa."); // Mostrar mensaje de éxito
                         table.ajax.reload(); // Recargar la tabla después de eliminar la empresa
@@ -63,7 +70,9 @@ function eliminarEmpresa(id_Empresa, NumeroContrato){
     });
 }
 
+// Función para activar una empresa
 function activarEmpresa(id_Empresa, NumeroContrato){
+  // Mostrar alerta de confirmación antes de activar
     Swal.fire({
         title: '¿Seguro?',
         html: "¿Está seguro de activar el contrato: <h5>"+ NumeroContrato +"</h5>?",
@@ -76,6 +85,7 @@ function activarEmpresa(id_Empresa, NumeroContrato){
     .then((result) => {
         if (result.value) {
             $.ajax({
+              // Enviar solicitud AJAX para activar la empresa
                 url: "../controller/EmpresasController.php?operador=activar_Empresa",
                 type: "POST",
                 data: {
@@ -83,11 +93,9 @@ function activarEmpresa(id_Empresa, NumeroContrato){
                     "NumeroContrato": NumeroContrato
                 },
                 beforeSend: function(response){
-                    // Aquí puedes mostrar un mensaje de carga si lo deseas
                 },
                 success: function(response){
-                  console.log("Respuesta: " + response);
-                  console.log("data: " + id_Empresa + "  " + NumeroContrato);
+                  // Manejar la respuesta del servidor
                     if(response == "success"){
                         toastr.success("Empresa activada exitosamente", "Activación Exitosa."); // Mostrar mensaje de éxito
                         table.ajax.reload(); // Recargar la tabla después de activar la empresa
@@ -101,6 +109,7 @@ function activarEmpresa(id_Empresa, NumeroContrato){
 }
 
 function cerrarModalUpdate(){
+  // Limpiar los campos del modal de actualización
     $('#id_Empresa').val("");
     $('#txtempresaupdate').val("");
     $('#txtNITupdate').val("");
@@ -111,6 +120,7 @@ function cerrarModalUpdate(){
 }
 
 function cerrarModal(){
+  // Limpiar los campos del modal de creación
     $('#id_Empresa').val("");
     $('#txtempresacrear').val("");
     $('#txtNITcrear').val("");
@@ -126,7 +136,7 @@ function cerrarModal(){
 }
 				
 function AlertaBuscarEmpresa(NIT, NumeroContrato,op){
-
+// Validar que los campos NIT y NumeroContrato no estén vacíos
     if(NIT == "" || NumeroContrato == ""){
         toastr.error("Debe ingresar el NIT y el Numero de Contrato", "Campos Vacios"); // Mostrar mensaje de error
     }else{
@@ -137,11 +147,13 @@ function AlertaBuscarEmpresa(NIT, NumeroContrato,op){
 
 
 function BuscarEmpresa(NIT,NumeroContrato,op){
+  // Validar que los campos NIT y NumeroContrato no estén vacíos
 parametros = {
     "NIT": NIT,
     "NumeroContrato": NumeroContrato
 };
 $.ajax({
+  // Enviar solicitud AJAX para buscar la empresa
     url: "../controller/EmpresasController.php?operador=buscar_Empresa",
     type: "POST",
     data: parametros,
@@ -149,6 +161,7 @@ $.ajax({
         // Aquí puedes mostrar un mensaje de carga si lo deseas
     },
     success: function(response){
+      // Manejar la respuesta del servidor
         if(response && response.length > 0){
           data = $.parseJSON(response);
           $('#id_Empresa').val(data[0]['id_Empresa']);
@@ -214,8 +227,9 @@ $.ajax({
 });
 }
 
-
+// Función para actualizar una empresa
 function actualizarEmpresa(){
+  // Obtener los valores de los campos del formulario de actualización
     id_Empresa = $('#id_Empresa').val();
     empresa = $('#txtempresaupdate').val();
     NIT = $('#txtNITupdate').val();
@@ -224,6 +238,7 @@ function actualizarEmpresa(){
     NumeroContrato = $('#txtNumeroContratoupdate').val();
 
     $.ajax({
+      // Enviar solicitud AJAX para actualizar la empresa
         url: "../controller/EmpresasController.php?operador=actualizar_Empresa",
         type: "POST",
         data: {
@@ -237,7 +252,7 @@ function actualizarEmpresa(){
         beforeSend: function(response){
         },
         success: function(response){
-
+          // Manejar la respuesta del servidor
             if(response == "success"){
               toastr.success("Empresa Actualizada exitosamente", "Actualización Exitosa."); // Mostrar mensaje de éxito
               table.ajax.reload(); // Recargar la tabla después de registrar el equipo
@@ -255,8 +270,9 @@ function actualizarEmpresa(){
     });
 }
 
-
+// Función para registrar una nueva empresa
 function RegistrarEmpresa(){
+  // Obtener los valores de los campos del formulario de creación
     empresa = $('#txtempresacrear').val();
     NIT = $('#txtNITcrear').val();
     fecha_I = $('#txtFechaIcrear').val();
@@ -264,6 +280,7 @@ function RegistrarEmpresa(){
     Numero_Contrato = $('#txtNumeroContratoCrear').val();
 
     $.ajax({
+      // Enviar solicitud AJAX para registrar la empresa
         url: "../controller/EmpresasController.php?operador=registrar_Empresa",
         type: "POST",
         data: {
@@ -276,7 +293,7 @@ function RegistrarEmpresa(){
         beforeSend: function(response){
         },
         success: function(response){
-
+          // Manejar la respuesta del servidor
             if(response == "success"){
               toastr.success("Empresa Registrada exitosamente", "Registro Exitoso."); // Mostrar mensaje de éxito
               table.ajax.reload(); // Recargar la tabla después de registrar el equipo

@@ -28,13 +28,17 @@
 
           <li class=" nav-item"><a href="welcome.php"><i class="icon-home3"></i><span class="menu-title">Dashboard</span></a>
           </li>
-          <li class=" nav-item"><a href="#"><i class="icon-gears"></i><span class="menu-title">Configuración</span></a>
+          <li class=" nav-item"><a href="../pages/OrdenCompra.php"><i class="icon-gears"></i><span class="menu-title">Orden</span></a>
           </li>
+          <?php
+          /*
           <li class=" nav-item"><a href="#"><i class="icon-user-secret"></i><span  class="menu-title">Gestion de usuarios</span></a>
             <ul class="menu-content">
               <li><a href="#" class="menu-item">Usuarios</a></li>
             </ul>
           </li>
+          */
+          ?>
           <li class=" nav-item"><a href="#"><i class="icon-mobile2"></i><span class="menu-title">Colaboradores</span></a>
             <ul class="menu-content">
               <li><a href="/pages/empleados.php" class="menu-item">Empleados</a></li>
@@ -55,7 +59,8 @@
           </li>
           <li class=" nav-item"><a href="/pages/Empresa.php"><i class="icon-ios-cart-outline"></i><span class="menu-title">Empresas</span></a>
           </li>
-
+          <?php
+          /*
           <li class=" navigation-header"><span>Informes</span>
           </li>
           <li class=" nav-item"><a href="#"><i class="icon-file-text2"></i><span class="menu-title">Reportes </span></a>
@@ -66,6 +71,8 @@
           </li>
           <li class=" nav-item"><a href="#"><i class="icon-database2"></i><span  class="menu-title">Backup</span></a>
           </li>
+          */
+          ?>
         </ul>
       </div>
 

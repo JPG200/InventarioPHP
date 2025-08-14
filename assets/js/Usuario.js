@@ -1,4 +1,5 @@
 function ValidarUsuario(){ 
+    // Función para validar el usuario
     correo = $('#user-name').val();
     clave = $('#user-password').val();
     msg="";
@@ -8,11 +9,13 @@ function ValidarUsuario(){
         "clave": clave
     };
     $.ajax({
+        // Configuración de la solicitud AJAX
         data:  parametros,
         url:   'controller/UsuarioController.php?operador=ValidarUsuario',
         type:  'post',
         beforeSend: function () {},
         success: function (response) {
+            console.log(response);
             if(response == "success"){
                 console.log(response);
                 location.href = "/pages/welcome.php";
@@ -31,6 +34,7 @@ function ValidarUsuario(){
 }
 
 function LimpiarController(){
+    // Limpiar los campos de entrada
 $('#user-name').val("");
 $('#user-password').val("");
 }

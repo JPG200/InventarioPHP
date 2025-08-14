@@ -3,6 +3,7 @@ var table;
 init();// Función para inicializar el DataTable
 
 function init(){
+    // Inicializar el DataTable
     listarOrden();
     cerrarModal();
     llenarSelectTipoOrden();
@@ -15,6 +16,7 @@ function init(){
 }
 
  function cerrarModal(){
+    //  Cierra el modal de Bootstrap y limpia los campos del formulario
         $('#createOrden').modal('hide'); // Cierra el modal de Bootstrap
         // Limpiar todos los campos del formulario de la orden
         $('#id_Orden').val('');
@@ -41,6 +43,7 @@ function init(){
 
     function buscarContratoExistente(numeroContrato) {
     $.ajax({
+        // Cambia la URL al controlador correcto para buscar un contrato
         url: "../controller/OrdenController.php?operador=buscarContrato",
         type: "POST",
         data: {
@@ -51,6 +54,7 @@ function init(){
             $('#btnBuscarContrato').prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Buscando...');
         },
         success: function(response) {
+            
             let res;
             try {
                 res = JSON.parse(response);
@@ -59,19 +63,14 @@ function init(){
                 toastr.error("Respuesta inesperada del servidor al buscar la orden. (Error de formato)", "Error de Comunicación.");
                 return;
             }
-            console.log(numeroContrato)
-            console.log("Respuesta del servidor (buscarOrden):", res.data, res.status, res.message);
+            // Manejo de respuesta del servidor
             if (res.status === "success") {
                 toastr.success(res.message, "Búsqueda Exitosa.");
                 // Rellenar el formulario con los datos de la orden
                 const ordenData = res.data;
-                $('#btnGuardarOrden').show();
+                $('#btnGuardarOrden').show(); // Mostrar el botón de guardar orden
                 $('#txtNumeroContrato').val(ordenData.NumeroContrato); // Mostrar el número de contrato
-                $('#txtNumeroContrato').attr('readonly', true);
-                // Opcional: Podrías deshabilitar o hacer readonly estos campos si la orden ya existe
-                // $('#txtOrdenCompra').prop('readonly', true); 
-                // $('#txtOrdenServicio').prop('readonly', true);
-                // ... etc.
+                $('#txtNumeroContrato').attr('readonly', true); // Hacer readonly el campo de número de contrato
             } else if (res.status === "error"){
                 toastr.error(res.message || "Ocurrió un error al buscar la orden.", "Búsqueda Fallida.");
             } else if( res.status === "required") {            
@@ -83,6 +82,7 @@ function init(){
             }
         },
         error: function(jqXHR, textStatus, errorThrown) {
+            // Manejo de errores en la solicitud AJAX
             console.error("Error en la solicitud AJAX (buscarOrden):", textStatus, errorThrown, jqXHR.responseText);
             let errorMessage = "No se pudo conectar con el servidor para buscar la orden.";
             if (jqXHR.status) {
@@ -101,6 +101,7 @@ function init(){
 }
 
 function registrarCambioConEquipos() {
+    // Recopila los datos del formulario de la orden
         const ordenCompra = $('#txtOrdenCompra').val();
         const ordenServicio = $('#txtOrdenServicio').val();
         const fechaEntrega = $('#txtFechaEntrega').val();
@@ -129,6 +130,7 @@ function registrarCambioConEquipos() {
         });
 
         const equiposCambio = [];
+        // Recopila los datos de los equipos de cambio
         $('#tablaEquiposModalCambio tbody tr').each(function() {
             const placa = $(this).find('.input-placa').val();
             const serial = $(this).find('.input-serial').val();
@@ -147,13 +149,14 @@ function registrarCambioConEquipos() {
             toastr.warning("Por favor, agregue al menos un equipo con Placa y Serial a la orden.", "Equipos Faltantes.");
             return;
         }
+        // Validación específica para el tipo de orden "Cambio" (idTipoOrden == 2)
         if (idTipoOrden==2 && equiposCambio.length === 0) {
             toastr.warning("Por favor, agregue al menos un equipo con Placa y Serial a la orden de cambio.", "Equipos Faltantes.");
             return;
         }
         // Envía los datos mediante AJAX
         $.ajax({
-            url: "../controller/OrdenController.php?operador=registrarCambio", // Ajusta esta URL
+            url: "../controller/OrdenController.php?operador=registrarCambio",
             type: "POST",
             data: {
                 "ordenCompra": ordenCompra,
@@ -168,8 +171,7 @@ function registrarCambioConEquipos() {
             },
             success: function(response) {
                 data = JSON.parse(response);
-                console.log(response);
-                console.log(ordenCompra, ordenServicio, numeroOrden, fechaEntrega, idTipoOrden, numeroContrato, equipos);
+                // Manejo de la respuesta del servidor
                 if (data === "success") {
                     toastr.success("Orden registrada exitosamente.", "Registro Exitoso.");
                     table.ajax.reload(); // Recargar tu tabla principal
@@ -214,11 +216,8 @@ function buscarOrdenExistente(numeroOrden) {
                 toastr.error("Respuesta inesperada del servidor al buscar la orden. (Error de formato)", "Error de Comunicación.");
                 return;
             }
-            console.log(numeroOrden)
-            console.log("Respuesta del servidor (buscarOrden):", res.data, res.status, res.message);
+            // Corregido el log para usar el parámetro correcto
             if (res.status === "success") {
-
-   
                 toastr.success(res.message, "Búsqueda Exitosa.");
                 // Rellenar el formulario con los datos de la orden
                 const ordenData = res.data;
@@ -233,19 +232,17 @@ function buscarOrdenExistente(numeroOrden) {
                 $('#txtNumeroContrato').val(ordenData.NumeroContrato); // Mostrar el número de contrato
                 $('#txtNumeroRegistro').attr('readonly', true); // Hacer editable
 
-                // Opcional: Podrías deshabilitar o hacer readonly estos campos si la orden ya existe
-                // $('#txtOrdenCompra').prop('readonly', true); 
-                // $('#txtOrdenServicio').prop('readonly', true);
-                // ... etc.
-
+                $('#tablaEquiposModalCambio tbody').empty(); // Limpiar tabla actual
                 // Rellenar la tabla de equipos en el modal
                 $('#tablaEquiposModal tbody').empty(); // Limpiar tabla actual
                 equipoRowCounter = 0; // Resetear contador
                 equipoRowCounterCambio=0;
 
                 if (ordenData.equipos && ordenData.equipos.length > 0) {
+                    // Iterar sobre los equipos y agregarlos a la tabla
                     ordenData.equipos.forEach(function(equipo) {
                         if(equipo.estado==1){
+                            // Equipo Activo
                         equipoRowCounter++;
                         const newRow = `
                             <tr id="equipo-row-${equipoRowCounter}">
@@ -263,6 +260,7 @@ function buscarOrdenExistente(numeroOrden) {
                         }
                         
                         if(equipo.estado==0&&equipo.estado_devolucion==1){
+                            // Equipo Cambio
                         equipoRowCounterCambio++;
                         const newRow = `
                             <tr id="equipo-row-${equipoRowCounter}">
@@ -281,6 +279,7 @@ function buscarOrdenExistente(numeroOrden) {
                     });
 
                     if(res.data['TotalEquiposActivos']==0){
+                        // Si no hay equipos activos, mostrar mensaje y ocultar botones
                          toastr.info(res.message, "Orden sin Equipos Activos.");
                          $('#btnBuscarContrato').hide();
                          $('#btnGuardarOrden').hide();     
@@ -321,30 +320,147 @@ function buscarOrdenExistente(numeroOrden) {
 }
 
 
+function buscarEquiposActivosDevueltos(id_Orden) { // Cambiado a id_Orden para coincidir con la data
+    $.ajax({
+        url: "../controller/OrdenController.php?operador=buscarOrden",
+        type: "POST",
+        data: {
+            "numeroOrden": id_Orden // Asegúrate de que este sea el nombre correcto del parámetro esperado por el backend
+        },
+        beforeSend: function() {
+        },
+        success: function(response) {
+            let res;
+            try {
+                res = JSON.parse(response);
+            } catch (e) {
+                console.error("Error al parsear la respuesta del servidor (buscarOrden):", response, e);
+                toastr.error("Respuesta inesperada del servidor al buscar la orden. (Error de formato)", "Error de Comunicación.");
+                return;
+            }
+            // Manejo de respuesta del servidor
+            if (res.status === "success") {
+                toastr.success(res.message, "Búsqueda Exitosa.");
+                const ordenData = res.data;
+
+                // Limpiar ambas tablas antes de llenarlas
+                $('#searchtablaEquiposModal tbody').empty();
+                $('#searchtablaEquiposModalCambio tbody').empty();
+
+                // Reiniciar contadores para las filas
+                let equipoRowCounter = 0;
+                let equipoRowCounterCambio = 0;
+
+                if (ordenData.equipos && ordenData.equipos.length > 0) {
+                    ordenData.equipos.forEach(function(equipo) {
+                        let estadoTexto = '';
+                        let targetTableBody = '';
+                        let currentRowCounter; // Usaremos un contador específico para la fila actual
+
+                        // Determinar el estado del equipo y la tabla de destino
+                        if (equipo.estado_devolucion == 1 && equipo.estado == 0) {
+                            estadoTexto = 'Devuelto';
+                            targetTableBody = '#searchtablaEquiposModalCambio tbody';
+                            equipoRowCounterCambio++;
+                            currentRowCounter = equipoRowCounterCambio;
+                        } else if (equipo.estado_devolucion == 0 && equipo.estado == 0) {
+                            estadoTexto = 'Cambio';
+                            targetTableBody = '#searchtablaEquiposModalCambio tbody';
+                            equipoRowCounterCambio++;
+                            currentRowCounter = equipoRowCounterCambio;
+                        } else if (equipo.estado_devolucion == 0 && equipo.estado == 1) {
+                            estadoTexto = 'Activo';
+                            targetTableBody = '#searchtablaEquiposModal tbody';
+                            equipoRowCounter++;
+                            currentRowCounter = equipoRowCounter;
+                        } else {
+                            // En caso de un estado no contemplado, puedes decidir qué hacer
+                            estadoTexto = 'Estado Desconocido';
+                            targetTableBody = '#searchtablaEquiposModal tbody'; // Por defecto, a la tabla principal
+                            equipoRowCounter++;
+                            currentRowCounter = equipoRowCounter;
+                            console.warn("Equipo con estado desconocido:", equipo);
+                        }
+
+                        // Construir la nueva fila con los campos readonly y el estado textual
+                        const newRow = `
+                            <tr id="equipo-row-${currentRowCounter}">
+                                <td>${currentRowCounter}</td>
+                                <td><input type="text" class="form-control form-control-sm input-placa" placeholder="Placa" value="${equipo.placa}" required readonly></td>
+                                <td><input type="text" class="form-control form-control-sm input-serial" placeholder="Serial" value="${equipo.serial}" required readonly></td>
+                                <td><input type="text" class="form-control form-control-sm input-estado" placeholder="Estado" value="${estadoTexto}" required readonly></td>
+                            </tr>
+                        `;
+                        $(targetTableBody).append(newRow);
+                    });
+                } else {
+                    toastr.info("La orden encontrada no tiene equipos asociados.", "Info");
+                }
+
+                // Opcional: Abre el modal si no está ya abierto
+                // $('#createOrden').modal('show');
+
+            } else if (res.status === "error") {
+                toastr.error(res.message || "Ocurrió un error al buscar los equipos.", "Búsqueda Fallida.");
+            } else if (res.status === "required") {
+                toastr.error(res.message || "Ocurrió un error al buscar los equipos.", "Faltan Datos.");
+            } else {
+                toastr.info(res.message || "La búsqueda se completó con un estado desconocido.", "Estado Desconocido.");
+                console.warn("Estado de respuesta desconocido del servidor (buscarOrden):", res);
+            }
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.error("Error en la solicitud AJAX (buscarOrden):", textStatus, errorThrown, jqXHR.responseText);
+            let errorMessage = "No se pudo conectar con el servidor para buscar la orden.";
+            if (jqXHR.status) {
+                errorMessage += ` (Código de estado: ${jqXHR.status})`;
+            }
+            if (jqXHR.responseText) {
+                errorMessage += "\nDetalles: " + jqXHR.responseText.substring(0, 150) + "...";
+            }
+            toastr.error(errorMessage, "Error de Conexión o Servidor.");
+        },
+        complete: function() {
+            // Habilitar el botón de búsqueda y restaurar su texto original
+            $('#btnBuscarNumero').prop('disabled', false).html('<i class="icon-search"></i> Buscar');
+            // Asegurarse de que el spinner se oculte incluso si hay un error en el success/error
+            $('#loadingOverlay').hide();
+        }
+    });
+}
+
+
 $(document).ready(function() {
 
     // Contador global para dar IDs únicos a las filas de equipos
     let equipoRowCounter = 0;
 
      $('#btnBuscarNumero').on('click', function() {
+        // Obtiene el valor del campo de número de registro
         const numeroNumerooBuscar = $('#txtNumeroRegistro').val();
         if (numeroNumerooBuscar) {
+            // Llama a la función para buscar la orden existente
             buscarOrdenExistente(numeroNumerooBuscar); // Llama a la nueva función de búsqueda
         } else {
+            // Si el campo está vacío, muestra un mensaje de advertencia
             toastr.warning("Por favor, ingrese un contrato para buscar.", "Campo Vacío");
         }
     });
 
      $('#btnBuscarContrato').on('click', function() {
+        // Obtiene el valor del campo de número de contrato
         const numeroContratoBuscar = $('#txtNumeroContrato').val();
         if (numeroContratoBuscar) {
+            // Llama a la función para buscar el contrato existente
             buscarContratoExistente(numeroContratoBuscar); // Llama a la nueva función de búsqueda
         } else {
+            // Si el campo está vacío, muestra un mensaje de advertencia
             toastr.warning("Por favor, ingrese un Contrato para buscar.", "Campo Vacío");
         }
     });
 
     $('#btnGuardarOrden').on('click', function() {
+        // Recopila los datos del formulario de la orden
         const ordenCompra = $('#txtOrdenCompra').val();
         const ordenServicio = $('#txtOrdenServicio').val();
         const fechaEntrega = $('#txtFechaEntrega').val();
@@ -359,18 +475,18 @@ $(document).ready(function() {
 
         // Recopila los equipos de la tabla principal. La interpretación depende del Tipo de Orden.
         $('#tablaEquiposModal tbody tr').each(function() {
+            // Obtiene los valores de placa y serial de cada fila
             const placa = $(this).find('.input-placa').val();
             const serial = $(this).find('.input-serial').val();
             if (placa && serial) {
-                // Si es Instalación o Cambio (los "nuevos" de la tabla original)
-                if (idTipoOrden == 1 || idTipoOrden == 3) {
+                // Si es Instalación o Cambio (los "nuevos" de la tabla original) 
                     equiposParaRegistrar.push({ placa: placa, serial: serial });
-                }
             }
         });
 
         // Para el tipo "Cambio", los "equiposParaRegistrar" son los de la segunda tabla
         if (idTipoOrden==2) {
+            // Recopila los equipos de la tabla de cambio (Equipos a devolver)
             $('#tablaEquiposModalCambio tbody tr').each(function() {
                 const placa = $(this).find('.input-placa').val();
                 const serial = $(this).find('.input-serial').val();
@@ -382,22 +498,23 @@ $(document).ready(function() {
 
         // --- Validaciones en Frontend antes de enviar ---
         if (!ordenCompra || !ordenServicio || !fechaEntrega || !idTipoOrden || !numeroContrato) {
+            // Validación básica de los campos de la orden
             toastr.warning("Por favor, complete todos los campos principales de la orden.", "Datos Incompletos.");
             return;
         }
 
-        if (idTipoOrden === '1' && equiposParaRegistrar.length === 0) { // Instalación
+        if (idTipoOrden == 1 && equiposParaRegistrar.length === 0) { // Instalación
             toastr.warning("Para una Instalación, debe agregar al menos un equipo.", "Equipos Faltantes.");
             return;
         }
 
-        if (idTipoOrden === '2' && equiposParaDevolver.length === 0 && equiposParaRegistrar.length === 0) { // Cambio
+        if (idTipoOrden == 2 && equiposParaDevolver.length == 0 && equiposParaRegistrar.length == 0) { // Cambio
             toastr.warning("Para un Cambio, debe seleccionar los equipos a devolver.", "Equipos Faltantes.");
             return;
         }
 
-        if (idTipoOrden === '3') { // Devolucion
-            if (equiposParaRegistrar.length === 0) {
+        if (idTipoOrden == 3) { // Devolucion
+            if (equiposParaRegistrar.length == 0) {
                 toastr.warning("Para un Cambio, se requieren tanto los equipos a devolver como los nuevos equipos.", "Equipos Faltantes.");
                 return;
             }
@@ -423,8 +540,7 @@ $(document).ready(function() {
                 $('#btnGuardarOrden').prop('disabled', true).text('Guardando...');
             },
             success: function(res) {
-                console.log("Respuesta del servidor:", res.data);
-                console.log(equiposParaDevolver,equiposParaRegistrar);
+                // Manejo de la respuesta del servidor
                 if (res.status === "success") {
                     toastr.success(res.message || "Operación de orden completada exitosamente.", "Éxito.");
                     if (window.table && typeof window.table.ajax !== 'undefined') {
@@ -464,6 +580,7 @@ $(document).ready(function() {
             $('#tablaEquiposModal button').show();                             
             break;
         case "2":
+            // Para 'Cambio', txtNumeroOrden debe ser editable y el botón de búsqueda visible.
             $('#btnBuscarContrato').hide();     
             $('#txtNumeroRegistro').attr('readonly', false); // Hacer editable
             $('#btnBuscarNumero').show();                     // Mostrar el botón
@@ -501,6 +618,7 @@ $(document).ready(function() {
  });
 
         $('#btnAddEquipoCambio').on('click', function() {
+            // Incrementa el contador para el ID de la nueva fila
         equipoRowCounterCambio++; // Incrementa el contador para el ID de la nueva fila
         const newRow = `
             <tr id="equipo-row-${equipoRowCounterCambio}">
@@ -518,6 +636,7 @@ $(document).ready(function() {
     });
 
     $('#tablaEquiposModalCambio tbody').on('click', '.btn-remove-equipo', function() {
+        // Maneja la eliminación de filas de la tabla de equipos de cambio
         const rowIdToRemove = $(this).data('row-id');
         $(`#equipo-row-${rowIdToRemove}`).remove(); // Elimina la fila completa
         actualizarNumeracionFilasCambio(); // Vuelve a numerar las filas para mantener el orden visual
@@ -527,6 +646,7 @@ $(document).ready(function() {
      * Actualiza la numeración de la primera columna de la tabla de equipos después de agregar/eliminar.
      */
     function actualizarNumeracionFilasCambio() {
+        // Actualiza la numeración de las filas en la tabla de equipos de cambio
         $('#tablaEquiposModalCambio tbody tr').each(function(index) {
             $(this).find('td:first').text(index + 1); // Actualiza el número de la primera celda
         });
@@ -554,6 +674,7 @@ $(document).ready(function() {
      * Utiliza delegación de eventos para manejar clics en botones de eliminación dinámicamente agregados.
      */
     $('#tablaEquiposModal tbody').on('click', '.btn-remove-equipo', function() {
+        // Maneja la eliminación de filas de la tabla de equipos
         const rowIdToRemove = $(this).data('row-id');
         $(`#equipo-row-${rowIdToRemove}`).remove(); // Elimina la fila completa
         actualizarNumeracionFilas(); // Vuelve a numerar las filas para mantener el orden visual
@@ -571,6 +692,7 @@ $(document).ready(function() {
 
 function llenarSelectTipoOrden(){
     $.ajax({
+        // Realiza una solicitud AJAX para llenar el select de tipo de orden
         url: '../controller/OrdenController.php?operador=llenarTipoOrden',
         type: 'POST',
         beforeSend: function(response) {
@@ -608,8 +730,9 @@ function llenarSelectTipoOrden(){
 }
 
 function listarOrden(){
-
+// Inicializa la tabla de órdenes con DataTables
     table = $('#Tabla_Orden').DataTable({
+        // Configuración de DataTables
         pageLength:10,
         responsive:true,
         processing:true,
@@ -628,6 +751,7 @@ function listarOrden(){
             { data: "op", "orderable": false }
             ],
             "autoWidth": false, 
+            // Configuración de los anchos de las columnas
         columnDefs: [
         { "width": "10%", "targets": 0 },
         { "width": "10%", "targets": 1 },

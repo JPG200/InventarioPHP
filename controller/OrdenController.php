@@ -4,51 +4,18 @@ require "../model/Orden.php";
 $cat = new Orden();
 switch($_REQUEST["operador"]){
     case "listarOrden":
+        // Llamar al método listarOrden del modelo Orden
+        // y obtener los datos de las órdenes
+        // Se inicializa el array $list para almacenar los datos  
+        $list = array();
+        // Se inicializa el array $list para almacenar los datos
+        // Llamar al método listarOrden del modelo Orden
+        // y obtener los datos de las órdenes
         $datos = $cat->listarOrden();
         if(is_array(value: $datos)){
-            for($i=0;$i<count($datos);$i++){
-                /*$fechaFinalContratoStr = $datos[$i]['fecha_fin'];
-
-                // Inicializamos la variable para la vigencia
-                $vigenciaDisplay = '';
-                 if ($fechaFinalContratoStr !== "0000-00-00" && !empty($fechaFinalContratoStr)) {
-                    // Creamos objetos DateTime para la fecha final y la fecha actual
-                    $fechaFinal = new DateTime($fechaFinalContratoStr);
-                    $fechaActual = new DateTime(); // La fecha y hora actuales
-
-                    // Calculamos la diferencia entre las dos fechas
-                    $diferencia = $fechaActual->diff($fechaFinal);
-                    $diasRestantes = (int)$diferencia->days; // Convertimos a entero para asegurar
-
-                    // Comprobamos si la fecha actual ha superado la fecha final
-                    if ($fechaActual > $fechaFinal) {
-                        // Si la fecha actual es posterior a la fecha final, el contrato no está vigente
-                        $vigenciaDisplay = '<div class="tag tag-danger"><i class="fa fa-times-circle"></i> No Vigente</div>';
-                        // O si no tienes Font Awesome: $vigenciaDisplay = '<div class="tag tag-danger">No Vigente</div>';
-                    } else if($datos[$i]['estado'] == 0){
-                        $vigenciaDisplay = '<div class="tag tag-danger"><i class="fa fa-times-circle"></i> No Vigente</div>';  
-                    }
-                    else {
-                        // Si la fecha actual es anterior o igual a la fecha final, mostramos los días restantes
-                        $vigenciaDisplay = '<div class="tag tag-success">' . $diasRestantes . ' días restantes</div>';
-                    }
-                } else {
-                    // Si la fecha_fin es inválida o vacía, asumimos que está vigente o mostramos un mensaje predeterminado
-                    $vigenciaDisplay = '<div class="tag tag-success">Vigente (Sin Fecha Fin)</div>';
-                }
-
-                // 'estado' es 1 para activo y 0 para inactivo
-                if ($datos[$i]['estado'] == 0) {
-                    $estadoDisplay = '<div class="tag tag-danger">Inactivo</div>'; // Si el estado en DB es 0, es inactivo.
-                } elseif ($fechaFinalContratoStr !== "0000-00-00" && !empty($fechaFinalContratoStr) && $fechaActual > $fechaFinal) {
-                    $estadoDisplay = '<div class="tag tag-danger">No Vigente</div>'; // Si la fecha ya pasó, no está vigente.
-                } elseif ($diasRestantes >= 0 && $diasRestantes <= 7) {
-                    $estadoDisplay = '<div class="tag tag-warning">Pronto Vencimiento</div>'; // Menos o igual a 7 días restantes.
-                } else {
-                    $estadoDisplay = '<div class="tag tag-success">Vigente</div>'; // Por defecto, si no cumple las anteriores y está activo.
-                }
-                */
-                
+            // Preparar la lista para el formato de respuesta
+            for($i=0;$i<count($datos);$i++){   
+                // Se inicializa el array $list para almacenar los datos  
                 $list[]=array(
                     "Orden De Compra"=> $datos[$i]['orden_Compra'],
                     "Orden de Servicio"=> $datos[$i]['orden_Servicio'],
@@ -61,68 +28,18 @@ switch($_REQUEST["operador"]){
                     "Empresa"=> $datos[$i]['Empresa'],
                     "Orden Original"=>($datos[$i]['orden_original'])==0?'<div class="tag tag-success">Orden Origen</div>':
                                                         $datos[$i]['orden_original'],
-                    "op"=>($datos[$i]['TotalEquiposActivos'])==0? '<div class="btn-group">
+                    "op"=> '<div class="btn-group">
                     <button class="btn btn-info dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                         <i class="icon-gear"></i>
                     </button>
                     <div class="dropdown-menu">
-                            <a class="dropdown-item" data-toggle="modal" data-target=""
-                            onclick="">
-                            <i class="icon-pencil"></i>Editar</a>
-                        <a class="dropdown-item" onclick="">
-                        <i class="icon-trash"></i> Eliminar</a>
-                    </div>':'<div class="btn-group">
-                                <button class="btn btn-info dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                    <i class="icon-gear"></i>
-                                </button>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" onclick="">
-                                    <i class="icon-check"></i> Activar</a>
-                                    <div class="dropdown-divider"></div>
-                                </div>
-                            </div>'
-                    /*"op"=> ($datos[$i]['estado'])==1? '<div class="btn-group">
-                    <button class="btn btn-info dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                        <i class="icon-gear"></i>
-                    </button>
-                    <div class="dropdown-menu">
-                            <a class="dropdown-item" data-toggle="modal" data-target="#updateEmpresa"
-                            onclick="">
-                            <i class="icon-pencil"></i>Editar</a>
-                        <a class="dropdown-item" onclick="">
-                        <i class="icon-trash"></i> Eliminar</a>
-                    </div>':'<div class="btn-group">
-                                <button class="btn btn-info dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                    <i class="icon-gear"></i>
-                                </button>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" onclick="">
-                                    <i class="icon-check"></i> Activar</a>
-                                    <div class="dropdown-divider"></div>
-                                </div>
-                            </div>'*/
-                    /*($datos[$i]['estado'])==1?'<div class="btn-group">
-                    <button class="btn btn-info dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                        <i class="icon-gear"></i>
-                    </button>
-                    <div class="dropdown-menu">
-                            <a class="dropdown-item" data-toggle="modal" data-target="#createregEquipo"
-                            onclick="BuscarEquipo('.$datos[$i]['placa'].",'editar'".');">
-                            <i class="icon-pencil"></i> Editar</a>
-                        <a class="dropdown-item" onclick="BuscarEquipo('.$datos[$i]['placa'].",'eliminar'".');">
-                        <i class="icon-trash"></i> Eliminar</a>
-                    </div>':'
-                            <div class="btn-group">
-                                <button class="btn btn-info dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                    <i class="icon-gear"></i>
-                                </button>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" onclick="BuscarEquipo('.$datos[$i]['placa'].",'activar'".');"><i class="icon-check"></i> Activar</a>
-                                    <div class="dropdown-divider"></div>
-                                </div>
-                            </div>'*/
+                            <a class="dropdown-item" data-toggle="modal" data-target="#searchEquiposOrden"
+                            onclick="buscarEquiposActivosDevueltos('.$datos[$i]['id_Orden'].');">
+                            <i class="icon-pencil"></i>Lista Equipos</a>
+                    </div>'           
                 );
             }
+            // Preparar el resultado para la respuesta JSON
             $resultador = array(
                 "sEcho"=>1,
                 "iTotalRecords"=>count($list),
@@ -141,6 +58,7 @@ switch($_REQUEST["operador"]){
                     "Total de Equipos Devueltos"=> "",
                     "Empresa"=> "",
                     "Orden Original"=>"",
+                    "op"=>""
             );
              $resultador = array(
                         "sEcho"=>1,
@@ -149,19 +67,26 @@ switch($_REQUEST["operador"]){
                         "aaData"=>$list
                     );
         }
-
+        // Devolver el resultado como JSON
         echo json_encode($resultador);
 
     break;
     case "llenarTipoOrden":
+        // Llamar al método llenarTipoOrden del modelo Orden
+        // y obtener los datos de los tipos de orden
+        // Se inicializa el array $list para almacenar los datos
         $data = $cat->llenarTipoOrden();
+        // Se inicializa el array $list para almacenar los datos
         if($data){
+            // Preparar la lista para el formato de respuesta
             for($i=0;$i<count($data);$i++){
+                // Se inicializa el array $list para almacenar los datos
                 $list[]=array(
                 "id_TipoOrden"=>$data[$i]["id_TipoOrden"],
                 "Tipo_Orden"=>$data[$i]['Tipo_Orden']
             );
             }
+            // Devolver el resultado como JSON
             echo json_encode($list);
         }else{
             $response = array(
@@ -171,20 +96,22 @@ switch($_REQUEST["operador"]){
         break;
         case 'buscarContrato':
         try {
+            // Validar que se haya enviado el número de contrato
          $numeroContrato = $_POST['numeroContrato'] ?? '';
+         // Validar que el número de contrato no esté vacío
             if (empty($numeroContrato)) {
                 echo json_encode(['status' => 'required', 'message' => 'El contrato es requerido para la búsqueda.']);
                 exit();
             }
-
+            // Llamar al método buscarContratoPorNumero del modelo Orden
             $datosOrden = $cat->buscarContratoPorNumero($numeroContrato);
-
+              // Validar que se haya encontrado el contrato
             if ($datosOrden) {
                 echo json_encode(['status' => 'success', 'message' => 'Contrato encontrado.', 'data' => $datosOrden]);
             } else {
                 echo json_encode(['status' => 'error', 'message' => 'contrato no encontrado o datos inválidos.']);
             }
-
+            // Devolver el resultado como JSON
         } catch (Exception $e) {
             error_log("Error en controlador (buscarOrden): " . $e->getMessage() . " en " . $e->getFile() . " línea " . $e->getLine());
             echo json_encode(['status' => 'error', 'message' => 'Error interno del servidor al buscar el contrato.']);
@@ -192,21 +119,23 @@ switch($_REQUEST["operador"]){
         break;
         case 'buscarOrden':
         try {
+            // Validar que se haya enviado el número de orden
          $numeroOrden = $_POST['numeroOrden'] ?? '';
-
+            // Validar que el número de orden no esté vacío
             if (empty($numeroOrden)) {
                 echo json_encode(['status' => 'required', 'message' => 'El numero de registro es requerido para la búsqueda.']);
                 exit();
             }
-
+            // Llamar al método buscarOrdenPorNumero del modelo Orden
+            // y obtener los datos de la orden
             $datosOrden = $cat->buscarOrdenPorNumero($numeroOrden);
-
+            // Validar que se haya encontrado la orden
             if ($datosOrden) {
                 echo json_encode(['status' => 'success', 'message' => 'Orden encontrada.', 'data' => $datosOrden]);
             } else {
                 echo json_encode(['status' => 'error', 'message' => 'Orden no encontrada o datos inválidos.']);
             }
-
+            // Devolver el resultado como JSON
         } catch (Exception $e) {
             error_log("Error en controlador (buscarOrden): " . $e->getMessage() . " en " . $e->getFile() . " línea " . $e->getLine());
             echo json_encode(['status' => 'error', 'message' => 'Error interno del servidor al buscar la orden.']);
@@ -214,6 +143,7 @@ switch($_REQUEST["operador"]){
         break;
         case "registrarOrden":
         try {
+            // Validar que se hayan enviado los datos necesarios
             $ordenCompra = $_POST['ordenCompra'] ?? '';
             $ordenServicio = $_POST['ordenServicio'] ?? '';
             $fechaEntrega = $_POST['fechaEntrega'] ?? '';
@@ -237,6 +167,7 @@ switch($_REQUEST["operador"]){
                         echo json_encode(['status' => 'required', 'message' => 'Para una Instalación, debe agregar al menos un equipo.']);
                         exit();
                     }
+                    // Para instalación, los 'equiposParaDevolver' estarán vacíos. Solo se procesan los que entran.
                     $resultado = $cat->procesarOrden($ordenCompra, $ordenServicio, $fechaEntrega, $idTipoOrden, $numeroContrato, $equiposParaRegistrar, [],$numeroRegistro);
                     break;
 
@@ -256,20 +187,22 @@ switch($_REQUEST["operador"]){
                         echo json_encode(['status' => 'required', 'message' => 'Para un Cambio, se requieren tanto los equipos a devolver como los nuevos equipos.']);
                         exit();
                     }
+                    // Para cambio, se procesan ambos conjuntos de equipos
                     $resultado = $cat->procesarOrden($ordenCompra, $ordenServicio, $fechaEntrega, $idTipoOrden, $numeroContrato, $equiposParaRegistrar, $equiposParaDevolver,$numeroRegistro);
                     break;
 
                 default:
+                // Tipo de orden no válido
                     echo json_encode(['status' => 'error', 'message' => 'Tipo de orden no válido.']);
                     exit();
             }
-
+            // Verificar el resultado de la operación
             if ($resultado === true) {
                 echo json_encode(['status' => 'success', 'message' => 'Orden procesada exitosamente.']);
             } else {
                 echo json_encode(['status' => 'error', 'message' => 'Error desconocido al procesar la orden.']);
             }
-
+            // Devolver el resultado como JSON
         } catch (Exception $e) {
             error_log("Error en controlador (registrarOrden): " . $e->getMessage() . " en " . $e->getFile() . " línea " . $e->getLine());
             echo json_encode(['status' => 'error', 'message' => 'Error interno del servidor al procesar la orden. Detalles: ' . $e->getMessage()]);

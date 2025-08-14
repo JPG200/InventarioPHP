@@ -10,10 +10,12 @@ BuscarAsignacionPorId('.$datos[$i]['id_Asig'].');
 
 switch($_REQUEST["operador"]){
     case "listar_Devolucion":
+        // Listar las devoluciones
         $datos = $cat->listarDevolucion();
         if(is_array(value: $datos)){
+            // Recorrer los datos obtenidos
             for($i=0;$i<count($datos);$i++){
-            /* Numero de Registro, Acta de Asignacion, Empleado, Placa, Empresa, Fecha de Devolucion, Fecha de Entrega, Acta de Devolucion, Estado, op*/
+
                 $list[]=array(
                     "Numero de Registro"=>$datos[$i]['id_Dev'],
                     "Acta"=> $datos[$i]['Acta'],
@@ -49,6 +51,7 @@ switch($_REQUEST["operador"]){
                             </div>'
                 );
             }
+            // Preparar el resultado para enviar como JSON
             $resultador = array(
                 "sEcho"=>1,
                 "iTotalRecords"=>count($list),
@@ -56,6 +59,7 @@ switch($_REQUEST["operador"]){
                 "aaData"=>$list
             );
         }else{
+            // Si no hay datos, enviar un mensaje de error
             $datos = array(
                 "Numero de Registro"=>"ERROR",
                 "Placa"=> "ERROR",
@@ -68,6 +72,7 @@ switch($_REQUEST["operador"]){
                 "Estado"=> "ERROR",
                 "op"=> "ERROR"
             );
+            // Preparar el resultado para enviar como JSON
              $resultador = array(
                         "sEcho"=>1,
                         "iTotalRecords"=>count($list),
@@ -81,18 +86,23 @@ switch($_REQUEST["operador"]){
     break;
     case "registrar_Devolucion":
         try{
+            // Validar que los campos requeridos estén presentes y no vacíos
             if(isset($_POST['acta_asig']) && isset($_POST['observaciones']) && isset($_POST['acta']) && 
             !empty($_POST['acta_asig']) && !empty($_POST['observaciones']) && !empty($_POST['acta'])){
+                // Obtener los datos del formulario
             $acta_asig = $_POST['acta_asig'];
             $observaciones = $_POST['observaciones'];
             $acta = $_POST['acta'];
-            
+            // Registrar la devolución utilizando el modelo
             if($cat->RegistrarDevolucion($acta_asig, $observaciones, $acta)){
+                // Si la inserción es exitosa, enviar una respuesta de éxito
                 $response="success";
             }else{
+                // Si la inserción falla, enviar una respuesta de error
                 $response="error";
             }
             }else{
+                // Si los campos requeridos no están presentes o están vacíos, enviar una respuesta de error
                 $response="required";
             }
         }catch(Exception $e){
@@ -102,9 +112,13 @@ switch($_REQUEST["operador"]){
     break;
     case "buscarDevolucion":
         if(isset($_POST["acta"]) && !empty($_POST["acta"])){
+            // Buscar información de la devolución por el número de acta
                 $list = array();
+                // Llamar al método BuscarInformacion del modelo Devolucion
                 $data = $cat->BuscarInformacion($_POST["acta"]);
+                // Verificar si se obtuvieron datos
                     if($data && $data["id_Dev"]==null && $data["id_Dev"]==null){
+                        // Si no se encontraron datos, enviar un mensaje de error
                         $list[] = array(
                             "id_Dev"=>"",
                             "placa"=>$data["placa"],
@@ -115,7 +129,9 @@ switch($_REQUEST["operador"]){
                     );
                         echo json_encode($list);
                     }else{
+                        // Si se encontraron datos, preparar la respuesta con la información de la devolución
                     if(is_array($data)){
+                        // Agregar los datos de la devolución al array de respuesta
                         $list[] = array(
                             "id_Dev"=>$data["id_Dev"],
                             "placa"=>$data["placa"],
@@ -126,6 +142,7 @@ switch($_REQUEST["operador"]){
                         );
                         echo json_encode($list);
                     }else{
+                        // Si no se encontraron datos, enviar un mensaje de error
                         $list[] = array(
                             "id_Dev"=>"",
                             "placa"=>"",
@@ -144,15 +161,20 @@ switch($_REQUEST["operador"]){
     break;
     case"actualizar_Devolucion":
         try{
+            // Validar que los campos requeridos estén presentes y no vacíos
             if(isset($_POST['id_Dev']) && isset($_POST['acta_asig']) && isset($_POST['observaciones']) && isset($_POST['descripcion']) && isset($_POST['acta_dev']) && 
             !empty($_POST['id_Dev']) && !empty($_POST['acta_asig']) && !empty($_POST['observaciones']) && !empty($_POST['descripcion']) && !empty($_POST['acta_dev'])){
+                // Obtener los datos del formulario
                 $id_Dev = $_POST['id_Dev'];
                 $acta_asig = $_POST['acta_asig'];
                 $observaciones = $_POST['observaciones'];
                 $acta = $_POST['acta_dev'];
+                // Actualizar la devolución utilizando el modelo|
                 if($cat->ActualizarDevolucion($id_Dev, $acta_asig, $observaciones, $acta)){
+                    // Si la actualización es exitosa, enviar una respuesta de éxito
                     $response="success";
                 }else{
+                    // Si la actualización falla, enviar una respuesta de error
                     $response="error";
                 }
             }else{
@@ -164,21 +186,32 @@ switch($_REQUEST["operador"]){
         echo $response;
     break;
     case "eliminar_Devolucion":
+        // Eliminar una devolución
         if(isset($_POST['id_Dev']) && !empty($_POST['id_Dev'])){
+            // Validar que el ID de la devolución esté presente y no vacío
             $id_Dev = $_POST['id_Dev'];
+            // Llamar al método EliminarDevolucion del modelo Devolucion
             if($cat->EliminarDevolucion($id_Dev)){
+                // Si la eliminación es exitosa, enviar una respuesta de éxito
                 $response="success";
             }else{
+                // Si la eliminación falla, enviar una respuesta de error
                 $response="error";
             }
         }
     break;
     case"activar_Devolucion":
+        // Activar una devolución
+        // Validar que el ID de la devolución esté presente y no vacío
         if(isset($_POST['id_Dev']) && !empty($_POST['id_Dev'])){
+            // Obtener el ID de la devolución desde el formulario
             $id_Dev = $_POST['id_Dev'];
+            // Llamar al método ActivarDevolucion del modelo Devolucion
             if($cat->ActivarDevolucion($id_Dev)){
+                // Si la activación es exitosa, enviar una respuesta de éxito
                 $response="success";
             }else{
+                // Si la activación falla, enviar una respuesta de error
                 $response="error";
             }
         }

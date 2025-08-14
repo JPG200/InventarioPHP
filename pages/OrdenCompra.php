@@ -61,6 +61,7 @@ if(isset($_SESSION["user"])){
 											</tr>
 											</thead>
 											<tbody>
+												
 											</tbody>
 											<tfoot>
 												<tr>
@@ -80,8 +81,8 @@ if(isset($_SESSION["user"])){
 <!--=============MODAL====================-->
 <?php 
 include 'modals/createOrden.php';
-/*include 'modals/updateEmpresa.php';
-*/
+include 'modals/searchEquiposOrden.php';
+
 ?>
 <!--==========================================-->
 

@@ -4,6 +4,7 @@ var table;
 init();// Función para inicializar el DataTable
 
 function init(){
+    // Inicializar el DataTable
 LlenarTablaregEquipos();
 LlenarSelectorEmpresa();
 $("#btnGuardar").hide();
@@ -17,11 +18,13 @@ $('#txtempresacrear').val("");
 }
 
 function LlenarTablaregEquipos(){
+// Configuración del DataTable
 table = $('#Tabla_regEquipos').DataTable({
 pageLength:10,
 responsive:true,
 processing:true,
 ajax:"../controller/regEquiposController.php?operador=listar_regEquipos",
+// Configuración de la tabla
 columns:[
     {data:"Numero de Registro",'visible': false},
     {data:"Placa"},
@@ -35,11 +38,13 @@ columns:[
     {data:"Estado"},
     {data:"op"}
 ],
+
             "autoWidth": false, 
 });
 }
 
 function cerrarModal(){
+    // Limpiar los campos del modal
     $('#txtplacacrear').val("");
     $('#txtserialcrear').val("");
     $('#txtdescripcioncrear').val("");
@@ -57,6 +62,7 @@ function BuscarEquipo(placa,op){
         "placa": placa,
         },
     $.ajax({
+        // Enviar los parámetros al servidor
         data: parametros,
         url: '../controller/regEquiposController.php?operador=buscarEquipo',
         type: 'POST',
@@ -64,13 +70,16 @@ function BuscarEquipo(placa,op){
         },
         success: function(response){
             if(response && response.length > 0){
+                // Si la respuesta es exitosa, procesar los datos
                 data = $.parseJSON(response);                         
                 $("#btnGuardar").hide();
                 $("#btnActualizar").hide();
                 if(op=="registrar" || op=="editar"){
+                    // Si es un registro o edición, mostrar los datos del equipo
                         $("#txtplacacrear").val(placa);
                         $('#txtserialcrear').val(data[0]['serial']);
                         if(data[0]['descripcion']!=null && data[0]['descripcion']!=""){
+                            // Si la descripción no es nula o vacía, mostrar los datos del equipo
                             $('#id_Registro').val(data[0]['id_Reg']);
                             $("#txtplacacrear").val(placa);
                             $('#txtdescripcioncrear').val(data[0]['descripcion']);
@@ -80,21 +89,25 @@ function BuscarEquipo(placa,op){
 
                             // Buscar la opción en el select que coincida con el nombre de la empresa
                             $('#txtempresacrear option').each(function() {
+                                // Comparar el texto de la opción con el nombre de la empresa
                                 if ($(this).text().toUpperCase() === nombreEmpresaEncontrada.toUpperCase()) {
                                     $('#txtempresacrear').val($(this).val()); // Seleccionar la opción por su valor
                                     return false; // Romper el bucle each una vez encontrada la coincidencia
                                 }
                             });
                             if(op=="editar"){
+                                // Si es una edición, mostrar los datos del equipo
                                 toastr.info("Actualice los datos del equipo.", "Actualice los datos"); // Mostrar mensaje de éxito      
                                 $("#btnGuardar").hide();
                                 $("#btnActualizar").show();
                             }else{
+                                // Si es un registro, mostrar los datos del equipo
                                 toastr.error("El equipo ya esta registrado.", "Equipo ya registrado"); // Mostrar mensaje de éxito      
                                 $("#btnGuardar").hide();
                                 $("#btnActualizar").hide();
                             }
                         }else{
+                            // Si la descripción es nula o vacía, limpiar los campos del modal
                             $('#txtdescripcioncrear').val("");
                             $('#txtobservacionescrear').val("");
                             $('#txtaccesorioscrear').val("");
@@ -104,9 +117,11 @@ function BuscarEquipo(placa,op){
                             $("#btnActualizar").hide();
                         }
                     }else if(op=="eliminar"){
+                        // Si es una eliminación, mostrar los datos del equipo
                         id_Reg=data[0]['id_Reg'];
                         AlertaDesactivar(id_Reg,data[0]['placa']);
                     }else if(op=="activar"){
+                        // Si es una activación, mostrar los datos del equipo
                         id_Reg=data[0]['id_Reg'];
                         console.log(id_Reg);
                         AlertaActivar(id_Reg,data[0]['placa']);
@@ -121,6 +136,7 @@ function BuscarEquipo(placa,op){
 
 function AlertaActivar(id_Reg,placa)
 {
+    // Mostrar una alerta de confirmación antes de activar el registro
     Swal.fire({
         title: "Seguro?",
         html: "Se activara el registro con el serial: <h5>" + placa+"?</h5>",
@@ -144,6 +160,8 @@ function AlertaActivar(id_Reg,placa)
 }
 
 function ActivarRegistroEquipo(id_Reg){
+    // Activar el registro del equipo
+    // Enviar una solicitud AJAX al servidor para activar el registro
     console.log(id_Reg);
     $.ajax({
         data: {"id_Reg": id_Reg},
@@ -152,8 +170,7 @@ function ActivarRegistroEquipo(id_Reg){
         beforeSend: function(response){
         },
         success: function(response){
-            console.log(response); // Para depuración
-            console.log(id_Reg);
+            // Procesar la respuesta del servidor
             if (response == "sucess") {
                 toastr.success("Registro Activado.", "Registro de Equipo Activado exitosamente"); // Mostrar mensaje de éxito
                 table.ajax.reload(); // Recargar la tabla
@@ -173,6 +190,7 @@ function ActivarRegistroEquipo(id_Reg){
 
 function AlertaDesactivar(id_Reg,placa)
 {
+    // Mostrar una alerta de confirmación antes de desactivar el registro
     Swal.fire({
         title: "Seguro?",
         html: "Se desactivara el registro con el serial: <h5>" + placa+"?</h5>",
@@ -188,6 +206,7 @@ function AlertaDesactivar(id_Reg,placa)
             text: "El registro ha sido desactivado.",
             type: "success"
           });
+          // Llamar a la función para eliminar el equipo
           EliminarEquipo(id_Reg);
         }
       });
@@ -196,12 +215,15 @@ function AlertaDesactivar(id_Reg,placa)
 
 
 function LlenarSelectorEmpresa(){
+    // Llenar el selector de empresas
     $.ajax({
+        // Enviar una solicitud AJAX al servidor para obtener las empresas
         url: '../controller/regEquiposController.php?operador=LlenarSelectEmpresas',
         type: 'POST',
         beforeSend: function(response){
         },
         success: function(response){
+            // Procesar la respuesta del servidor
             if(response && response.length > 0){
                 data = $.parseJSON(response);
                 var options = '<option value="">Seleccione una empresa</option>';
@@ -225,7 +247,7 @@ function RegistrarEquipo(){
     observaciones = $("#txtobservacionescrear").val();
     accesorios = $("#txtaccesorioscrear").val();
     empresa = $("#txtempresacrear").val();
-
+    // Validar que los campos no estén vacíos
     parametros = {
         "placa": placa,
         "serial": serial,
@@ -235,12 +257,14 @@ function RegistrarEquipo(){
         "empresa": empresa
         },
     $.ajax({
+        // Enviar los parámetros al servidor para registrar el equipo
         data: parametros,
         url: '../controller/regEquiposController.php?operador=registrarEquipo',
         type: 'POST',
         beforeSend: function(response){
         },
         success: function(response){
+            // Procesar la respuesta del servidor
                         if (response == "sucess") {
                             toastr.success("Equipo registrado exitosamente", "Registro Exitoso."); // Mostrar mensaje de éxito
                             table.ajax.reload(); // Recargar la tabla después de registrar el equipo
@@ -270,7 +294,7 @@ function EditarEquipo(){
     observaciones = $("#txtobservacionescrear").val();
     accesorios = $("#txtaccesorioscrear").val();
     empresa = $("#txtempresacrear").val();
-
+// Validar que los campos no estén vacíos
     parametros = {
         "id_Reg":id_Reg,
         "placa": placa,
@@ -280,12 +304,14 @@ function EditarEquipo(){
         "empresa": empresa
         },
     $.ajax({
+        // Enviar los parámetros al servidor para editar el equipo
         data: parametros,
         url: '../controller/regEquiposController.php?operador=editarEquipo',
         type: 'POST',
         beforeSend: function(response){
         },
         success: function(response){
+            // Procesar la respuesta del servidor
                 if(data.length > 0){
                     if (response == "sucess") {
                         toastr.success("Registro actualizado exitosamente", "Registro Actualizado."); // Mostrar mensaje de éxito
@@ -316,12 +342,14 @@ function EliminarEquipo(id_Reg){
         "id_Reg": id_Reg,
         },
     $.ajax({
+        // Enviar los parámetros al servidor para eliminar el equipo
         data: parametros,
         url: '../controller/regEquiposController.php?operador=eliminarEquipo',
         type: 'POST',
         beforeSend: function(response){
         },
         success: function(response){
+            // Procesar la respuesta del servidor
             if (response == "sucess") {
                 toastr.success("Equipo desactivado exitosamente", "Registro Desactivado."); // Mostrar mensaje de éxito
                 table.ajax.reload(); // Recargar la tabla

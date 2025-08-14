@@ -2,7 +2,9 @@ var table;
 
 init();// Función para inicializar el DataTable
 
+
 function init(){
+// Inicializar el DataTable
 $('#txtcedula').val("");
 $('#txtnombre').val("");
 $('#txtapellido').val("");
@@ -12,7 +14,9 @@ listarEmpleados();
 LlenarSelectArea();
 }
 
+// Función para listar los empleados en la tabla
 function listarEmpleados(){
+    // Configuración del DataTable
     table = $('#Tabla_Empleados').DataTable({
     pageLength:10,
     responsive:true,
@@ -28,11 +32,13 @@ function listarEmpleados(){
         {data:"Estado"},
         {data:"op"}
     ],
+    
             "autoWidth": false, 
     });
     }
 
     function cerrarModal(){
+    // Limpiar los campos del modal
     $('#txtcedula').val("");
     $('#txtnombre').val("");
     $('#txtapellido').val("");
@@ -43,12 +49,13 @@ function listarEmpleados(){
 }
 
     function RegistrarEmpleado(){
+        // Obtener los valores de los campos del formulario
     cedula=$('#txtcedula').val();
     nombre=$('#txtnombre').val();
     apellido=$('#txtapellido').val();
     email=$('#txtemail').val();
     area=$('#txtareacrear').val();
-
+        // Validar que los campos no estén vacíos
      parametros = {
         "cedula": cedula,
         "nombre": nombre,
@@ -57,6 +64,7 @@ function listarEmpleados(){
         "area": area
         },
     $.ajax({
+        // Enviar los datos al servidor
         data: parametros,
         url: '../controller/EmpleadosController.php?operador=RegistrarEmpleado',
         type: 'POST',
@@ -86,12 +94,7 @@ function listarEmpleados(){
     }
 
 function BuscarEmpleado(id,op){
-    /*cedula=$('#txtcedula').val();
-    nombre=$('#txtnombre').val();
-    apellido=$('#txtapellido').val();
-    email=$('#txtemail').val();
-    area=$('#txtareacrear').val();
-    */
+    // Realizar una solicitud AJAX para buscar el empleado por ID
     $.ajax({
         data: {"id_Empl": id},
         url: '../controller/EmpleadosController.php?operador=buscarEmpleado',
@@ -99,9 +102,12 @@ function BuscarEmpleado(id,op){
         beforeSend: function(response){
         },
         success: function(response){
+            // Procesar la respuesta del servidor
              data = $.parseJSON(response);
                 if(data.length > 0){
+                    // Llenar los campos del modal con los datos del empleado encontrado
                     if(op=="editar"){
+                        // Llenar los campos del modal de actualización
                         $('#id_Empleado').val(data[0]['id_Empl']);
                         $('#txtcedulaupdate').val(data[0]['cedula']);
                         $('#txtnombreupdate').val(data[0]['nombre']);
@@ -115,9 +121,11 @@ function BuscarEmpleado(id,op){
                                 }
                             }); 
                     }else if(op=="eliminar"){
+                        //Alerta de desactivación
                         id_Empleado=data[0]['id_Empl'];
                         AlertaDesactivar(id_Empleado,data[0]['cedula']);
                     }else if(op=="activar"){
+                        //Alerta de activación
                         id_Empleado=data[0]['id_Empl'];
                         AlertaActivar(id_Empleado,data[0]['cedula']);
                     }
@@ -126,8 +134,11 @@ function BuscarEmpleado(id,op){
         });
 }
 
+// Función para mostrar una alerta de confirmación antes de activar un empleado
 function AlertaActivar(id_Empl,cedula)
 {
+    // Mostrar una alerta de confirmación utilizando SweetAlert
+    // Si el usuario confirma, llamar a la función ActivarEmpleado
     Swal.fire({
         title: "Seguro?",
         html: "Se Activara el empleado con la cedula: <h5>" + cedula+"?</h5>",
@@ -149,7 +160,9 @@ function AlertaActivar(id_Empl,cedula)
 
 }
 
+// Función para activar un empleado
 function ActivarEmpleado(id_Empl){
+    // Realizar una solicitud AJAX para activar el empleado 
     $.ajax({
         data: {"id_Empl": id_Empl},
         url: '../controller/EmpleadosController.php?operador=Activar_Empleado',
@@ -157,7 +170,7 @@ function ActivarEmpleado(id_Empl){
         beforeSend: function(response){
         },
         success: function(response){
-            console.log(response); // Para depuración
+            // Procesar la respuesta del servidor
             if (response == "sucess") {
                 toastr.success("Registro Activado.", "Empleado Activado exitosamente"); // Mostrar mensaje de éxito
                 table.ajax.reload(); // Recargar la tabla
@@ -172,20 +185,20 @@ function ActivarEmpleado(id_Empl){
             toasrt.error("ERROR","Error en la conexión. Intente nuevamente.");
         }
     });
-
 }
 
+// Función para buscar un empleado por cédula al hacer clic en un botón
 function BuscarEmpleadoBoton(cedula,op){
+    // Realizar una solicitud AJAX para buscar el empleado por cédula
     $.ajax({
+        // Enviar los datos al servidor
         data: {"cedula": cedula},
         url: '../controller/EmpleadosController.php?operador=buscarEmpleadoBoton',
         type: 'POST',
         beforeSend: function(response){
         },
         success: function(response){
-            console.log(response);
-            console.log(cedula);
-            console.log(op);
+            // Procesar la respuesta del servidor
             data = $.parseJSON(response);
                 if(data.length > 0){
                     if(op=="editar"){
@@ -222,7 +235,9 @@ function BuscarEmpleadoBoton(cedula,op){
         });
 }
 
+// Función para actualizar un empleado
     function ActualizarEmpleado(){
+        // Obtener los valores de los campos del formulario de actualización
         id_Empleado=$('#id_Empleado').val();
         cedula=$('#txtcedulaupdate').val();
         nombre=$('#txtnombreupdate').val();
@@ -237,11 +252,13 @@ function BuscarEmpleadoBoton(cedula,op){
             "email": email,
             "area": area
         },$.ajax({
+            // Enviar los datos al servidor para actualizar el empleado
             data: parametros,
             url: '../controller/EmpleadosController.php?operador=Actualizar_Empleado',
             type: 'POST',
             beforeSend: function(response){},
             success:function(response){
+                // Procesar la respuesta del servidor
                 if (response == "sucess") {
                     toastr.success("Empleado actualizado exitosamente", "Registro Actualizado."); // Mostrar mensaje de éxito
                     table.ajax.reload(); // Recargar la tabla
@@ -268,13 +285,17 @@ function BuscarEmpleadoBoton(cedula,op){
         });
     }
 
+    // Función para llenar el select de áreas al crear o actualizar un empleado
     function LlenarSelectArea(){
+        // Realizar una solicitud AJAX para obtener las áreas
     $.ajax({
+        // Enviar los datos al servidor
         url: '../controller/EmpleadosController.php?operador=LlenarSelectArea',
         type: 'POST',
         beforeSend: function(response){
         },
         success: function(response){
+            // Procesar la respuesta del servidor
             if(response && response.length > 0){
                 data = $.parseJSON(response);
                 var options = '<option value="">Seleccione un Area</option>';
@@ -290,14 +311,19 @@ function BuscarEmpleadoBoton(cedula,op){
         });
 }
 
+// Función para eliminar un empleado
+// Esta función se llama cuando se confirma la desactivación de un empleado
 function EliminarEmpleado(id_Empl){
+    // Realizar una solicitud AJAX para eliminar el empleado
     $.ajax({
+        // Enviar los datos al servidor para eliminar el empleado
         data: {"id_Empl": id_Empl},
         url: '../controller/EmpleadosController.php?operador=Eliminar_Empleado',
         type: 'POST',
         beforeSend: function(response){
         },
         success: function(response){
+            // Procesar la respuesta del servidor
             if (response == "sucess") {
                 toastr.success("Empleado desactivado exitosamente", "Registro Desactivado."); // Mostrar mensaje de éxito
                 table.ajax.reload(); // Recargar la tabla
@@ -314,9 +340,12 @@ function EliminarEmpleado(id_Empl){
     });
 }
 
+// Función para mostrar una alerta de confirmación antes de desactivar un empleado
 function AlertaDesactivar(id_Empl,cedula)
 {
+    // Mostrar una alerta de confirmación utilizando SweetAlert
     Swal.fire({
+        // Si el usuario confirma, llamar a la función EliminarEmpleado
         title: "Seguro?",
         html: "Se desactivara el Empleado con el serial: <h5>" + cedula+"?</h5>",
         type: "warning",
@@ -336,6 +365,7 @@ function AlertaDesactivar(id_Empl,cedula)
       });
 
 }
+// Función para limpiar los campos del modal de creación y actualización
     function LimpiarModel(){
         $('#txtcedula').val("");
         $('#txtnombre').val("");
@@ -343,6 +373,7 @@ function AlertaDesactivar(id_Empl,cedula)
         $('#txtemail').val("");
         $('#txtarea').val("");
     }
+    // Función para limpiar los campos del modal de actualización
     function LimpiarModelUpdate(){
         $('#txtcedulaupdate').val("");
         $('#txtnombreupdate').val("");
