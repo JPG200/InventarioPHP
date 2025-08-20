@@ -4,15 +4,20 @@ var table;
 init();// Función para inicializar el DataTable
 
 function init(){
-LlenarTablaEquipos();
+// Inicializar el DataTable
+    LlenarTablaEquipos();
 }
 
 function LimpiarModel(){
+   // Limpiar los campos del modal de registro
     $('#txtplaca').val("");
     $('#txtserial').val("");
 }
 
+
 function ActualizarEquipo(){
+    // Función para actualizar un equipo
+    // Obtener los valores de los campos del modal de actualización
     id_Equip=$('#id_Equipupdate').val();
     placa=$('#txtplacaupdate').val();
     serial=$('#txtserialupdate').val();
@@ -21,11 +26,13 @@ function ActualizarEquipo(){
         "placa": placa,
         "serial": serial
     },$.ajax({
+        // Enviar los datos al servidor para actualizar el equipo
         data: parametros,
         url: '../controller/EquiposController.php?operador=Actualizar_Equipos',
         type: 'POST',
         beforeSend: function(response){},
         success:function(response){
+            // Manejar la respuesta del servidor
             if (response == "sucess") {
                 toastr.success("Equipo actualizado exitosamente", "Registro Actualizado."); // Mostrar mensaje de éxito
                 table.ajax.reload(); // Recargar la tabla
@@ -52,7 +59,10 @@ function ActualizarEquipo(){
     });
 }
 
+
 function LlenarTablaEquipos(){
+    // Función para llenar la tabla de equipos
+    // Inicializar el DataTable con los datos del servidor
 table = $('#Tabla_Equipos').DataTable({
 pageLength:10,
 responsive:true,
@@ -65,11 +75,14 @@ columns:[
     {data:"Fecha de Ingreso"},
     {data:"Estado"},
     {data:"op"}
-]
+],
+            "autoWidth": false, 
 });
 }
 
 function RegistrarEquipo(){
+    // Función para registrar un nuevo equipo
+    // Obtener los valores de los campos del modal de registro
     placa = $("#txtplaca").val();
     serial = $("#txtserial").val();
     parametros = {
@@ -77,12 +90,13 @@ function RegistrarEquipo(){
         "serial": serial
     },
     $.ajax({
+        // Enviar los datos al servidor para registrar el equipo
         url: "../controller/EquiposController.php?operador=registrar_equipo",
         type: "POST",
         data: parametros,
         beforeSend: function(response){},
         success: function(response) {
-            console.log(response); // Para depuración
+            // Manejar la respuesta del servidor
             if (response == "sucess") {
                 toastr.success("Equipo registrado exitosamente", "Registro Exitoso."); // Mostrar mensaje de éxito
                 table.ajax.reload(); // Recargar la tabla después de registrar el equipo
@@ -110,8 +124,10 @@ function RegistrarEquipo(){
     });
 }
 
+
 function AlertaDesactivar(id_Equip,serial)
 {
+    // Función para mostrar una alerta de confirmación antes de desactivar un equipo
     Swal.fire({
         title: "Seguro?",
         html: "Se desactivara el equipo con el serial: <h5>" + serial+"?</h5>",
@@ -136,6 +152,7 @@ function AlertaDesactivar(id_Equip,serial)
 
 function AlertaActivar(id_Equip,serial)
 {
+    // Función para mostrar una alerta de confirmación antes de activar un equipo
     Swal.fire({
         title: "Seguro?",
         html: "Se activara el equipo con el serial: <h5>" + serial+"?</h5>",
@@ -160,12 +177,14 @@ function AlertaActivar(id_Equip,serial)
 
 function EliminarEquipo(id_Equip){
     $.ajax({
+        // Enviar los datos al servidor para desactivar el equipo
         data: {"id_Equip": id_Equip},
         url: '../controller/EquiposController.php?operador=Eliminar_Equipos',
         type: 'POST',
         beforeSend: function(response){
         },
         success: function(response){
+            // Manejar la respuesta del servidor
             if (response == "sucess") {
                 toastr.success("Equipo desactivado exitosamente", "Registro Desactivado."); // Mostrar mensaje de éxito
                 table.ajax.reload(); // Recargar la tabla
@@ -184,13 +203,14 @@ function EliminarEquipo(id_Equip){
 
 function ActivarEquipo(id_Equip){
     $.ajax({
+        // Enviar los datos al servidor para activar el equipo
         data: {"id_Equip": id_Equip},
         url: '../controller/EquiposController.php?operador=Activar_Equipos',
         type: 'POST',
         beforeSend: function(response){
         },
         success: function(response){
-            console.log(response); // Para depuración
+            // Manejar la respuesta del servidor
             if (response == "sucess") {
                 toastr.success("Registro Activado.", "Equipo Activado exitosamente"); // Mostrar mensaje de éxito
                 table.ajax.reload(); // Recargar la tabla
@@ -210,12 +230,14 @@ function ActivarEquipo(id_Equip){
 
 function BuscarEquipo(id_Equip,op){
     $.ajax({
+        // Enviar los datos al servidor para buscar un equipo por su ID
         data: {"id_Equip": id_Equip},
         url: '../controller/EquiposController.php?operador=buscar_equipo',
         type: 'POST',
         beforeSend: function(response){
         },
         success: function(response){
+            // Manejar la respuesta del servidor
             data = $.parseJSON(response);
                 if(data.length > 0){
                     if(op=="editar"){

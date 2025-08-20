@@ -28,41 +28,39 @@
 
           <li class=" nav-item"><a href="welcome.php"><i class="icon-home3"></i><span class="menu-title">Dashboard</span></a>
           </li>
-          <li class=" nav-item"><a href="#"><i class="icon-gears"></i><span class="menu-title">Configuración</span></a>
+          <li class=" nav-item"><a href="../pages/OrdenCompra.php"><i class="icon-gears"></i><span class="menu-title">Orden</span></a>
           </li>
+          <?php
+          /*
           <li class=" nav-item"><a href="#"><i class="icon-user-secret"></i><span  class="menu-title">Gestion de usuarios</span></a>
             <ul class="menu-content">
               <li><a href="#" class="menu-item">Usuarios</a></li>
             </ul>
           </li>
-          <li class=" nav-item"><a href="#"><i class="icon-mobile2"></i><span class="menu-title">Contactos</span></a>
+          */
+          ?>
+          <li class=" nav-item"><a href="#"><i class="icon-mobile2"></i><span class="menu-title">Colaboradores</span></a>
             <ul class="menu-content">
-              <li><a href="#" class="menu-item">Clientes</a></li>
-              <li><a href="#" class="menu-item">Proveedores</a></li>
+              <li><a href="/pages/empleados.php" class="menu-item">Empleados</a></li>
+              <li><a href="/pages/area.php" class="menu-item">Area</a></li>
             </ul>
           </li>
           <li class=" nav-item"><a href="#"><i class="icon-dropbox"></i><span class="menu-title">Productos</span></a>
             <ul class="menu-content">
-              <li><a href="#" class="menu-item">Nuevo producto</a></li>
-              <li><a href="/pages/equipos.php" class="menu-item">Lista de productos</a></li>
-              <li><a href="/pages/categorias.php" class="menu-item">Categorias</a></li>
-              <li><a href="#" class="menu-item">Sub categorias</a></li>
-              <li><a href="#" class="menu-item">Unidad de medida</a></li>
+              <li><a href="/pages/equipos.php" class="menu-item">Lista de Equipos</a></li>
+              <li><a href="/pages/categorias.php" class="menu-item">Registrar Equipos</a></li>
             </ul>
           </li>
-          <li class=" nav-item"><a href="#"><i class="icon-briefcase4"></i><span class="menu-title">Ventas</span></a>
+          <li class=" nav-item"><a href="#"><i class="icon-briefcase4"></i><span class="menu-title">Asignacion</span></a>
             <ul class="menu-content">
-              <li><a href="#" class="menu-item">Realizar venta</a></li>
-              <li><a href="#" class="menu-item">Lista de ventas</a></li>
+              <li><a href="/pages/Asignacion.php" class="menu-item">Realizar Asignacion</a></li>
+              <li><a href="/pages/Devolucion.php" class="menu-item">Realizar Devolucion</a></li>
             </ul>
           </li>
-          <li class=" nav-item"><a href="#"><i class="icon-ios-cart-outline"></i><span class="menu-title">Compras</span></a>
-            <ul class="menu-content">
-              <li><a href="#" class="menu-item">Realizar compras</a></li>
-              <li><a href="#" class="menu-item">Lista de compras</a></li>
-            </ul>
+          <li class=" nav-item"><a href="/pages/Empresa.php"><i class="icon-ios-cart-outline"></i><span class="menu-title">Empresas</span></a>
           </li>
-
+          <?php
+          /*
           <li class=" navigation-header"><span>Informes</span>
           </li>
           <li class=" nav-item"><a href="#"><i class="icon-file-text2"></i><span class="menu-title">Reportes </span></a>
@@ -73,6 +71,8 @@
           </li>
           <li class=" nav-item"><a href="#"><i class="icon-database2"></i><span  class="menu-title">Backup</span></a>
           </li>
+          */
+          ?>
         </ul>
       </div>
 

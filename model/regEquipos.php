@@ -8,9 +8,13 @@ function __construct(){
     $this->cnx = Conexion::ConectarBD();
 }
 
+
+//Listar todos los registros de equipos
 function ListarregEquipos(){
-    $query="SELECT tbreq.id_Reg,tbeq.placa,tbeq.serial,tbreq.descripcion,tbreq.observaciones,tbreq.accesorios,emp.Empresa, tbreq.fecha_creacion,tbreq.estado
-     FROM tbequipos tbeq INNER JOIN tbregequip tbreq ON tbeq.id_Equip=tbreq.id_Equip INNER JOIN tbempresas emp ON emp.id_Empresa=tbreq.id_Empresa WHERE tbeq.estado=1;";
+    //Consulta para listar todos los equipos
+    
+    $query="SELECT tbreq.id_Reg,tbeq.placa,tbeq.serial,tbreq.descripcion,tbreq.observaciones,tbreq.accesorios,emp.Empresa, tbreq.fecha_creacion,tbreq.fecha_finalizacion,tbreq.estado
+     FROM tbequipos tbeq INNER JOIN tbregequip tbreq ON tbeq.id_Equip=tbreq.id_Equip INNER JOIN tbempresas emp ON emp.id_Empresa=tbreq.id_Empresa;";
 
     $result = $this->cnx->prepare($query);
 
@@ -25,12 +29,13 @@ function ListarregEquipos(){
     return false;
 }
 
-
+//Buscar serial por placa
 function buscarSerial($placa){
     $estado = 1; //Activo por defecto
+    //Consulta para buscar el serial por placa
     $query="SELECT tbeq.placa, tbeq.serial from tbequipos tbeq where placa=? and estado=?;";
     $result = $this->cnx->prepare($query);
-    $result->bindParam(1,$placa);
+    $result->bindParam(1,$placa, PDO::PARAM_INT);
     $result->bindParam(2,$estado);
     if($result->execute()){
         if($result->rowCount()>0){
@@ -41,13 +46,16 @@ function buscarSerial($placa){
     return false;
 }
 
+
+//Buscar equipo registrado por placa
 function buscarEquipo($placa){
     $estado = 1; //Activo por defecto
+    //Consulta para buscar el equipo registrado por placa
     $query="SELECT tbreq.id_Reg,tbeq.placa,tbeq.serial,tbreq.descripcion,tbreq.observaciones,tbreq.accesorios,emp.Empresa
     from tbequipos tbeq INNER JOIN tbregequip tbreq ON tbeq.id_Equip=tbreq.id_Equip INNER JOIN tbempresas emp ON emp.id_Empresa=tbreq.id_Empresa
     where tbeq.placa=? and tbeq.estado=?;";
     $result = $this->cnx->prepare($query);
-    $result->bindParam(1,$placa);
+    $result->bindParam(1,$placa , PDO::PARAM_INT);
     $result->bindParam(2,$estado);
     if($result->execute()){
         if($result->rowCount()>0){
@@ -58,7 +66,9 @@ function buscarEquipo($placa){
     return false;
 }
 
+//Llenar select de empresas
 function LlenarSelectEmpresas(){
+    //Consulta para llenar el select de empresas
     $query="SELECT * from tbempresas;";
     $result = $this->cnx->prepare($query);
     if($result->execute()){
@@ -72,34 +82,20 @@ function LlenarSelectEmpresas(){
     return false;
 }
 
-function buscartablaEquipo($placa){
-    $query="SELECT id_Equip from tbequipos where placa=?;";
-    $result = $this->cnx->prepare($query);
-    $result->bindParam(1,$placa);
-    if($result->execute()){
-        if($result->rowCount()>0){
-            return $result->fetch(mode: PDO::FETCH_ASSOC);
-        }
-        return false;
-    }
-    return false;
-}
-
+//Registrar registro de equipo
 function RegistrarRegistroEquipo($placa,$descripcion,$observaciones,$accesorios,$Empr){
 
     $estado = 1; //Activo por defecto
     $fecha_creacion=date( 'Y-m-d H:i:s',time()); //Fecha creacion del equipo
     $Equip=$this->buscartablaEquipo($placa); //Buscar el id del equipo en la tabla de equipos
-    #$Empre=$this->buscarEmpresa($Empr); //Buscar el id de la empresa en la tabla de empresas
     if($Equip){
-        #echo "el id de la empre es: ".$Empre;
-        #echo "El id del equipo es; ".$Equip;
-        #$id_Empresa=$Empre['id_Empresa']; //Obtenemos el id de la empresa
+        
         if ($Equip && isset($Equip['id_Equip'])) {
             $id_Equip = $Equip['id_Equip']; // Obtenemos el id del equipo
         } else {
             return false; // Handle the case where $Equip is null or does not contain 'id_Equip'
         }
+        //Insertar el registro del equipo en la base de datos
         $query="INSERT INTO tbregequip(id_Equip,descripcion,observaciones,accesorios,id_Empresa,fecha_creacion,estado) VALUES (?,?,?,?,?,?,?)";
         $result = $this->cnx->prepare($query);
         $result->bindParam(1,$id_Equip);
@@ -120,51 +116,59 @@ function RegistrarRegistroEquipo($placa,$descripcion,$observaciones,$accesorios,
     }
 }
 
-function eliminarRegistroEquipo($id_Reg){
-    $query="UPDATE tbregequip
-    set estado = 0 where id_Reg = ?;";
+//Buscar el id del equipo en la tabla de equipos
+function buscartablaEquipo($placa){
+    //Consulta para buscar el id del equipo en la tabla de equipos
+    $query="SELECT id_Equip from tbequipos where placa=?;";
     $result = $this->cnx->prepare($query);
-    $result->bindParam(1,$id_Reg);
-    if($result->execute()){
-        return true;
-    }else{
-        return false;
-    }
-}
-
-function activarRegEquipo($id_Reg){
-    $query="UPDATE tbregequip
-    set estado = 1 where id_Reg = ?;";
-    $result = $this->cnx->prepare($query);
-    $result->bindParam(1,$id_Reg);
-    if($result->execute()){
-        return true;
-    }else{
-        return false;
-    }
-}
-
-
-/*
-function buscarEmpresa($Empr){
-    $EmprUper=strtoupper($Empr); //Convertimos a mayusculas el nombre de la empresa
-    $query="SELECT id_Empresa from tbempresas where Empresa LIKE ?;";
-    $result = $this->cnx->prepare($query);
-    $result->bindParam(1,$EmprUper);
+    $result->bindParam(1,$placa, PDO::PARAM_INT);
     if($result->execute()){
         if($result->rowCount()>0){
-            return $result->fetch(PDO::FETCH_ASSOC);
+            return $result->fetch(mode: PDO::FETCH_ASSOC);
         }
         return false;
     }
     return false;
-
 }
-*/
+
+
+function eliminarRegistroEquipo($id_Reg){
+    $fecha_fin=date( 'Y-m-d H:i:s',time());
+    //Actualizar el estado del registro a inactivo y la fecha de finalizacion
+    $query="UPDATE tbregequip
+    set estado = 0, fecha_finalizacion=?  where id_Reg = ?;";
+    $result = $this->cnx->prepare($query);
+    $result->bindParam(1,$fecha_fin);
+    $result->bindParam(2,$id_Reg);
+    if($result->execute()){
+        return true;
+    }else{
+        return false;
+    }
+}
+
+//Activar registro de equipo
+function activarRegEquipo($id_Reg){
+    $fecha_finalizacion="0000-00-00";
+    //Actualizar el estado del registro a activo y la fecha de finalizacion a 0000-00-00
+    $query="UPDATE tbregequip
+    set estado = 1,fecha_finalizacion=? WHERE id_Reg = ?;";
+        $result = $this->cnx->prepare($query);
+        $result->bindParam(1,$fecha_finalizacion);
+        $result->bindParam(2,$id_Reg);
+    if($result->execute()){
+        return true;
+    }else{
+        return false;
+    }
+}
+
+//Actualizar registro de equipo
 function ActualizarRegistroEquipo($id,$placa,$descripcion,$observaciones,$accesorios,$Empr){
     $Equip=$this->buscartablaEquipo($placa); //Buscar el id del equipo en la tabla de equipos
     if($Equip){
         $id_Equip=$Equip['id_Equip']; //Obtenemos el id del equipo
+        //Actualizar el registro del equipo en la base de datos
         $query="UPDATE tbregequip set id_Equip=?, descripcion=?,observaciones=?,accesorios=?,id_Empresa=? where id_Reg=?";
         $result = $this->cnx->prepare($query);
         $result->bindParam(1,$id_Equip);
@@ -184,10 +188,12 @@ function ActualizarRegistroEquipo($id,$placa,$descripcion,$observaciones,$acceso
     }
     }
 
+    //Verificar si el equipo ya tiene un registro activo
 function Verificar($placa){
     $Equip=$this->buscartablaEquipo($placa); //Buscar el id del equipo en la tabla de equipos
     $estado = 1; //Activo por defecto
     $id_Equip=$Equip['id_Equip']; //Obtenemos el id del equipo
+    //Consulta para verificar si el equipo ya tiene un registro activo
     $query="SELECT * from tbregequip where id_Equip=? and estado=?;";
     $result = $this->cnx->prepare($query);
     $result->bindParam(1,$id_Equip);
