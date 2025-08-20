@@ -60,7 +60,7 @@ switch($_REQUEST["operador"]){
             );
         }else{
             // Si no hay datos, enviar un mensaje de error
-            $datos = array(
+            $list = array(
                 "Numero de Registro"=>"ERROR",
                 "Placa"=> "ERROR",
                 "Empleado"=> "ERROR",

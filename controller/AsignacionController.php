@@ -35,10 +35,6 @@ switch($_REQUEST["operador"]){
                                 <button class="btn btn-info dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                     <i class="icon-gear"></i>
                                 </button>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" onclick="BuscarAsignacionPorId('.$datos[$i]['id_Asig'].');"><i class="icon-check"></i> Activar</a>
-                                    <div class="dropdown-divider"></div>
-                                </div>
                             </div>'
                 );
             }

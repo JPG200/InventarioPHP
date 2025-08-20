@@ -8,7 +8,9 @@ class Equipos{
         $this->cnx = Conexion::ConectarBD();
     }
 
+    // ListarArea: Retrieves all areas from the database.
     function ListarArea(){
+        // This function fetches all records from the tbarea table.
         $query="SELECT * from tbarea;";
 
         $result = $this->cnx->prepare($query);
@@ -23,6 +25,10 @@ class Equipos{
         }
         return false;
     }
+
+    // CrearArea: Inserts a new area into the database.
+    // Parameters: Area (string), centro_costos (string).
+    // Returns true on success, false on failure.
     function CrearArea($Area,$centro_costos){
         $estado = 1; //Activo por defecto
         $fecha_fin = null; //Fecha de terminacion por defecto
@@ -41,7 +47,13 @@ class Equipos{
             return false;
         }
 }
+
+// VerificarArea: Checks if an area with the given centro_costos already exists.
+// Parameters: centro_costos (string).
+// Returns true if the area does not exist, false if it does.
 function VerificarArea($centro_costos){
+    // This function checks if an area with the specified centro_costos exists and is active.
+    // It returns false if the area exists, and true if it does not.
     $query = "SELECT * FROM tbarea WHERE centro_costos = ? AND estado = 1";
     $result = $this->cnx->prepare($query);
     $result->bindParam(1, $centro_costos);
@@ -53,7 +65,13 @@ function VerificarArea($centro_costos){
     }
     return true; // Area no existe
 }
-    function buscarArea($id){
+
+// buscarArea: Retrieves an area by its ID.
+// Parameters: id (int).
+// Returns the area data as an associative array if found, false otherwise.
+function buscarArea($id){
+    // This function fetches an area by its ID from the tbarea table.
+    // It returns the area data as an associative array if found, or false if not found.
         $query="SELECT * from tbarea where id_Area = ?;";
         $result = $this->cnx->prepare($query);
         $result->bindParam(1,$id);
@@ -65,7 +83,11 @@ function VerificarArea($centro_costos){
         }
         return false;
     }
- function ActivarArea($id){
+
+    // ActivarArea: Activates an area by setting its estado to 1.
+    // Parameters: id (int).
+    // Returns true on success, false on failure.
+    function ActivarArea($id){
         $query="UPDATE tbarea set estado = 1 where id_Area = ?;";
         $result = $this->cnx->prepare($query);
         $result->bindParam(1,$id);
@@ -77,6 +99,10 @@ function VerificarArea($centro_costos){
         }
     }
     
+
+    // EliminarArea: Deactivates an area by setting its estado to 0.
+    // Parameters: id (int).
+    // Returns true on success, false on failure.
     function EliminarArea($id){
         $query="UPDATE tbarea set estado = 0 where id_Area = ?;";
         $result = $this->cnx->prepare($query);
@@ -88,6 +114,10 @@ function VerificarArea($centro_costos){
             return false;
         }
     }
+
+    // ActualizarArea: Updates an existing area in the database.
+    // Parameters: id (int), Area (string), centro_costos (string).
+    // Returns true on success, false on failure.
     function ActualizarArea($id,$Area,$centro_costos){
         $query="UPDATE tbarea set Area = ?, centro_costos = ? where id_Area = ?;";
         $result = $this->cnx->prepare($query);

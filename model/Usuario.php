@@ -6,9 +6,12 @@ class Usuario{
         $this->cnx=Conexion::ConectarBD();
     }
 
+
+    //Registrar Usuario
     function RegistrarUsuario($u_nombre,$u_apelidos,$u_correo,$u_contraseña,$u_tipo): bool{
         $estado=1; // Estado activo
         $fecha_creacion=date( 'Y-m-d H:i:s',time()); //Fecha creacion del usuario
+        //Insertar el usuario en la base de datos
         $query = "INSERT INTO tbusuarios (nombre, apellidos, correo, contraseña, id_tipoU,estado,fecha_creacion) VALUES (?,?,?,?,?,?,?)";
         $result = $this->cnx->prepare($query);
         $result->bindParam(1,$u_nombre);
@@ -26,6 +29,7 @@ class Usuario{
     }
         //Validar Usuario
     function ValidarUsuario($u_correo,$u_contraseña){
+        //Consulta para validar el usuario
         $query = "SELECT * FROM tbusuarios WHERE correo=? AND contraseña=? AND estado=1";
         $result = $this->cnx->prepare($query);
         $result->bindParam(1,$u_correo);

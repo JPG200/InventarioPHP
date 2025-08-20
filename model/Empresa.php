@@ -6,6 +6,8 @@ class Empresa{
         $this->cnx = Conexion::ConectarBD();
     }
 
+
+    //Listar todas las empresas con su contrato
     function listarEmpresa(){
         $query = "SELECT tbem.id_Empresa,tbem.Empresa,tbem.NIT,tbc.NumeroContrato,tbc.fecha_Inicio,tbc.fecha_fin,tbc.estado 
                   FROM tbempresas tbem INNER JOIN tbcontrato tbc ON tbc.id_Empresa=tbem.id_Empresa;";
@@ -23,7 +25,7 @@ class Empresa{
         return false;
     }
 
-
+    //Buscar contrato por numero de contrato y id de empresa
     function buscarContrato($NumeroContrato,$id_Empresa){
         $query = "SELECT * FROM tbcontrato WHERE estado =1 AND id_Empresa=? OR NumeroContrato = ?;";
         $result = $this->cnx->prepare($query);
@@ -38,6 +40,8 @@ class Empresa{
         return false; //No se encontro el contrato
 
     }
+
+    //Buscar empresa por nombre o NIT
     function buscarEmpresa($empresa,$NIT){
         $query = "SELECT * FROM tbempresas WHERE Empresa = ? OR NIT=?;";
         $result = $this->cnx->prepare($query);
@@ -52,6 +56,7 @@ class Empresa{
         return false; //No se encontro la empresa
     }
 
+    //Buscar empresa por NIT y numero de contrato
     function BuscarInformacion($NIT,$NumeroContrato){
         $query = "SELECT tbe.id_Empresa,tbe.NIT,tbe.Empresa,tbc.NumeroContrato,tbc.fecha_Inicio,tbc.fecha_fin
          FROM tbempresas tbe INNER JOIN tbcontrato tbc ON tbc.id_Empresa=tbe.id_Empresa
@@ -68,6 +73,7 @@ class Empresa{
         return false; //No se encontro la empresa
     }
 
+    //Actualizar empresa y contrato
     function actualizarEmpresa($id_Empresa,$empresa,$NIT,$NumeroContrato,$FechaI,$FechaF){
 try{       
         $estado = 1; //Estado activo por defecto
@@ -102,13 +108,14 @@ try{
         }
     }
 
+    //Registrar empresa y contrato
         function RegistrarEmpresa($empresa,$NIT,$NumeroContrato,$FechaI,$FechaF){
             try{
             $datos=$this->buscarEmpresa($empresa,$NIT);
             $estado = 1; //Estado activo por defecto
             $fecha_creacion = date( 'Y-m-d H:i:s',time());
             $fecha_fin = "0000-00-00"; //Fecha de finalizacion por defecto
-
+                //Si no existe la empresa, se registra
             if(!$datos){
                 $query = "INSERT INTO tbempresas (Empresa,NIT,fecha_creacion,estado,fecha_fin) VALUES (?,?,?,?,?);";
                 $result = $this->cnx->prepare($query);
@@ -133,6 +140,7 @@ try{
                     return false; //Error al registrar el contrato
             }
             } else{
+                //Si la empresa ya existe, solo se registra el contrato si no existe otro con el mismo numero para esa empresa
                 if($this->buscarContrato($NumeroContrato,$datos['id_Empresa'])){
                     $queryContrato = "INSERT INTO tbcontrato (id_Empresa,NumeroContrato,fecha_Inicio,fecha_fin,estado) VALUES (?,?,?,?,?);";
                     $resultContrato = $this->cnx->prepare($queryContrato);
@@ -153,7 +161,9 @@ try{
             }
     }
 
+    //Activar contrato
     function activarEmpresa($id_Empresa,$NumeroContrato){
+        //Una empresa nunca se desactiva, solo su contrato
         $query = "UPDATE tbcontrato SET estado=1 WHERE NumeroContrato=? AND id_Empresa=?;";
         $result = $this->cnx->prepare($query);
         $result->bindParam(1, $NumeroContrato);
@@ -165,6 +175,7 @@ try{
         return false; //Error al activar la empresa
     }
 
+    //Eliminar contrato (cambiar estado a 0)
     function eliminarContrato($NumeroContrato,$id_Empresa){
 
         $query = "UPDATE tbcontrato SET estado=0 WHERE NumeroContrato=? and id_Empresa=?;";

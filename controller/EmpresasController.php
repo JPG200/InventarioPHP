@@ -93,7 +93,7 @@ switch($_REQUEST["operador"]){
                 "aaData"=>$list
             );
         }else{
-            $datos = array(
+            $list = array(
                 "Numero de Registro"=>"ERROR",
                 "Empresa"=> "ERROR",
                 "NIT"=> "ERROR",

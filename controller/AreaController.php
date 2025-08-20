@@ -52,6 +52,16 @@ switch($_REQUEST["operador"]){
                 "aaData"=>$list
             );
         }else{
+            // Respuesta en caso de error
+            $list[]=array(
+                "Numero de Registro"=>"ERROR",
+                "Area"=> "ERROR",
+                "Centro de Costos"=> "ERROR",
+                "Fecha de Inicio"=> "ERROR",
+                "Fecha de Terminacion"=> "ERROR",
+                "Estado"=> "ERROR",
+                "op"=> "ERROR"
+            );
             $resultador = array(
                 // Respuesta cuando no hay datos
                 "sEcho"=>1,

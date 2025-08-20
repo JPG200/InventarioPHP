@@ -5,7 +5,11 @@ class Orden{
     function __construct(){
         $this->cnx = Conexion::ConectarBD();
     }
+
+    //Listar todas las ordenes con su contrato y empresa
     function listarOrden(){
+        //Consulta para listar todas las ordenes con su contrato y empresa
+        //Incluye conteo de equipos activos y devueltos por orden
         $query = "SELECT 
                     tbo.id_Orden,
                     tbo.orden_Compra,
@@ -39,7 +43,9 @@ class Orden{
         return false;
     }
 
+    //Verificar si el contrato existe por numero de contrato
     public function verificarContrato($numeroContrato) {
+        //Buscar contrato en la base de datos por numero de contrato
         $query = "SELECT Id_Contrato FROM tbcontrato WHERE NumeroContrato = ?";
         $stmt = $this->cnx->prepare($query);
         $stmt->bindParam(1, $numeroContrato);
@@ -47,6 +53,7 @@ class Orden{
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    //Buscar orden por numero de orden
     function buscarOrdenPorNumero($numeroOrden) {
         try {
             // Iniciar transacción (opcional, pero buena práctica si harás más operaciones)
@@ -106,6 +113,7 @@ class Orden{
         }
     }
 
+    //Buscar contrato por numero de contrato
     function buscarContratoPorNumero($numeroContrato){
         try {
             // Iniciar transacción (opcional, pero buena práctica si harás más operaciones)
@@ -138,7 +146,10 @@ class Orden{
         }
 
     }
+
+    //Verificar si el equipo ya existe por placa
     function verificarEquipo($placa) {
+        //Buscar equipo en la base de datos por placa
         $query = "SELECT id_Equip FROM tbequipos WHERE placa = ?";
         $stmt = $this->cnx->prepare($query);
         $stmt->bindParam(1, $placa);
@@ -146,7 +157,9 @@ class Orden{
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    //Verificar si el equipo ya esta asignado a una orden activa
     function verificarEquipoxOrdenActivo($idEquipo) {
+        //Buscar equipo en la base de datos por idEquipo y estado activo (1)
         $query = "SELECT id_ExO FROM tb_equipoxorden WHERE id_Equipo = ? AND estado = 1 LIMIT 1";
         $stmt = $this->cnx->prepare($query);
         $stmt->bindParam(1, $idEquipo, PDO::PARAM_INT);
@@ -154,7 +167,9 @@ class Orden{
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    //Verificar si el equipo ya esta asignado a una orden activa para cambio
     function verificarEquipoxOrdenVerificarCambio($idEquipo, $idOrden) {
+        //Buscar equipo en la base de datos por idEquipo y estado activo (1)
         $query = "SELECT id_ExO FROM tb_equipoxorden WHERE id_Equipo = ? AND id_Orden=? AND estado = 0 LIMIT 1";
         $stmt = $this->cnx->prepare($query);
         $stmt->bindParam(1, $idEquipo, PDO::PARAM_INT);
@@ -163,12 +178,14 @@ class Orden{
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    //Verificar si el equipo ya esta asignado a una orden inactiva
     function verificarEquipoxOrden($id_Equipo){
+        //Buscar equipo en la base de datos por id
         $query = "SELECT * FROM tb_equipoxorden WHERE estado = 0 AND id_Equipo = ? LIMIT 1";
         $stmt = $this->cnx->prepare($query);
         $stmt->bindParam(1, $id_Equipo);
 
-
+        
         if($stmt->execute()){
             if($stmt->rowCount()>0){
                     return $stmt->fetch(PDO::FETCH_ASSOC); //Retorna los datos del Equipo
@@ -178,7 +195,9 @@ class Orden{
     }
 }
 
+    //Listar tipos de orden
     function llenarTipoOrden(){
+        //Consulta para listar todas las ordenes con su contrato y empresa
         $query = "SELECT * FROM tbtipoorden";
         $result = $this->cnx->prepare($query);
         if($result->execute()){
@@ -192,7 +211,9 @@ class Orden{
         return false;
     }
 
+    //Actualizar estado de equipo en tb_equipoxorden a 0 (devuelto) y registrar fecha de salida
     function actualizarEstadoEquipoXOrden($idEquipoXOrden, $fechaSalida) {
+        //Actualizar estado del equipo en tb_equipoxorden a 0 (devuelto) y registrar fecha de salida
         $query = "UPDATE tb_equipoxorden SET estado = 0, Fecha_Salida = ? WHERE id_ExO = ?";
         $stmt = $this->cnx->prepare($query);
         $stmt->bindParam(1, $fechaSalida);
@@ -200,10 +221,12 @@ class Orden{
         return $stmt->execute();
     }
 
+
+    //Procesar orden (inserta o actualiza según sea necesario)
  public function procesarOrden($ordenCompra, $ordenServicio, $fechaEntrega, $idTipoOrden, $numeroContrato, $equiposParaRegistrar = [], $equiposParaDevolver = [],$numeroRegistro) {
         $this->cnx->beginTransaction();
         $fechaActual = date( 'Y-m-d H:i:s',time());
-
+        // Validar parámetros esenciales
         try {
             // 1. Verificar el contrato
             $datosContrato = $this->verificarContrato($numeroContrato);
@@ -295,21 +318,16 @@ class Orden{
                         }
                         $idEquipoActual = $this->cnx->lastInsertId();
                     } else {
-                        // Si el equipo YA existe, usamos su ID
+
                         $idEquipoActual = $equipoExistente['id_Equip'];
-                        // Opcional: Actualizar el estado del equipo en tbequipos si es necesario.
-                        // Por ejemplo, si el equipo estaba inactivo y ahora se asigna a una orden.
-                        // $queryUpdateEquipo = "UPDATE tbequipos SET estado = ? WHERE id_Equip = ?";
-                        // $stmtUpdateEquipo = $this->cnx->prepare($queryUpdateEquipo);
-                        // $stmtUpdateEquipo->bindParam(1, $estadoEquipoTbequipos, PDO::PARAM_INT);
-                        // $stmtUpdateEquipo->bindParam(2, $idEquipoActual, PDO::PARAM_INT);
-                        // $stmtUpdateEquipo->execute();
+
                     }
 
                     if ($idEquipoActual === null) {
                         throw new Exception("No se pudo obtener un ID de equipo (nuevo o existente) para la placa: {$placa}.");
                     }
 
+                    // Verificar si el equipo ya está asignado a una orden activa
                     $equipoXOrdenVerificar = $this->verificarEquipoxOrdenActivo($idEquipoActual);
 
                     if(isset($numeroRegistro)&&empty($numeroRegistro)){
@@ -320,12 +338,15 @@ class Orden{
 
                         $verificarEquipoxOrdenVerificarCambio=$this->verificarEquipoxOrdenVerificarCambio($idEquipoActual,$numeroRegistro);
                         // Insertar la asociación en tb_equipoxorden para la NUEVA orden
-
+                        // Lógica para diferentes tipos de orden
+                        // Devolución (idTipoOrden = 3) y Cambio (idTipoOrden = 2) requieren estadoEquipoXOrdenDevolucion
+                        // Instalación (idTipoOrden = 1) no requiere estadoEquipoXOrdenDevolucion
+                        // Logica para Cambio
                         if(!$verificarEquipoxOrdenVerificarCambio && $idTipoOrden==2){
                         $estadoEquipoXOrdenDevolucion = 0;
                         $estadoEquipoXOrdenNuevo = 1; // 0 para devolucion
                         $fechaSalidaNueva = "0000-00-00 00:00:00"; // Indicar que aún no ha salido
-
+                        // Insertar la asociación en tb_equipoxorden para la NUEVA orden    
                         $queryEquipoOrden = "INSERT INTO tb_equipoxorden (id_Orden, id_Equipo, fecha_Entrega, Fecha_Salida, estado,estado_devolucion, orden_original) VALUES (?, ?, ?, ?, ?, ?, ?)";
                         $stmtEquipoOrden = $this->cnx->prepare($queryEquipoOrden);
                         $stmtEquipoOrden->bindParam(1, $idOrdenGenerado, PDO::PARAM_INT);
@@ -336,7 +357,8 @@ class Orden{
                         $stmtEquipoOrden->bindParam(6, $estadoEquipoXOrdenDevolucion, PDO::PARAM_INT);
                         $stmtEquipoOrden->bindParam(7, $numeroRegistro, PDO::PARAM_INT);
 
-                        }else if($idTipoOrden==3){
+                        }else // Lógica para devolución
+                         if($idTipoOrden==3){
                         $estadoEquipoXOrdenDevolucion = 1;
                         $estadoEquipoXOrdenNuevo = 0; // 0 para devolucion
                         $queryEquipoOrden = "INSERT INTO tb_equipoxorden (id_Orden, id_Equipo, fecha_Entrega, Fecha_Salida, estado,estado_devolucion, orden_original) VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -348,7 +370,8 @@ class Orden{
                         $stmtEquipoOrden->bindParam(5, $estadoEquipoXOrdenNuevo, PDO::PARAM_INT);
                         $stmtEquipoOrden->bindParam(6, $estadoEquipoXOrdenDevolucion, PDO::PARAM_INT);
                         $stmtEquipoOrden->bindParam(7, $numeroRegistro, PDO::PARAM_INT);
-                        }else if($idTipoOrden=1){
+                        }else // Lógica para Instalación 
+                        if($idTipoOrden=1){
                         $estadoEquipoXOrdenNuevo = 1; // 1 para activo/en uso en la nueva orden
                         $fechaSalidaNueva = "0000-00-00 00:00:00"; // Indicar que aún no ha salido
 
@@ -362,6 +385,7 @@ class Orden{
                         $stmtEquipoOrden->bindParam(6, $numeroRegistro, PDO::PARAM_INT);
 
                         }   
+                        // Ejecutar la inserción en tb_equipoxorden
                         if (!$stmtEquipoOrden->execute()) {
                             throw new Exception("Error al insertar la asociación equipo-orden en tb_equipoxorden (Orden: {$idOrdenGenerado}, Equipo: {$idEquipoActual}).");
                         }

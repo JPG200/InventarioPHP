@@ -55,6 +55,14 @@ switch($_REQUEST["operador"]){
             );
         }else{
             // Si $datos no es un array, devolvemos un resultado vacío
+            $list[]=array(
+                "Numero de Registro"=>"ERROR",
+                "Placa"=> "ERROR",
+                "Serial"=> "ERROR",
+                "Fecha de Ingreso"=> "ERROR",
+                "Estado"=> "ERROR",
+                "op"=> "ERROR"
+            );
             // Esto puede ocurrir si no hay equipos registrados o si hubo un error al obtener los datos
             // En este caso, devolvemos un array vacío con los parámetros necesarios para DataTables
             $resultador = array(

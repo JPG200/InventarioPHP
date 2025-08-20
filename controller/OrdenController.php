@@ -47,18 +47,18 @@ switch($_REQUEST["operador"]){
                 "aaData"=>$list
             );
         }else{
-            $datos = array(
-                    "Orden De Compra"=> "",
-                    "Orden de Servicio"=> "",
-                    "Numero de Registro"=> "",
-                    "Fecha de Entrega"=> "",
-                    "Tipo de Orden"=> "",
-                    "Numero de Contrato"=> "",
-                    "Total de Equipos Activos"=> "",
-                    "Total de Equipos Devueltos"=> "",
-                    "Empresa"=> "",
-                    "Orden Original"=>"",
-                    "op"=>""
+            $list[] = array(
+                    "Orden De Compra"=> "ERROR",
+                    "Orden de Servicio"=> "ERROR",
+                    "Numero de Registro"=> "ERROR",
+                    "Fecha de Entrega"=> "ERROR",
+                    "Tipo de Orden"=> "ERROR",
+                    "Numero de Contrato"=> "ERROR",
+                    "Total de Equipos Activos"=> "ERROR",
+                    "Total de Equipos Devueltos"=> "ERROR",
+                    "Empresa"=> "ERROR",
+                    "Orden Original"=>"ERROR",
+                    "op"=>"ERROR"
             );
              $resultador = array(
                         "sEcho"=>1,
