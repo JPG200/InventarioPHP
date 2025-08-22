@@ -10,6 +10,8 @@ $('#txtnombre').val("");
 $('#txtapellido').val("");
 $('#txtemail').val("");
 $('#txtareacrear').val("");
+$('#txtcargo').val("");
+
 listarEmpleados();
 LlenarSelectArea();
 }
@@ -28,6 +30,7 @@ function listarEmpleados(){
         {data:"Nombre"},
         {data:"Apellido"},
         {data:"Email"},
+        {data:"Cargo"},
         {data:"Area"},
         {data:"Estado"},
         {data:"op"}
@@ -44,9 +47,20 @@ function listarEmpleados(){
     $('#txtapellido').val("");
     $('#txtemail').val("");
     $('#txtareacrear').val("");
+    $('#txtcargo').val("");
+    $('#txtcedulaupdate').val("");
+    $('#txtnombreupdate').val("");
+    $('#txtapellidoupdate').val("");
+    $('#txtemailupdate').val("");
+    $('#txtareaupdate').val("");
+    $('#txtcargoupdate').val("");
+    
+    $("#btnActualizar").show();
     $("#btnGuardar").show();
     $('#createEmpleado').modal('hide'); // Cerrar el modal después de registrar
 }
+
+
 
     function RegistrarEmpleado(){
         // Obtener los valores de los campos del formulario
@@ -55,13 +69,15 @@ function listarEmpleados(){
     apellido=$('#txtapellido').val();
     email=$('#txtemail').val();
     area=$('#txtareacrear').val();
+    cargo=$('#txtcargo').val();
         // Validar que los campos no estén vacíos
      parametros = {
         "cedula": cedula,
         "nombre": nombre,
         "apellido": apellido,
         "email": email,
-        "area": area
+        "area": area,
+        "cargo": cargo
         },
     $.ajax({
         // Enviar los datos al servidor
@@ -244,13 +260,15 @@ function BuscarEmpleadoBoton(cedula,op){
         apellido=$('#txtapellidoupdate').val();
         email=$('#txtemailupdate').val();
         area=$('#txtareaupdate').val();
+        cargo=$('#txtcargoupdate').val();
         parametros = {
             "id_Empleado":id_Empleado,
             "cedula": cedula,
             "nombre": nombre,
             "apellido": apellido,
             "email": email,
-            "area": area
+            "area": area,
+            "cargo": cargo
         },$.ajax({
             // Enviar los datos al servidor para actualizar el empleado
             data: parametros,

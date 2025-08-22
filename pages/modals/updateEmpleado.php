@@ -35,6 +35,11 @@
 						<textarea rows="2" type="text" id="txtemailupdate" class="form-control" placeholder="Email del empleado" autofocus required></textarea>
 						<div class="form-control-position"><i class="icon-file2"></i></div>	
 					</div>
+					<label for="cargo">Cargo</label>
+                    <div class="position-relative has-icon-left">
+						<textarea rows="2" type="text" id="txtcargoupdate" class="form-control" placeholder="Cargo del empleado" autofocus required></textarea>
+						<div class="form-control-position"><i class="icon-file2"></i></div>	
+					</div>
 					<div class="form-group">
 						<label for="area">Area</label>
 						<div class="position-relative has-icon-left">

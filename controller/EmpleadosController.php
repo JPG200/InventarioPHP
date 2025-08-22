@@ -18,6 +18,7 @@ switch($_REQUEST["operador"]){
                     "Nombre"=> $datos[$i]['nombre'],
                     "Apellido"=> $datos[$i]['apellido'],
                     "Email"=> $datos[$i]['correo'],
+                    "Cargo"=> $datos[$i]['Cargo'],
                     "Area"=> $datos[$i]['Area'],
                     "Estado"=> $datos[$i]['estado']==1?'<div class="tag tag-success">Activo</div>':
                                                         '<div class="tag tag-danger">Inactivo</div>',
@@ -175,7 +176,7 @@ switch($_REQUEST["operador"]){
         // If any of the required fields are missing, return a "required" response
         if(!isset($_POST["cedula"]) || empty($_POST["cedula"]) || !isset($_POST["nombre"]) || empty($_POST["nombre"]) 
         || !isset($_POST["apellido"]) || empty($_POST["apellido"]) || !isset($_POST["email"])
-        || empty($_POST["email"]) || !isset($_POST["area"]) || empty($_POST["area"])){
+        || empty($_POST["email"]) || !isset($_POST["area"]) || empty($_POST["area"]) || !isset($_POST["cargo"]) || empty($_POST["cargo"])){
             $response = "required";
         }else{
             // If all required fields are present, proceed to register the employee
@@ -186,6 +187,7 @@ switch($_REQUEST["operador"]){
             $apellido = $_POST["apellido"];
             $correo = $_POST["email"];
             $id_Area = $_POST["area"];
+            $cargo= $_POST["cargo"];
             // If the employee already exists, return a "registered" response
             // If the employee does not exist, proceed to register the employee using the registrarEmpleados method
             // If the registration is successful, return a "success" response; otherwise, return an "error" response
@@ -195,7 +197,7 @@ switch($_REQUEST["operador"]){
                 // If the employee does not exist, proceed to register the employee
                 // Call the registrarEmpleados method to register the employee
                 // If the registration is successful, return a "success" response; otherwise, return an "error" response
-                if($cat->registrarEmpleados($cedula,$nombre,$apellido,$correo,$id_Area)){
+                if($cat->registrarEmpleados($cedula,$nombre,$apellido,$correo,$id_Area,$cargo)){
                     $response = "sucess";
                 }else{
                     $response = "error";
@@ -211,7 +213,7 @@ switch($_REQUEST["operador"]){
         // If any of the required fields are missing, return a "required" response
         if(!isset($_POST["cedula"]) || empty($_POST["cedula"]) || !isset($_POST["nombre"]) || empty($_POST["nombre"]) 
         || !isset($_POST["apellido"]) || empty($_POST["apellido"]) || !isset($_POST["email"])
-        || empty($_POST["email"]) || !isset($_POST["area"]) || empty($_POST["area"])){
+        || empty($_POST["email"]) || !isset($_POST["area"]) || empty($_POST["area"]) || !isset($_POST["cargo"]) || empty($_POST["cargo"])){
             $response = "required";
         }else{
             // If all required fields are present, proceed to update the employee
@@ -224,9 +226,10 @@ switch($_REQUEST["operador"]){
             $apellido = $_POST["apellido"];
             $correo = $_POST["email"];
             $id_Area = $_POST["area"];
+            $cargo= $_POST["cargo"];
             // Check if the employee ID is set and not empty
             // If the ID is set, proceed to update the employee
-                if($cat->ActualizarEmpleados($id_Empleado,$cedula,$nombre,$apellido,$correo,$id_Area)){
+                if($cat->ActualizarEmpleados($id_Empleado,$cedula,$nombre,$apellido,$correo,$id_Area,$cargo)){
                     $response = "sucess";
                 }else{
                     $response = "error";

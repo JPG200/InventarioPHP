@@ -14,7 +14,7 @@ class Empleados{
     // This function joins the tbempleado and tbarea tables to get employee details along with their area.
     // It uses a prepared statement to prevent SQL injection.
     function listarEmpleados(){
-        $query="SELECT tbe.id_Empl,tbe.nombre,tbe.apellido,tba.Area,tbe.estado,tbe.cedula,tbe.correo
+        $query="SELECT tbe.id_Empl,tbe.nombre,tbe.apellido,tba.Area,tbe.estado,tbe.cedula,tbe.correo, tbe.Cargo
         FROM tbempleado tbe INNER JOIN tbarea tba ON tbe.id_Area=tba.id_Area;";
    
        $result = $this->cnx->prepare($query);
@@ -69,15 +69,16 @@ class Empleados{
     // Parameters: id (int), cedula (string), nombre (string), apellido (string), correo (string), id_Area (int).
     // Returns true on success, false on failure.
     // This function updates the employee's details in the tbempleado table using a prepared statement to prevent SQL injection.
-    function ActualizarEmpleados($id,$cedula,$nombre,$apellido,$correo,$id_Area){
-        $query="UPDATE tbempleado set cedula = ?, nombre = ?, apellido = ?, correo = ?, id_Area = ? where id_Empl = ?;";
+    function ActualizarEmpleados($id,$cedula,$nombre,$apellido,$correo,$id_Area,$cargo){
+        $query="UPDATE tbempleado set cedula = ?, nombre = ?, apellido = ?, correo = ?, id_Area = ?, Cargo=? where id_Empl = ?;";
         $result = $this->cnx->prepare($query);
         $result->bindParam(1,$cedula);
         $result->bindParam(2,$nombre);
         $result->bindParam(3,$apellido);
         $result->bindParam(4,$correo);
         $result->bindParam(5,$id_Area);
-        $result->bindParam(6,$id);
+        $result->bindParam(6,$cargo);  
+        $result->bindParam(7,$id);
 
         if($result->execute()){
             return true;
@@ -150,8 +151,8 @@ class Empleados{
     // Returns true on success, false on failure.
     // This function inserts a new employee into the tbempleado table with a default estado of 1 (active).
     // It uses a prepared statement to prevent SQL injection.
-function registrarEmpleados($cedula,$nombre,$apellido,$correo,$id_Area){
-    $query="INSERT INTO tbempleado(cedula,nombre,apellido,correo,id_Area,estado) VALUES(?,?,?,?,?,?);"; 
+function registrarEmpleados($cedula,$nombre,$apellido,$correo,$id_Area,$cargo){
+    $query="INSERT INTO tbempleado(cedula,nombre,apellido,correo,id_Area,estado,Cargo) VALUES(?,?,?,?,?,?,?);"; 
     $result = $this->cnx->prepare($query); 
     $estado = 1; //Activo por defecto
     $result->bindParam(1,$cedula);
@@ -160,6 +161,7 @@ function registrarEmpleados($cedula,$nombre,$apellido,$correo,$id_Area){
     $result->bindParam(4,$correo);
     $result->bindParam(5,$id_Area);
     $result->bindParam(6,$estado);
+    $result->bindParam(7,$cargo);
     if($result->execute()){
         return true;
     }else{
