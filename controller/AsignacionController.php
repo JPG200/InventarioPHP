@@ -5,6 +5,7 @@ $cat = new Asignacion();
 
 switch($_REQUEST["operador"]){
     case "listar_Asignacion":
+        try{
         $datos = $cat->listarAsignacion();
         if(is_array(value: $datos)){
             for($i=0;$i<count($datos);$i++){
@@ -46,8 +47,30 @@ switch($_REQUEST["operador"]){
                 "aaData"=>$list
             );
         }else{
-            $datos = array(
-                // Si no hay datos, retornar un array con campos de error
+            $list = array(
+                // Si no hay datos, retornar un array con campos vacios
+                "Numero de Registro"=>"",
+                "Placa"=> "",
+                "Empleado"=> "",
+                "Area"=> "",
+                "Acta"=> "",
+                "Empresa"=> "",
+                "Fecha Ingreso"=> "",
+                "Fecha Devolucion"=> "",
+                "Estado"=> "",
+                "op"=> ""
+            );
+             $resultador = array(
+                // Estructura del resultado para el DataTable
+                        "sEcho"=>1,
+                        "iTotalRecords"=>count($list),
+                        "iTotalDisplayRecords"=>count($list),
+                        "aaData"=>$list
+                    );
+        }
+        }catch(Exception $e){
+            $list = array(
+                // Si hay una excepción, retornar un array con campos de error
                 "Numero de Registro"=>"ERROR",
                 "Placa"=> "ERROR",
                 "Empleado"=> "ERROR",
@@ -67,7 +90,6 @@ switch($_REQUEST["operador"]){
                         "aaData"=>$list
                     );
         }
-
         echo json_encode($resultador);
 
     break;

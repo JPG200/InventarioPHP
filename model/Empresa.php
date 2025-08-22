@@ -141,7 +141,7 @@ try{
             }
             } else{
                 //Si la empresa ya existe, solo se registra el contrato si no existe otro con el mismo numero para esa empresa
-                if($this->buscarContrato($NumeroContrato,$datos['id_Empresa'])){
+                if(!$this->buscarContrato($NumeroContrato,$datos['id_Empresa'])){
                     $queryContrato = "INSERT INTO tbcontrato (id_Empresa,NumeroContrato,fecha_Inicio,fecha_fin,estado) VALUES (?,?,?,?,?);";
                     $resultContrato = $this->cnx->prepare($queryContrato);
                     $resultContrato->bindParam(1, $datos['id_Empresa']);

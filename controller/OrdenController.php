@@ -4,6 +4,7 @@ require "../model/Orden.php";
 $cat = new Orden();
 switch($_REQUEST["operador"]){
     case "listarOrden":
+        try{
         // Llamar al método listarOrden del modelo Orden
         // y obtener los datos de las órdenes
         // Se inicializa el array $list para almacenar los datos  
@@ -48,17 +49,17 @@ switch($_REQUEST["operador"]){
             );
         }else{
             $list[] = array(
-                    "Orden De Compra"=> "ERROR",
-                    "Orden de Servicio"=> "ERROR",
-                    "Numero de Registro"=> "ERROR",
-                    "Fecha de Entrega"=> "ERROR",
-                    "Tipo de Orden"=> "ERROR",
-                    "Numero de Contrato"=> "ERROR",
-                    "Total de Equipos Activos"=> "ERROR",
-                    "Total de Equipos Devueltos"=> "ERROR",
-                    "Empresa"=> "ERROR",
-                    "Orden Original"=>"ERROR",
-                    "op"=>"ERROR"
+                    "Orden De Compra"=> "",
+                    "Orden de Servicio"=> "",
+                    "Numero de Registro"=> "",
+                    "Fecha de Entrega"=> "",
+                    "Tipo de Orden"=> "",
+                    "Numero de Contrato"=> "",
+                    "Total de Equipos Activos"=> "",
+                    "Total de Equipos Devueltos"=> "",
+                    "Empresa"=> "",
+                    "Orden Original"=>"",
+                    "op"=>""
             );
              $resultador = array(
                         "sEcho"=>1,
@@ -67,6 +68,27 @@ switch($_REQUEST["operador"]){
                         "aaData"=>$list
                     );
         }
+    }catch(Exception $e){
+            $list[] = array(
+                "Orden De Compra"=> "ERROR",
+                "Orden de Servicio"=> "ERROR",
+                "Numero de Registro"=> "ERROR",
+                "Fecha de Entrega"=> "ERROR",
+                "Tipo de Orden"=> "ERROR",
+                "Numero de Contrato"=> "ERROR",
+                "Total de Equipos Activos"=> "ERROR",
+                "Total de Equipos Devueltos"=> "ERROR",
+                "Empresa"=> "ERROR",
+                "Orden Original"=>"ERROR",
+                "op"=>"ERROR"
+            );
+            $resultador = array(
+                        "sEcho"=>1,
+                        "iTotalRecords"=>count($list),
+                        "iTotalDisplayRecords"=>count($list),
+                        "aaData"=>$list
+                    );
+    }
         // Devolver el resultado como JSON
         echo json_encode($resultador);
 

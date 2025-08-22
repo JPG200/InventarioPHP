@@ -6,6 +6,7 @@ $cat = new Empleados();
 
 switch($_REQUEST["operador"]){
     case "listar_Empleados":
+        try{
         $datos = $cat->listarEmpleados();
         if(is_array(value: $datos)){
             // Caso para listar empleados
@@ -51,14 +52,14 @@ switch($_REQUEST["operador"]){
                 "aaData"=>$list
             );
             } else{
-                // If no data is found, prepare an error response
+                // If no data is found, prepare an empty response
                 $list[]=array(
-                    "Numero de Registro"=>"ERROR",
-                    "Nombre"=> "ERROR",
-                    "Apellido"=> "ERROR",
-                    "Area"=> "ERROR",
-                    "Estado"=> "ERROR",
-                    "op"=> "ERROR"
+                    "Numero de Registro"=>"",
+                    "Nombre"=> "",
+                    "Apellido"=> "",
+                    "Area"=> "",
+                    "Estado"=> "",
+                    "op"=> ""
                     );
                     // Prepare the result to be returned as JSON
                     // The result includes the total number of records and the data itself
@@ -68,6 +69,24 @@ switch($_REQUEST["operador"]){
                         "iTotalDisplayRecords"=>count($list),
                         "aaData"=>$list
                     );
+            }
+        }catch(Exception $e){
+            $list[]=array(
+                "Numero de Registro"=>"ERROR",
+                "Nombre"=> "ERROR",
+                "Apellido"=> "ERROR",
+                "Area"=> "ERROR",
+                "Estado"=> "ERROR",
+                "op"=> "ERROR"
+                );
+                // Prepare the result to be returned as JSON
+                // The result includes the total number of records and the data itself
+                $resultador = array(
+                    "sEcho"=>1,
+                    "iTotalRecords"=>count($list),
+                    "iTotalDisplayRecords"=>count($list),
+                    "aaData"=>$list
+                );
             }
         // Return the result as a JSON response
         echo json_encode($resultador);

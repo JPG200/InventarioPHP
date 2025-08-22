@@ -5,6 +5,7 @@ $cat = new Equipos();
 
 switch($_REQUEST["operador"]){
     case "Area_listar":  
+        try{
         // Listar las áreas
         $datos = $cat->ListarArea();
         if(is_array(value: $datos)){
@@ -52,24 +53,40 @@ switch($_REQUEST["operador"]){
                 "aaData"=>$list
             );
         }else{
-            // Respuesta en caso de error
+            // Respuesta en caso de vacios
             $list[]=array(
-                "Numero de Registro"=>"ERROR",
-                "Area"=> "ERROR",
-                "Centro de Costos"=> "ERROR",
-                "Fecha de Inicio"=> "ERROR",
-                "Fecha de Terminacion"=> "ERROR",
-                "Estado"=> "ERROR",
-                "op"=> "ERROR"
+                "Numero de Registro"=>"",
+                "Area"=> "",
+                "Centro de Costos"=> "",
+                "Fecha de Inicio"=> "",
+                "Fecha de Terminacion"=> "",
+                "Estado"=> "",
+                "op"=> ""
             );
             $resultador = array(
-                // Respuesta cuando no hay datos
                 "sEcho"=>1,
-                "iTotalRecords"=>0,
-                "iTotalDisplayRecords"=>0,
-                "aaData"=>array()
+                "iTotalRecords"=>count($list),
+                "iTotalDisplayRecords"=>count($list),
+                "aaData"=>$list
             );
         }
+    }catch(Exception $e){
+        $list[]=array(
+            "Numero de Registro"=>"ERROR",
+            "Area"=> "ERROR",
+            "Centro de Costos"=> "ERROR",
+            "Fecha de Inicio"=> "ERROR",
+            "Fecha de Terminacion"=> "ERROR",
+            "Estado"=> "ERROR",
+            "op"=> "ERROR"
+        );
+            $resultador = array(
+                "sEcho"=>1,
+                "iTotalRecords"=>count($list),
+                "iTotalDisplayRecords"=>count($list),
+                "aaData"=>$list
+            );      
+    }
 
         echo json_encode($resultador);
 

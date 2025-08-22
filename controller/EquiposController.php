@@ -4,7 +4,7 @@ $cat = new Equipos();
 
 switch($_REQUEST["operador"]){
     case "listar_categorias":  
-    
+    try{
         $datos = $cat->ListarEquipos();
         // Verificamos si $datos es un array
         if(is_array(value: $datos)){
@@ -56,22 +56,40 @@ switch($_REQUEST["operador"]){
         }else{
             // Si $datos no es un array, devolvemos un resultado vacío
             $list[]=array(
-                "Numero de Registro"=>"ERROR",
-                "Placa"=> "ERROR",
-                "Serial"=> "ERROR",
-                "Fecha de Ingreso"=> "ERROR",
-                "Estado"=> "ERROR",
-                "op"=> "ERROR"
+                "Numero de Registro"=>"",
+                "Placa"=> "",
+                "Serial"=> "",
+                "Fecha de Ingreso"=> "",
+                "Estado"=> "",
+                "op"=> ""
             );
             // Esto puede ocurrir si no hay equipos registrados o si hubo un error al obtener los datos
             // En este caso, devolvemos un array vacío con los parámetros necesarios para DataTables
             $resultador = array(
                 "sEcho"=>1,
-                "iTotalRecords"=>0,
-                "iTotalDisplayRecords"=>0,
-                "aaData"=>array()
+                "iTotalRecords"=>count($list),
+                "iTotalDisplayRecords"=>count($list),
+                "aaData"=>$list
             );
         }
+    }catch(Exception $e){
+        // Si ocurre un error, devolvemos un mensaje de error
+        $list[]=array(
+            "Numero de Registro"=>"ERROR",
+            "Placa"=> "ERROR",
+            "Serial"=> "ERROR",
+            "Fecha de Ingreso"=> "ERROR",
+            "Estado"=> "ERROR",
+            "op"=> "ERROR"
+        );
+        // Preparamos el resultado para enviar como JSON
+            $resultador = array(
+                "sEcho"=>1,
+                "iTotalRecords"=>count($list),
+                "iTotalDisplayRecords"=>count($list),
+                "aaData"=>$list
+            );
+    }
         // Enviamos el resultado como JSON
         echo json_encode($resultador);
 
