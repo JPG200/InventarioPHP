@@ -16,7 +16,7 @@
               ?>
               </p> 
             </h6>
-            <span class="font-small-3 text-muted">Administrador</span>
+            <span class="font-small-3 text-muted"><?php echo $_SESSION["user"]["tipo_usuario"]; ?></span>
 
           </div>
        </div> 

@@ -15,18 +15,18 @@ function ValidarUsuario(){
         type:  'post',
         beforeSend: function () {},
         success: function (response) {
-            console.log(response);
             if(response == "success"){
-                console.log(response);
                 location.href = "/pages/welcome.php";
             } else if(response == "not found"){
                 console.log(response);
-                LimpiarController();
+
                msg ='<div class="alert alert-danger mb-2" role="alert"><strong>Usuario o Contraseña incorrecta </strong>Las Credenciales son incorrectas. Por favor verifique.</div>;'
+               LimpiarController();
             } else if(response == "requerido"){
                 console.log(response);
-                LimpiarController();
+                
                msg ='<div class="alert alert-danger mb-2" role="alert"><strong>Usuario no existe </strong> Por favor registrese.</div>;'
+               LimpiarController();
             }
             $('#status_login').html(msg);
         }
@@ -35,8 +35,8 @@ function ValidarUsuario(){
 
 function LimpiarController(){
     // Limpiar los campos de entrada
-$('#user-name').val("");
-$('#user-password').val("");
+    $('#user-name').val("");
+    $('#user-password').val("");
 }
 
 
