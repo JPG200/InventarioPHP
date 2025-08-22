@@ -30,7 +30,10 @@ class Usuario{
         //Validar Usuario
     function ValidarUsuario($u_correo,$u_contraseña){
         //Consulta para validar el usuario
-        $query = "SELECT * FROM tbusuarios WHERE correo=? AND contraseña=? AND estado=1";
+        $query = "SELECT tbusuarios.correo,tbusuarios.contraseña, tbusuarios.nombre,tbusuarios.apellidos, tbtipou.tipo_usuario 
+        FROM tbusuarios INNER JOIN tbtipou
+        ON tbusuarios.id_tipoU = tbtipou.id_tipoU
+        WHERE tbusuarios.correo=? AND tbusuarios.contraseña=? AND tbusuarios.estado=1";
         $result = $this->cnx->prepare($query);
         $result->bindParam(1,$u_correo);
         $result->bindParam(2,$u_contraseña);
