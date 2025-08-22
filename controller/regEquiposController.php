@@ -5,6 +5,7 @@ $cat = new regEquipos();
 
 switch($_REQUEST["operador"]){
     case "listar_regEquipos":
+        try{
         $datos = $cat->ListarregEquipos();
         if(is_array(value: $datos)){
             // Inicializamos un array para almacenar los datos
@@ -55,18 +56,19 @@ switch($_REQUEST["operador"]){
                 "aaData"=>$list
             );
             } else{
-                // Respuesta en caso de error
+                // Respuesta en caso de vacios
                 $list[]=array(
-                    "Numero de Registro"=>"ERROR",
-                    "Placa"=> "ERROR",
-                    "Serial"=> "ERROR",
-                    "Descripcion"=> "ERROR",
-                    "Observaciones"=> "ERROR",
-                    "Accesorios"=> "ERROR",
-                    "Empresa"=> "ERROR",
-                    "Fecha de Ingreso"=> "ERROR",
-                    "Estado"=> "ERROR",
-                    "op"=> "ERROR"
+                    "Numero de Registro"=>"",
+                    "Placa"=> "",
+                    "Serial"=> "",
+                    "Descripcion"=> "",
+                    "Observaciones"=> "",
+                    "Accesorios"=> "",
+                    "Empresa"=> "",
+                    "Fecha de Ingreso"=> "",
+                    "Fecha de Finalizacion"=> "",
+                    "Estado"=> "",
+                    "op"=> ""
                     );
                     $resultador = array(
                         "sEcho"=>1,
@@ -75,6 +77,28 @@ switch($_REQUEST["operador"]){
                         "aaData"=>$list
                     );
             }
+        }catch(Exception $e){
+            $list[]=array(
+                "Numero de Registro"=>"ERROR",
+                "Placa"=> "ERROR",
+                "Serial"=> "ERROR",
+                "Descripcion"=> "ERROR",
+                "Observaciones"=> "ERROR",
+                "Accesorios"=> "ERROR",
+                "Empresa"=> "ERROR",
+                "Fecha de Ingreso"=> "ERROR",
+                "Fecha de Finalizacion"=> "ERROR",
+                "Estado"=> "ERROR",
+                "op"=> "ERROR"
+                );
+                $resultador = array(
+                    "sEcho"=>1,
+                    "iTotalRecords"=>count($list),
+                    "iTotalDisplayRecords"=>count($list),
+                    "aaData"=>$list
+                );
+
+        }
 
         echo json_encode($resultador);
 

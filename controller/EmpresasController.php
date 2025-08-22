@@ -5,6 +5,7 @@ $cat = new Empresa();
 
 switch($_REQUEST["operador"]){
     case "listar_Empresa":
+        try{
         $datos = $cat->listarEmpresa();
         if(is_array( $datos)){
             for($i=0;$i<count($datos);$i++){
@@ -93,6 +94,25 @@ switch($_REQUEST["operador"]){
                 "aaData"=>$list
             );
         }else{
+            $list = array(
+                "Numero de Registro"=>"",
+                "Empresa"=> "",
+                "NIT"=> "",
+                "Numero de Contrato"=> "",
+                "Fecha de Inicio"=> "",
+                "Fecha de Final"=> "",
+                "Vigencia"=> "",
+                "Estado"=> "",
+                "op"=> ""
+            );
+             $resultador = array(
+                        "sEcho"=>1,
+                        "iTotalRecords"=>count($list),
+                        "iTotalDisplayRecords"=>count($list),
+                        "aaData"=>$list
+                    );
+        }
+    }catch(Exception $e){
             $list = array(
                 "Numero de Registro"=>"ERROR",
                 "Empresa"=> "ERROR",

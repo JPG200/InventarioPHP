@@ -10,6 +10,7 @@ BuscarAsignacionPorId('.$datos[$i]['id_Asig'].');
 
 switch($_REQUEST["operador"]){
     case "listar_Devolucion":
+        try{
         // Listar las devoluciones
         $datos = $cat->listarDevolucion();
         if(is_array(value: $datos)){
@@ -59,7 +60,28 @@ switch($_REQUEST["operador"]){
                 "aaData"=>$list
             );
         }else{
-            // Si no hay datos, enviar un mensaje de error
+            // Si no hay datos, enviar un mensaje de vacios
+            $list = array(
+                "Numero de Registro"=>"",
+                "Placa"=> "",
+                "Empleado"=> "",
+                "Area"=> "",
+                "Acta"=> "",
+                "Empresa"=> "",
+                "Fecha Ingreso"=> "",
+                "Fecha Devolucion"=> "",
+                "Estado"=> "",
+                "op"=> ""
+            );
+            // Preparar el resultado para enviar como JSON
+             $resultador = array(
+                        "sEcho"=>1,
+                        "iTotalRecords"=>count($list),
+                        "iTotalDisplayRecords"=>count($list),
+                        "aaData"=>$list
+                    );
+        }
+        }catch(Exception $e){
             $list = array(
                 "Numero de Registro"=>"ERROR",
                 "Placa"=> "ERROR",
@@ -80,7 +102,6 @@ switch($_REQUEST["operador"]){
                         "aaData"=>$list
                     );
         }
-
         echo json_encode($resultador);
 
     break;
