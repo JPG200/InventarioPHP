@@ -52,6 +52,7 @@ if(isset($_SESSION["user"])){
 													<th >Nombre</th>
 													<th >Apellido</th>
 													<th >Email</th>
+													<th >Cargo</th>
 													<th >Area</th>
 													<th >Estado</th>
 													<th >op</th>
